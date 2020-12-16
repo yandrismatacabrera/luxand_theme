@@ -1,0 +1,1 @@
+/var/www/html/luxand_theme/app/code/Gym/JsAuth/view/adminhtml/web/js/jsAuth.js
