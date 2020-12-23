@@ -21,9 +21,9 @@ class Plan extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     public function getAllOptions()
     {
         return array(
-            array('value'=>'semanal', 'label'=>'Semanal'),
-            array('value'=>'mensual', 'label'=>'mensual'),
-            array('value'=>'anual', 'label'=>'Anual')
+            array('value'=>'Semanal', 'label'=>'Semanal'),
+            array('value'=>'Mensual', 'label'=>'Mensual'),
+            array('value'=>'Anual', 'label'=>'Anual')
         );
     }
 }

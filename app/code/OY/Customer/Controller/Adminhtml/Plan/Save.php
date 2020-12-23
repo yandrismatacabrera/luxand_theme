@@ -58,9 +58,9 @@ class Save extends Action
 
                 $count = 1;
 
-                if($data['plan']=='anual')
+                if($data['plan']=='Anual')
                     $typePlan = 'Anual';
-                if($data['plan']=='mensual')
+                if($data['plan']=='Mensual')
                     $typePlan = 'Mensual';
 
                 $plan = $typePlan;
@@ -69,11 +69,11 @@ class Save extends Action
                 switch ($typePlan) {
                     case 'Anual':
                         //$dateTo = date("+".$data['plan_year']." years", $strTo);
-                        $dateTo=date("Y-m-d H:i:s", strtotime("+".$data['plan_year']." years", strtotime($strTo)));
+                        $dateTo=date("Y-m-d H:i:s", strtotime("+1 years", strtotime($strTo)));
                         break;
                     case 'Mensual':
                         //$dateTo = date("+".$data['plan_month']." months", $strTo);
-                        $dateTo=date("Y-m-d H:i:s", strtotime("+".$data['plan_month']." months", strtotime($strTo)));
+                        $dateTo=date("Y-m-d H:i:s", strtotime("+1 months", strtotime($strTo)));
                         break;
                     default:
                         //$dateTo = date("+".$count." weeks", $strTo);

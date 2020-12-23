@@ -166,7 +166,7 @@ class PlanGrid extends \Magento\Backend\Block\Widget\Grid\Extended
      */
     public function getRowUrl($item)
     {
-        return $this->getUrl("*/plan/edit", ["_current" => true, 'id'=>$item->getId()]);
+        return $this->getUrl("*/plan/edit", ["_current" => true, 'id'=>$item->getId(), 'customerid'=>$item->getData('customer_id')]);
     }
 
     /**

@@ -46,7 +46,7 @@ class PlanDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 
             $data = $cardCurrent->getData();
 
-            switch ($data['plan']) {
+            /*switch ($data['plan']) {
                 case 'Año(s)':
                     $data['plan_year'] = $data['plan_count'];
                     break;
@@ -55,7 +55,7 @@ class PlanDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                     break;
                 default:
                     $data['plan_week'] = $data['plan_count'];
-            }
+            }*/
 
             $this->_loadedData[$cardCurrent->getId()]=$data;
 
