@@ -19,7 +19,9 @@ class Registry extends \Magento\Backend\App\Action
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \OY\Registry\Model\RegistryFactory $registryFactory,
         \OY\Registry\Api\RegistryRepositoryInterface $registryRepository,
-        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone,
+        \OY\Plan\Model\ResourceModel\Plan\CollectionFactory $collectionPlanFactory,
+        \OY\Plan\Api\PlanRepositoryInterface $planRepository
     )
     {
         parent::__construct($context);
@@ -29,6 +31,8 @@ class Registry extends \Magento\Backend\App\Action
         $this->registryFactory=$registryFactory;
         $this->registryRepository=$registryRepository;
         $this->timezone=$timezone;
+        $this->collectionPlanFactory=$collectionPlanFactory;
+        $this->planRepository=$planRepository;
     }
 
 
@@ -41,6 +45,40 @@ class Registry extends \Magento\Backend\App\Action
         {
 
             try{
+
+                $collection = $this->collectionPlanFactory->create();
+                $collection->addFieldToFilter('customer_id',(int)$this->getRequest()->getParam('customer_id'));
+                $hasPlan = false;
+
+                if($collection->getSize()){
+
+                    foreach ($collection as $plan){
+
+                        if($this->statusPlan($plan->getData('from'), $plan->getData('to'))){
+
+                           if($plan->getData('access_number')){
+
+                               if($plan->getData('access_enabled')){
+
+                                   $plan->setData('access_enabled', (int)$plan->getData('access_enabled')-1);
+                                   $this->planRepository->save($plan);
+                                   $hasPlan = true;
+                               }
+
+                           }else{
+                               $hasPlan = true;
+                           }
+
+                        }
+                    }
+                }
+
+                if(!$hasPlan){
+
+                    $data["success"]=false;
+                    $data["msg"]="El usuario no tiene plan asociado.";
+                    return $result->setData($data);
+                }
 
                 $customer = $this->customerRepository->getById((int)$this->getRequest()->getParam('customer_id'));
                 $fullName = $customer->getFirstname().' '.$customer->getLastname();
@@ -62,11 +100,21 @@ class Registry extends \Magento\Backend\App\Action
 
                 $data["success"]=false;
                 $data["msg"]="El usuario no existe.";
-                return $data;
+                return $result->setData($data);
             }
         }
 
         return $result->setData($data);
+    }
+
+    public function statusPlan($from, $to){
+
+        $today =date("Y-m-d H:i:s");
+
+        if(strtotime($from) <= strtotime($today) && strtotime($to) >= strtotime($today))
+            return true;
+
+        return false;
     }
 
 
