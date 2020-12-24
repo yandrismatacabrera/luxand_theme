@@ -46,7 +46,7 @@ class UpgradeData implements UpgradeDataInterface
                 [
                     'group' => 'Product Details',
                     'sort_order' => 99,
-                    'type' => 'int',
+                    'type' => 'varchar',
                     'backend' => '',
                     'frontend' => '',
                     'label' => 'Tipo de Plan (Semanal, Mensual o Anual)',
@@ -99,6 +99,44 @@ class UpgradeData implements UpgradeDataInterface
             );
 
         }
+
+        if (version_compare($context->getVersion(), '1.0.2') < 0){
+
+            $eavSetup = $this->eavSetupFactory->create( [ 'setup' => $setup ] );
+
+            $eavSetup->addAttribute(
+                \Magento\Catalog\Model\Product::ENTITY,
+                'planning_type',
+                [
+                    'group' => 'Product Details',
+                    'sort_order' => 99,
+                    'type' => 'varchar',
+                    'backend' => '',
+                    'frontend' => '',
+                    'label' => 'Tipo de Plan (Semanal, Mensual o Anual)',
+                    'input' => 'select',
+                    'source' => \OY\Catalog\Model\Entity\Attribute\Source\PlanningType::class,
+                    'class' => '',
+                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                    'visible' => true,
+                    'required' => false,
+                    'user_defined' => true,
+                    'searchable' => true,
+                    'filterable' => true,
+                    'comparable' => true,
+                    'visible_on_front' => true,
+                    'visible_in_advanced_search' => true,
+                    'used_in_product_listing' => true,
+                    'unique' => false,
+                    'is_used_in_grid' => true,
+                    'is_visible_in_grid' => false,
+                    'is_filterable_in_grid' => true,
+                    'apply_to' => 'virtual'
+                ]
+            );
+
+        }
     }
+
 
 }

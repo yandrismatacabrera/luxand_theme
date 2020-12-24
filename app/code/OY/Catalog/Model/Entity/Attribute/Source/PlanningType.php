@@ -16,15 +16,15 @@ class PlanningType extends AbstractSource
         return [
             '0' => [
                 'label' => 'Semanal',
-                'value' => 'semanal'
+                'value' => 'Semanal'
             ],
             '1' => [
                 'label' => 'Mensual',
-                'value' => 'mensual'
+                'value' => 'Mensual'
             ],
             '2' => [
                 'label' => 'Anual',
-                'value' => 'anual'
+                'value' => 'Anual'
             ]
         ];
     }
