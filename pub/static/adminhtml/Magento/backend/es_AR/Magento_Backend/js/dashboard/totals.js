@@ -1,1 +1,0 @@
-/var/www/html/luxand_theme/vendor/magento/module-backend/view/adminhtml/web/js/dashboard/totals.js

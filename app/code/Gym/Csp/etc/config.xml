@@ -4,10 +4,10 @@
         <csp>
             <mode>
                 <storefront>
-                    <report_uri>0</report_uri>
+                    <report_uri>http://csp-reporting-service.com/my-project/endpoint</report_uri>
                 </storefront>
                 <admin>
-                    <report_uri>0</report_uri>
+                    <report_uri>http://csp-reporting-service.com/my-project/endpoint</report_uri>
                 </admin>
             </mode>
             

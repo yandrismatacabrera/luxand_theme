@@ -1,1 +1,0 @@
-/var/www/html/luxand_theme/app/code/OY/Customer/view/adminhtml/web/js/photo.js

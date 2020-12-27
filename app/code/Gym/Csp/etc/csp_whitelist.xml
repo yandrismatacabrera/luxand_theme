@@ -31,5 +31,19 @@
                 <value id="facebook" type="host">https://www.facebook.com</value>
             </values>
         </policy>
+	<policy id="font-src">
+            <values>
+                <value id="twitter" type="host">https://platform.twitter.com</value>
+                <value id="addthis" type="host">https://s7.addthis.com</value>
+                <value id="facebook" type="host">https://www.facebook.com</value>
+		<value id="localhost" type="host">https://localhost:446</value>
+            </values>
+        </policy>
+	<policy id="img-src">
+            <values>
+                <value id="localhost" type="host">https://localhost:446</value>
+                <value id="prod" type="host">https://134.209.117.84:446</value>
+            </values>
+        </policy>
     </policies>
 </csp_whitelist>

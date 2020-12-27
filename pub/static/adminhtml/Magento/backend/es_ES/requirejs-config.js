@@ -266,6 +266,22 @@ require.config(config);
 var config = {
     map: {
         '*': {
+            escaper: 'Magento_Security/js/escaper'
+        }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+var config = {
+    map: {
+        '*': {
             popupWindow:            'mage/popup-window',
             confirmRedirect:        'Magento_Security/js/confirm-redirect'
         }
@@ -283,43 +299,7 @@ require.config(config);
 var config = {
     map: {
         '*': {
-            escaper: 'Magento_Security/js/escaper'
-        }
-    }
-};
-
-require.config(config);
-})();
-(function() {
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-var config = {
-    map: {
-        '*': {
             folderTree: 'Magento_Cms/js/folder-tree'
-        }
-    }
-};
-
-require.config(config);
-})();
-(function() {
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-var config = {
-    map: {
-        '*': {
-            priceBox:             'Magento_Catalog/js/price-box',
-            priceOptionDate:      'Magento_Catalog/js/price-option-date',
-            priceOptionFile:      'Magento_Catalog/js/price-option-file',
-            priceOptions:         'Magento_Catalog/js/price-options',
-            priceUtils:           'Magento_Catalog/js/price-utils'
         }
     }
 };
@@ -358,6 +338,26 @@ var config = {
             'Magento_Catalog/js/components/use-parent-settings/single-checkbox': {
                 'Magento_Catalog/js/components/use-parent-settings/toggle-disabled-mixin': true
             }
+        }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+var config = {
+    map: {
+        '*': {
+            priceBox:             'Magento_Catalog/js/price-box',
+            priceOptionDate:      'Magento_Catalog/js/price-option-date',
+            priceOptionFile:      'Magento_Catalog/js/price-option-file',
+            priceOptions:         'Magento_Catalog/js/price-options',
+            priceUtils:           'Magento_Catalog/js/price-utils'
         }
     }
 };
@@ -688,6 +688,7 @@ require.config(config);
 var config = {
         map: {
             '*': {
+                'vue': 'Gym_JsAuth/js/vue',
                 'faceApi': 'Gym_JsAuth/js/face-api.min',
                 'jsAuth': 'Gym_JsAuth/js/jsAuth'
             }
@@ -698,27 +699,41 @@ require.config(config);
 })();
 (function() {
 /**
- * Config to pull in all the relevant Braintree JS SDKs
- * @type {{paths: {braintreePayPalCheckout: string, braintreeHostedFields: string, braintreeDataCollector: string, braintreeThreeDSecure: string, braintreeGooglePay: string, braintreeApplePay: string, googlePayLibrary: string}, map: {"*": {braintree: string}}}}
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Core
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
  */
-var config = {
-    map: {
-        '*': {
-            braintree: 'https://js.braintreegateway.com/web/3.63.0/js/client.min.js',
-        }
-    },
 
+var config = {
     paths: {
-        "braintreePayPalCheckout": "https://js.braintreegateway.com/web/3.63.0/js/paypal-checkout.min",
-        "braintreeHostedFields": "https://js.braintreegateway.com/web/3.63.0/js/hosted-fields.min",
-        "braintreeDataCollector": "https://js.braintreegateway.com/web/3.63.0/js/data-collector.min",
-        "braintreeThreeDSecure": "https://js.braintreegateway.com/web/3.63.0/js/three-d-secure.min",
-        "braintreeApplePay": 'https://js.braintreegateway.com/web/3.63.0/js/apple-pay.min',
-        "braintreeGooglePay": 'https://js.braintreegateway.com/web/3.63.0/js/google-payment.min',
-        "braintreeVenmo": 'https://js.braintreegateway.com/web/3.63.0/js/venmo.min',
-        "braintreeAch": "https://js.braintreegateway.com/web/3.63.0/js/us-bank-account.min",
-        "braintreeLpm": "https://js.braintreegateway.com/web/3.63.0/js/local-payment.min",
-        "googlePayLibrary": "https://pay.google.com/gp/p/js/pay"
+        'mageplaza/core/jquery/popup': 'Mageplaza_Core/js/jquery.magnific-popup.min',
+        'mageplaza/core/owl.carousel': 'Mageplaza_Core/js/owl.carousel.min',
+        'mageplaza/core/bootstrap': 'Mageplaza_Core/js/bootstrap.min',
+        mpIonRangeSlider: 'Mageplaza_Core/js/ion.rangeSlider.min',
+        touchPunch: 'Mageplaza_Core/js/jquery.ui.touch-punch.min',
+        mpDevbridgeAutocomplete: 'Mageplaza_Core/js/jquery.autocomplete.min'
+    },
+    shim: {
+        "mageplaza/core/jquery/popup": ["jquery"],
+        "mageplaza/core/owl.carousel": ["jquery"],
+        "mageplaza/core/bootstrap": ["jquery"],
+        mpIonRangeSlider: ["jquery"],
+        mpDevbridgeAutocomplete: ["jquery"],
+        touchPunch: ['jquery', 'jquery/ui']
     }
 };
 
