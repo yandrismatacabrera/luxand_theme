@@ -49,8 +49,6 @@ class RegistryManagement implements RegistryManagementInterface
         if(isset($param['customer_id'])){
 
             $customer = $this->customerRepository->getById((int)$param['customer_id']);
-
-            print_r($customer->getCustomAttribute('customer_image')->getValue());die;
         }
 
         $imgContent64Base = $param['image']['base64_encoded_data'];
