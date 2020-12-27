@@ -48,8 +48,8 @@ class OrderSaveAfter implements ObserverInterface {
 
                                     try {
 
-                                        $splitDate = explode('/',$opt['date']);
-                                        $dateFormatNew = $splitDate[1].'/'.$splitDate[0].'/'.$splitDate[2];
+                                        //$splitDate = explode('/',$opt['date']);
+                                        $dateFormatNew = $opt['date'];//$splitDate[1].'/'.$splitDate[0].'/'.$splitDate[2];
 
                                         $strTo =$this->dateFilter->filter($dateFormatNew);
 
