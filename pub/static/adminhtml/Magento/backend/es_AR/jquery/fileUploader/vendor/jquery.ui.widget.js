@@ -1,1 +1,0 @@
-/var/www/html/luxand_theme/lib/web/jquery/fileUploader/vendor/jquery.ui.widget.js

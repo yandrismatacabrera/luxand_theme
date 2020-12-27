@@ -1,1 +1,0 @@
-/var/www/html/luxand_theme/lib/web/mage/backend/floating-header.js

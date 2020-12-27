@@ -1,15 +1,1 @@
-require(['jquery', 'domReady!'], function ($) {
-    'use strict';
-
-    $('.ddg-colpicker').colpick({
-        /**
-         * @param {String} hsb
-         * @param {String} hex
-         * @param {String} rgb
-         * @param {String} el
-         */
-        onChange: function (hsb, hex, rgb, el) {
-            $(el).val('#' + hex);
-        }
-    });
-});
+/var/www/html/luxand_theme/vendor/dotmailer/dotmailer-magento2-extension/view/adminhtml/web/js/colorPickerInit.js
