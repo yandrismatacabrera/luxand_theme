@@ -134,6 +134,7 @@ class Registry extends \Magento\Backend\App\Action
             ->addAttributeToFilter('ci',$this->getRequest()->getParam('ci'));
 
           if($customerCollection->getSize()){
+
               $customer = $this->customerRepository->getById((int)$customerCollection->getFirstItem()->getId());
 
               $data["success"]=true;
@@ -144,6 +145,15 @@ class Registry extends \Magento\Backend\App\Action
                 $data['ci']=$customer->getCustomAttribute('ci')->getValue();
               if($customer->getCustomAttribute('photo'))
                 $data['photo']=$customer->getCustomAttribute('photo')->getValue();
+
+              $dateTime=date("Y-m-d H:i:s");
+              $fullName = $customer->getFirstname().' '.$customer->getLastname();
+              $registryCi = $this->registryFactory->create();
+              $registryCi->setCustomerId((int)$customer->getId());
+              $registryCi->setDateTime($dateTime);
+              $registryCi->setFullname($fullName);
+
+              $this->registryRepository->save($registryCi);
           }
         }
 
