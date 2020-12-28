@@ -17,6 +17,11 @@
                     <argument name="label" xsi:type="string">Planes</argument>
                 </action>
             </block>
+            <block class="OY\Customer\Block\Adminhtml\Edit\Tab\Reserve" name="customertab_panel_reserve">
+                <action method="setTabLabel">
+                    <argument name="label" xsi:type="string">Reservas</argument>
+                </action>
+            </block>
         </referenceBlock>
     </body>
 </page>
