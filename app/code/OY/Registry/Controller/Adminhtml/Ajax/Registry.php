@@ -21,7 +21,9 @@ class Registry extends \Magento\Backend\App\Action
         \OY\Registry\Api\RegistryRepositoryInterface $registryRepository,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone,
         \OY\Plan\Model\ResourceModel\Plan\CollectionFactory $collectionPlanFactory,
-        \OY\Plan\Api\PlanRepositoryInterface $planRepository
+        \OY\Plan\Api\PlanRepositoryInterface $planRepository,
+        \Magento\Framework\App\Config\ScopeConfigInterface $config,
+        \Webkul\BookingSystem\Model\ResourceModel\Booked\CollectionFactory $bookedCollectionFactory
     )
     {
         parent::__construct($context);
@@ -33,11 +35,14 @@ class Registry extends \Magento\Backend\App\Action
         $this->timezone=$timezone;
         $this->collectionPlanFactory=$collectionPlanFactory;
         $this->planRepository=$planRepository;
+        $this->config=$config;
+        $this->bookedCollectionFactory=$bookedCollectionFactory;
     }
 
 
     public function execute()
     {
+
         $result = $this->resultJsonFactory->create();
         $data=[];
 
@@ -45,6 +50,22 @@ class Registry extends \Magento\Backend\App\Action
         {
 
             try{
+
+                if($this->isEnableReserve()){
+
+                    $dateTimeBooked=date("d-m-Y");
+
+                    $bookedCollection = $this->bookedCollectionFactory->create();
+                    $bookedCollection->addFieldToFilter('booking_from', ['like' => '%'.$dateTimeBooked.'%']);
+
+                    if($bookedCollection->getSize()){
+                        $booked = $bookedCollection->getFirstItem();
+                        $data["reserve"] = 'Reserva desde '.$booked->getData('booking_from').' hasta '.$booked->getData('booking_too');
+                    }
+                    else{
+                        $data["reserve"] = 'No tiene reserva para hoy.';
+                    }
+                }
 
                 $collection = $this->collectionPlanFactory->create();
                 $collection->addFieldToFilter('customer_id',(int)$this->getRequest()->getParam('customer_id'));
@@ -115,6 +136,18 @@ class Registry extends \Magento\Backend\App\Action
             return true;
 
         return false;
+    }
+
+    private function getConfig($config_path)
+    {
+        return $this->config->getValue(
+            $config_path,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    private function isEnableReserve(){
+        return $this->getConfig("reserve_general/config_general/enable");
     }
 
 

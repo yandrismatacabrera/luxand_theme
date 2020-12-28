@@ -45,6 +45,7 @@ class Collection extends BookingCollection implements SearchInterface
         \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetch,
         \Magento\Framework\Event\ManagerInterface $event,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Customer\Model\Session $session,
         $mainTable,
         $eventPrefix,
         $eventObject,
@@ -67,6 +68,7 @@ class Collection extends BookingCollection implements SearchInterface
         $this->_eventObject = $eventObject;
         $this->_init($model, $resourceModel);
         $this->setMainTable($mainTable);
+        $this->session=$session;
     }
 
     /**
@@ -183,6 +185,10 @@ class Collection extends BookingCollection implements SearchInterface
         $this->getSelect()
             ->join($sql, $cond, $fields);
         $this->addFilterToMap('increment_id', 'ogt.increment_id');
+
+        if($this->session->isLoggedIn()){
+            $this->addFieldToFilter('main_table.customer_id',$this->session->getCustomerId());
+        }
 
         parent::_renderFiltersBefore();
     }
