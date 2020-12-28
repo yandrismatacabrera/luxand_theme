@@ -23,7 +23,8 @@ class Registry extends \Magento\Backend\App\Action
         \OY\Plan\Model\ResourceModel\Plan\CollectionFactory $collectionPlanFactory,
         \OY\Plan\Api\PlanRepositoryInterface $planRepository,
         \Magento\Framework\App\Config\ScopeConfigInterface $config,
-        \Webkul\BookingSystem\Model\ResourceModel\Booked\CollectionFactory $bookedCollectionFactory
+        \Webkul\BookingSystem\Model\ResourceModel\Booked\CollectionFactory $bookedCollectionFactory,
+        \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory $customerCollectionFactory
     )
     {
         parent::__construct($context);
@@ -37,6 +38,7 @@ class Registry extends \Magento\Backend\App\Action
         $this->planRepository=$planRepository;
         $this->config=$config;
         $this->bookedCollectionFactory=$bookedCollectionFactory;
+        $this->customerCollectionFactory=$customerCollectionFactory;
     }
 
 
@@ -123,6 +125,26 @@ class Registry extends \Magento\Backend\App\Action
                 $data["msg"]="El usuario no existe.";
                 return $result->setData($data);
             }
+        }
+        
+        if($this->getRequest()->getParam('ci')){
+
+          $customerCollection = $this->customerCollectionFactory->create();
+            $customerCollection->addAttributeToSelect('*')
+            ->addAttributeToFilter('ci',$this->getRequest()->getParam('ci'));
+
+          if($customerCollection->getSize()){
+              $customer = $this->customerRepository->getById((int)$customerCollection->getFirstItem()->getId());
+
+              $data["success"]=true;
+              $data['id']=$customer->getId();
+              $data['email']=$customer->getEmail();
+              $data['name']=$customer->getFirstname().' '.$customer->getLastname();
+              if($customer->getCustomAttribute('ci'))
+                $data['ci']=$customer->getCustomAttribute('ci')->getValue();
+              if($customer->getCustomAttribute('photo'))
+                $data['photo']=$customer->getCustomAttribute('photo')->getValue();
+          }
         }
 
         return $result->setData($data);
