@@ -3,8 +3,28 @@ namespace Gym\Catalog\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 
+/**
+ * @property \Magento\Store\Model\StoreManagerInterface _storeManager
+ */
 class AddToCartObserver implements ObserverInterface
 {
+    /**
+     * AddToCartObserver constructor.
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Sales\Model\Order $order
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param \Magento\Checkout\Model\Session $_checkoutSession
+     * @param \Magento\Quote\Model\QuoteManagement $quoteManagement
+     * @param \Magento\Framework\App\Response\RedirectInterface $redirect
+     * @param \Magento\Quote\Model\QuoteFactory $quote
+     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Checkout\Model\Cart $cart
+     * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
+     * @param \Magento\Framework\DB\TransactionFactory $transactionFactory
+     * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
+     */
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
@@ -13,15 +33,14 @@ class AddToCartObserver implements ObserverInterface
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Checkout\Model\Session $_checkoutSession,
         \Magento\Quote\Model\QuoteManagement $quoteManagement,
-        \Magento\Quote\Model\Quote\Item $itemModel,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Framework\App\Response\RedirectInterface $redirect,
-	\Magento\Quote\Model\QuoteFactory $quote,
-	\Magento\Customer\Model\Session $customerSession,
-	\Magento\Checkout\Model\Cart $cart,
-	\Magento\Sales\Model\Service\InvoiceService $invoiceService,
-	\Magento\Framework\DB\TransactionFactory $transactionFactory,
-	\Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
+        \Magento\Quote\Model\QuoteFactory $quote,
+        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Checkout\Model\Cart $cart,
+        \Magento\Sales\Model\Service\InvoiceService $invoiceService,
+        \Magento\Framework\DB\TransactionFactory $transactionFactory,
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender,
+        \Magento\Framework\Event\Manager $eventManager
     )
     {
         $this->_storeManager = $storeManager;
@@ -32,12 +51,13 @@ class AddToCartObserver implements ObserverInterface
         $this->_checkoutSession = $_checkoutSession;
         $this->quoteManagement = $quoteManagement;
         $this->redirect = $redirect;
-	$this->quote = $quote;
-	$this->_customerSession = $customerSession;
-	$this->cart = $cart;
-	$this->invoiceService = $invoiceService;
-	$this->transactionFactory = $transactionFactory;
-	$this->invoiceSender = $invoiceSender;
+        $this->quote = $quote;
+        $this->_customerSession = $customerSession;
+        $this->cart = $cart;
+        $this->invoiceService = $invoiceService;
+        $this->transactionFactory = $transactionFactory;
+        $this->invoiceSender = $invoiceSender;
+        $this->_eventManager = $eventManager;
     }
 
     /**
@@ -117,26 +137,11 @@ class AddToCartObserver implements ObserverInterface
                 $this->cart->removeItem($itemId)->save();
             }
 
-            $invoice = $this->invoiceService->prepareInvoice($order);
-            if (!$invoice) {
-                throw new \Magento\Framework\Exception\LocalizedException(__('We can\'t save the invoice right now.'));
-            }
-            if (!$invoice->getTotalQty()) {
-                throw new \Magento\Framework\Exception\LocalizedException(
-                    __('You can\'t create an invoice without products.')
-                );
-            }
+            $this->_eventManager->dispatch(
+                'checkout_onepage_controller_success_action',
+                ['order_ids' => [$order->getId()]]
+            );
 
-            $invoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_ONLINE);
-            $invoice->register();
-            $invoice->getOrder()->setCustomerNoteNotify(true);
-            $invoice->getOrder()->setIsInProcess(true);
-            $order->addStatusHistoryComment('Automatically INVOICED', false);
-            $invoice->save();
-            $transactionSave = $this->transactionFactory->create()->addObject($invoice)->addObject($invoice->getOrder());
-            $transactionSave->save();
-
-            $this->invoiceSender->send($invoice);
             $this->_messageManager->addSuccess(__('La Reservación se realizó exitosamente.'));
         } catch (Exception $e) {
             $this->_messageManager->addError(__('Ocurrió un error realizando la Reservación.'));
