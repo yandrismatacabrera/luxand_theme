@@ -13,3 +13,18 @@
 .card-user-name {
     font-size: 3rem !important;
 }
+.admin__field {
+    margin-bottom: 0px !important;
+}
+.admin__field-label {
+    width: 3% !important;
+}
+.admin__field-control {
+    width: 87% !important;
+}
+.display-flex {
+    display: flex;
+}
+canvas {
+    position: absolute;
+}
