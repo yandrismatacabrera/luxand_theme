@@ -270,6 +270,51 @@ define([
                         msg: msg, type: style, showSpinner: showSpinner
                     })            
                 },
+                isValidCi: function isValidCi() {
+                    if (!this.ci) {
+                        return false;
+                    }
+                    if (isNaN(this.ci)) {
+                        return false;
+                    }
+                    try {
+                        return !!(parseInt(this.ci, 10) && parseInt(this.ci, 10) > 100);
+                    } catch (e) {
+                       console.log("invalid ci");     
+                    }   
+                    return false;
+                },
+                registerWithCi: function registerWithCi () {
+                    this.resetValues();
+                    const settings = {
+                        "async": true,
+                        "dataType": "json",
+                        "url": this.config.registerUrl,
+                        "method": "POST",
+                        "data": { "ci": this.ci }
+                    }
+                    const self = this;
+                   
+                    if (!self.isValidCi()) {
+                        self.setInfo(STATE_ENUM.INVALID_CI, 'Ingrerse una cedula valida.');
+                        return null;
+                    } else {
+                        self.identifiedPerson = {};
+                        self.setInfo(STATE_ENUM.REGISTERING);
+                        return jQuery.ajax(settings)
+                            .done(function (response) {
+                                if (response && response.success) {
+                                    self.setInfo(STATE_ENUM.REGISTERING_SUCCESS);
+                                } else {
+                                    self.setInfo(STATE_ENUM.REGISTERING_FAIL, response.msg);
+                                }
+                            })
+                            .fail(function () {
+                                self.setInfo(STATE_ENUM.REGISTERING_FAIL);
+                            })
+                    }
+                    
+                },
                 resetValues: function resetValues() {
                     this.setInfo(STATE_ENUM.DETECTING);
                     this.faceDetected = null;
@@ -301,51 +346,8 @@ define([
                         console.log(e);
                     }
                     return false;
-                },
-                isValidCi: function isValidCi() {
-                    if (!this.ci) {
-                        return false;
-                    }
-                    if (isNaN(this.ci)) {
-                        return false;
-                    }
-                    try {
-                        return !!(parseInt(this.ci, 10) && parseInt(this.ci, 10) > 100);
-                    } catch (e) {
-                       console.log("invalid ci");     
-                    }   
-                    return false;
-                },
-                registerWithCi: function registerWithCi () {
-                    this.resetValues();
-                    const settings = {
-                        "async": true,
-                        "dataType": "json",
-                        "url": this.config.registerUrl,
-                        "method": "POST",
-                        "data": { "ci": this.ci }
-                    }
-                    const self = this;
-                   
-                    if (!self.isValidCi()) {
-                        self.setInfo(STATE_ENUM.INVALID_CI, 'Ingrerse una cedula valida.');
-                        return null;
-                    } else {
-                        self.setInfo(STATE_ENUM.REGISTERING);
-                        return jQuery.ajax(settings)
-                            .done(function (response) {
-                                if (response && response.success) {
-                                    self.setInfo(STATE_ENUM.REGISTERING_SUCCESS);
-                                } else {
-                                    self.setInfo(STATE_ENUM.REGISTERING_FAIL, response.msg);
-                                }
-                            })
-                            .fail(function () {
-                                self.setInfo(STATE_ENUM.REGISTERING_FAIL);
-                            })
-                    }
-                    
                 }
+                
             }
          });
     };
