@@ -45,9 +45,9 @@
             </div>
         </div>
     </div>
-    <div class="col-4">
-        <div class="card card-user-info" v-if="showUserData">
-            <img class="card-img-top" v-bind:src="'data:image/png;base64,' + identifiedPerson.image64"
+    <div class="col-4" v-if="showUserData">
+        <div class="card card-user-info" >
+            <img class="card-img-top" v-bind:src="identifiedPerson.image"
                 alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title card-user-name">{{ identifiedPerson.name }}</h5>

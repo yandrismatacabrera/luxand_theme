@@ -41,123 +41,149 @@ class Registry extends \Magento\Backend\App\Action
         $this->customerCollectionFactory=$customerCollectionFactory;
     }
 
+    public function getCustomerDataByCi($ci) {
+        try {
+            $customerCollection = $this->customerCollectionFactory->create();
+            $customerCollection->addAttributeToSelect('*')
+            ->addAttributeToFilter('ci', $ci);
+            if($customerCollection->getSize()){
+                return $this->customerRepository->getById((int)$customerCollection->getFirstItem()->getId());
+            }
+        } catch (\Exception $e) {
 
-    public function execute()
-    {
+        }
+        return null;
+    }
 
-        $result = $this->resultJsonFactory->create();
-        $data=[];
+    public function getCustomerDataById($ci) {
+        try {
+            return $this->customerRepository->getById((int)$ci);
+        } catch (\Exception $e) {
+            
+        }
+        return null;
+    }
 
-        if($this->getRequest()->getParam('customer_id'))
-        {
+    public function formatCustomerData($customer){
+        if (!$customer) {
+            return [
+                'success' => false,
+                'msg' => 'Cliente no entontrado'
+            ];
+        }
+        return [
+            'success' => true,
+            'id' => $customer->getId(),
+            'image' => $customer->getCustomAttribute('photo')->getValue(),
+            'name' => $customer->getFirstname().' '.$customer->getLastname(),
+            'email' => $customer->getEmail(),
+            'ci' => $customer->getCustomAttribute('ci')->getValue()
+        ]; 
+    }
 
-            try{
+    public function getPlanDataByCustomer($customer) {
+        if (!$customer) {
+            return [];
+        }
+        $planData = [
+            'success' => false,
+            'msg' => 'El usuario no tiene plan asociado.'
+        ];
+        $collection = $this->collectionPlanFactory->create();
+        $collection->addFieldToFilter('customer_id', $customer->getId());
+        $hasPlan = false;
 
-                if($this->isEnableReserve()){
-
-                    $dateTimeBooked=date("d-m-Y");
-
-                    $bookedCollection = $this->bookedCollectionFactory->create();
-                    $bookedCollection->addFieldToFilter('booking_from', ['like' => '%'.$dateTimeBooked.'%']);
-
-                    if($bookedCollection->getSize()){
-                        $booked = $bookedCollection->getFirstItem();
-                        $data["reserve"] = 'Reserva desde '.$booked->getData('booking_from').' hasta '.$booked->getData('booking_too');
-                    }
-                    else{
-                        $data["reserve"] = 'No tiene reserva para hoy.';
-                    }
+        if($collection->getSize()){
+            foreach ($collection as $plan){
+                if($this->statusPlan($plan->getData('from'), $plan->getData('to'))){
+                   if($plan->getData('access_number')){
+                       if($plan->getData('access_enabled')){
+                           $plan->setData('access_enabled', (int) $plan->getData('access_enabled') - 1);
+                           $this->planRepository->save($plan);
+                           $planData['plan'] = $plan;
+                           $planData['success'] = true;
+                           unset($planData['msg']);
+                           $hasPlan = true;
+                       }
+                   } else {
+                       $hasPlan = true;
+                   }
                 }
-
-                $collection = $this->collectionPlanFactory->create();
-                $collection->addFieldToFilter('customer_id',(int)$this->getRequest()->getParam('customer_id'));
-                $hasPlan = false;
-
-                if($collection->getSize()){
-
-                    foreach ($collection as $plan){
-
-                        if($this->statusPlan($plan->getData('from'), $plan->getData('to'))){
-
-                           if($plan->getData('access_number')){
-
-                               if($plan->getData('access_enabled')){
-
-                                   $plan->setData('access_enabled', (int)$plan->getData('access_enabled')-1);
-                                   $this->planRepository->save($plan);
-                                   $hasPlan = true;
-                               }
-
-                           }else{
-                               $hasPlan = true;
-                           }
-
-                        }
-                    }
-                }
-
-                if(!$hasPlan){
-
-                    $data["success"]=false;
-                    $data["msg"]="El usuario no tiene plan asociado.";
-                    return $result->setData($data);
-                }
-
-                $customer = $this->customerRepository->getById((int)$this->getRequest()->getParam('customer_id'));
-                $fullName = $customer->getFirstname().' '.$customer->getLastname();
-                //$dateTime = $this->timezone->date()->format('Y-m-d H:i:s');
-                $dateTime=date("Y-m-d H:i:s");
-
-                $registry = $this->registryFactory->create();
-                $registry->setCustomerId((int)$this->getRequest()->getParam('customer_id'));
-                $registry->setDateTime($dateTime);
-                $registry->setFullname($fullName);
-
-                $this->registryRepository->save($registry);
-
-                $data["success"]=true;
-                $data["msg"]="Registro satisfactorio.";
-
-
-            }catch (Exception $e){
-
-                $data["success"]=false;
-                $data["msg"]="El usuario no existe.";
-                return $result->setData($data);
             }
         }
-        
-        if($this->getRequest()->getParam('ci')){
+        return $planData;
+    }
 
-          $customerCollection = $this->customerCollectionFactory->create();
-            $customerCollection->addAttributeToSelect('*')
-            ->addAttributeToFilter('ci',$this->getRequest()->getParam('ci'));
+    public function getBookDataByCustomer($customer) {
+        if (!$customer) {
+            return [];
+        }
+        $bookingData = [
+            'success' => true,
+            'active' => false
+        ];
+        if($this->isEnableReserve()){
+            $bookingData['active'] = true;
+            $dateTimeBooked = date("d-m-Y");
+            $bookedCollection = $this->bookedCollectionFactory->create();
+            $bookedCollection->addFieldToFilter('booking_from', ['like' => '%'.$dateTimeBooked.'%']);
+            $bookedCollection->addFieldToFilter('customer_id', $customer->getId());
+            if($bookedCollection->getSize()){
+                $booked = $bookedCollection->getFirstItem();
+                $bookingData['msg'] = 'Reserva desde '.$booked->getData('booking_from').' hasta '.$booked->getData('booking_too');
+                $bookingData['success'] = true;
+            }
+            else{
+                $bookingData['msg'] = 'No tiene reserva para hoy.';
+                $bookingData['success'] = false;
+            }
+         }
+         return $bookingData;
+    }
 
-          if($customerCollection->getSize()){
 
-              $customer = $this->customerRepository->getById((int)$customerCollection->getFirstItem()->getId());
+    public function execute() {
+        $result = $this->resultJsonFactory->create();
+        $data = [];
+        $customer;
+        $customerId = $this->getRequest()->getParam('customer_id');
+        $ci = $this->getRequest()->getParam('ci');
 
-              $data["success"]=true;
-              $data['id']=$customer->getId();
-              $data['email']=$customer->getEmail();
-              $data['name']=$customer->getFirstname().' '.$customer->getLastname();
-              if($customer->getCustomAttribute('ci'))
-                $data['ci']=$customer->getCustomAttribute('ci')->getValue();
-              if($customer->getCustomAttribute('photo'))
-                $data['photo']=$customer->getCustomAttribute('photo')->getValue();
-
-              $dateTime=date("Y-m-d H:i:s");
-              $fullName = $customer->getFirstname().' '.$customer->getLastname();
-              $registryCi = $this->registryFactory->create();
-              $registryCi->setCustomerId((int)$customer->getId());
-              $registryCi->setDateTime($dateTime);
-              $registryCi->setFullname($fullName);
-
-              $this->registryRepository->save($registryCi);
-          }
+        if (!$customerId && !$ci) {
+            $data['success'] = false;
+            $data['msg'] = 'Se debe indicar ci o identificador de cliente.';
+            return $result->setData($data);
         }
 
-        return $result->setData($data);
+        if($customerId) {
+            $customer = $this->getCustomerDataById((int)$customerId);
+        } elseif ($ci) {
+            $customer = $this->getCustomerDataByCi($ci);
+        } 
+        $data['customer'] = $this->formatCustomerData($customer);
+        $data['plan'] = $this->getPlanDataByCustomer($customer);
+        $data['book'] = $this->getBookDataByCustomer($customer);
+
+        return $result->setData($this->formatResponse($data));
+    }
+
+    public function formatResponse($data) {
+        if ($data && $data['customer'] && !$data['customer']['success']) {
+            $data['success'] = false;
+            $data['msg'] = $data['customer']['msg'];
+            return $data;
+        }
+        if ($data && $data['plan'] && !$data['plan']['success']) {
+            $data['success'] = false;
+            $data['msg'] = $data['plan']['msg'];
+            return $data;
+        }
+        if ($data && $data['book'] && !$data['book']['success']) {
+            $data['success'] = false;
+            $data['msg'] = $data['plan']['msg'];
+            return $data;
+        }
+        return $data;
     }
 
     public function statusPlan($from, $to){
