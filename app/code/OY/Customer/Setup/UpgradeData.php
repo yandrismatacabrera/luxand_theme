@@ -298,6 +298,56 @@ class UpgradeData implements UpgradeDataInterface
         }
 
 
+	if (version_compare($context->getVersion(), '1.0.9') < 0){
 
+            $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+
+            $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
+            $attributeSetId = $customerEntity->getDefaultAttributeSetId();
+
+            /** @var $attributeSet AttributeSet */
+            $attributeSet = $this->attributeSetFactory->create();
+            $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'phone_number', [
+                'type' => 'text',
+                'label' => 'Telefono',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => true,
+                'position' => 999,
+                'system' => 0,
+		'is_used_in_grid' => true,
+    		'is_visible_in_grid' => true,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'phone_number')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+
+	    $customerSetup->addAttribute(Customer::ENTITY, 'ci', [
+                'type' => 'text',
+                'label' => 'CI',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => true,
+                'position' => 999,
+                'system' => 0,
+		'is_used_in_grid' => true,
+    		'is_visible_in_grid' => true,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'ci')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+        }
     }
 }

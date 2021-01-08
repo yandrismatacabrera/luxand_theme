@@ -10,36 +10,38 @@ class Auth extends Template
 
     /**
      * Auth constructor.
+     * @param \OY\Registry\Helper\Luxand $luxand
      * @param Template\Context $context
      * @param array $data
+     * 
      */
     public function __construct(
+        \OY\Registry\Helper\Luxand $luxand,
         Template\Context $context,
         array $data = []
     ) {
         parent::__construct($context, $data);
+        $this->luxandHelper = $luxand;
     }
 
     public function getAdminBaseUrl()
     {
-        // TODO return http://magento.local.com/pub/static/version1606607469/adminhtml/Magento/backend/en_US/Gym_JsAuth/js
         // this is used to load models in face api library
         try {
             return $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
         } catch (NoSuchEntityException $e) {
+            return '';
         }
     }
     public function getApiUrl()
     {
-        // TODO return luxand cloud
         // this is used to make a call to recognition api
-        return 'https://api.luxand.cloud/photo/search';
+        return $this->luxandHelper->getUrlRest() . 'photo/search';
     }
     public function getApiToken()
     {
-        // TODO return luxand token
         // this is used to make a call to recognition api
-        return '92900c4118484515ab836f0faefcf2e5';
+        return $this->luxandHelper->getToken();
     }
 
     public function getUrlRegistry()
