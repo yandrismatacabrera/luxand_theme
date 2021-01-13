@@ -39,14 +39,14 @@
                     <td><?php echo $block->escapeHtml($plan['from']) ?></td>
                     <td><?php echo $plan['to'] ?></td>
                     <td>
-                        <?php if ($plan['access_enabled']): ?>
-                            <?php echo $plan['access_enabled'] ?>
+                        <?php if ($plan['access_number']): ?>
+                            <?php echo $plan['access_number'] ?>
                         <?php else : ?>
                             <?php echo 'Acceso diario' ?>
                         <?php endif; ?>
                     </td>
                     <td>
-                        <?php if ($plan['access_number']): ?>
+                        <?php if ($plan['access_enabled']): ?>
                             <?php echo $plan['access_enabled'] ?>
                         <?php else : ?>
                             <?php echo 'Acceso diario' ?>

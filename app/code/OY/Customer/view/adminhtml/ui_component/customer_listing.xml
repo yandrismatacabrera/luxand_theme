@@ -5,8 +5,39 @@
  * See COPYING.txt for license details.
  */
 -->
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <columns name="customer_columns" class="Magento\Customer\Ui\Component\Listing\Columns">
+        <column name="ci">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Cédula</item>
+                    <item name="sortOrder" xsi:type="number">32</item>
+                </item>
+            </argument>
+        </column>
+        <column name="phone_number" sortOrder="34">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Teléfono</item>
+                </item>
+            </argument>
+        </column>
+        <column name="access_number" class="OY\Customer\Ui\Component\Listing\Column\AccessNumber">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" translate="true" xsi:type="string">Planes</item>
+                </item>
+            </argument>
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </column>
         <column name="taxvat">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -14,85 +45,66 @@
                 </item>
             </argument>
         </column>
-	<column name="group_id">
+        <column name="group_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="componentDisabled" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
-	<column name="created_in">
+        <column name="created_in">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="componentDisabled" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
-	<column name="website_id">
+        <column name="website_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="componentDisabled" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
-	<column name="billing_country_id">
+        <column name="billing_country_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="componentDisabled" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
-	<column name="billing_region">
+        <column name="billing_region">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="componentDisabled" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
-	<column name="dob">
+        <column name="dob">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="componentDisabled" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
-	<column name="billing_postcode">
+        <column name="billing_postcode">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="componentDisabled" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
-	<column name="billing_telephone">
+        <column name="billing_telephone">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="componentDisabled" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
-	<column name="entity_id">
+        <column name="entity_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="componentDisabled" xsi:type="boolean">true</item>
-                </item>
-            </argument>
-        </column>
-	<column name="ci">
-	    <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="editor" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Cédula</item>
-		    <item name="sortOrder" xsi:type="number">32</item>
-                </item>
-            </argument>
-        </column>
-	<column name="phone_number" sortOrder="34">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="editor" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Teléfono</item>
                 </item>
             </argument>
         </column>
