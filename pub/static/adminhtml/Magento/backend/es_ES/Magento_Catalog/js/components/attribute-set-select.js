@@ -1,1 +1,0 @@
-/var/www/html/luxand_theme/vendor/magento/module-catalog/view/adminhtml/web/js/components/attribute-set-select.js
