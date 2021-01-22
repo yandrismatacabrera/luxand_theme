@@ -44,19 +44,15 @@ class AccessNumber extends Column
                         $status = $this->statusPlan($plan['from'], $plan['to']);
                         $planData = '';
                         if ($status == 'Activo') {
-                            $planData .= '<p>Estado: <span style="color: green;">'.$status.'</span>></p>';
-                            if ($plan['access_number']) {
-                                $planData .= 'No. de accesos: '.$plan['access_number'];
-                            } else {
-                                $planData .= 'Acceso diario';
-                            };
+                            $planData .= '<p>Estado: <span style="color: green;">'.$status.'</span></p>';
                         } else {
-                            $planData .= '<p>Estado: <span style="color: red;">'.$status.'</span>></p>';
-                            if ($plan['access_enabled']) {
-                                $planData .= 'No. de Accesos Habilitados: '.$plan['access_enabled'];
-                            } else {
-                                $planData .= 'Acceso diario';
-                            };
+                            $planData .= '<p>Estado: <span style="color: red;">'.$status.'</span></p>';
+                        }
+                        if ($plan['access_number']) {
+                            $planData .= '<p>No. de accesos: '.$plan['access_number'].'</p>';
+                        }
+                        if ($plan['access_enabled']) {
+                            $planData .= '<p>No. de Accesos Habilitados: '.$plan['access_enabled'].'</p>';
                         }
                         $data[] = $planData;
                     }
