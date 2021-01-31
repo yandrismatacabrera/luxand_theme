@@ -14,6 +14,11 @@
                     <argument name="label" xsi:type="string" translate="true">Mis Planes</argument>
                 </arguments>
             </block>
+            <referenceBlock name="customer-account-navigation-address-link" remove="true"/>
+            <referenceBlock name="customer-account-navigation-downloadable-products-link" remove="true"/>
+            <referenceBlock name="customer-account-navigation-wish-list-link" remove="true"/>
+            <referenceBlock name="customer-account-navigation-newsletter-subscriptions-link" remove="true"/>
+            <referenceBlock name="customer-account-navigation-product-reviews-link" remove="true"/>
         </referenceBlock>
     </body>
 </page>
