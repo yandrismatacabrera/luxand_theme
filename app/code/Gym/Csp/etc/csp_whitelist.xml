@@ -4,6 +4,7 @@
         <policy id="script-src">
             <values>
                 <value id="luxand" type="host">https://api.luxand.cloud</value>
+                <value id="luxandphoto" type="host">https://api.luxand.cloudphoto</value>
                 <value id="addthis" type="host">https://s7.addthis.com</value>
                 <value id="maddthis" type="host">https://m.addthis.com</value>
                 <value id="addthisedge" type="host">https://v1.addthisedge.com</value>
@@ -20,6 +21,7 @@
         <policy id="connect-src">
             <values>
                 <value id="luxand" type="host">https://api.luxand.cloud</value>
+                <value id="luxandphoto" type="host">https://api.luxand.cloudphoto</value>
                 <value id="addthis" type="host">https://s7.addthis.com</value>
                 <value id="maddthis" type="host">https://m.addthis.com</value>
             </values>
