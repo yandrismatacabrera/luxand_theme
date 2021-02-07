@@ -7,7 +7,7 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Ui\Component\Listing\Columns\Column;
 
-class AccessNumber extends Column
+class ClientLocalAccess extends Column
 {
     protected $_customerRepository;
     protected $_searchCriteria;
@@ -31,34 +31,10 @@ class AccessNumber extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 $customer  = $this->_customerRepository->getById($item["entity_id"]);
-
-                $customer_id = $customer->getId();
-                $collection = $this->collectionPlanFactory->create();
-                $collection->addFieldToFilter('customer_id', $customer_id);
-
-                $plans = 0;
-                if(count($collection->getData())) {
-                    $plans = $collection->getData();
-                    $data = [];
-                    foreach ($plans as $plan) {
-                        $status = $this->statusPlan($plan['from'], $plan['to']);
-                        $planData = '';
-                        if ($status == 'Activo') {
-                            $planData .= '<p>Estado: <span style="color: green;">'.$status.'</span></p>';
-                        } else {
-                            $planData .= '<p>Estado: <span style="color: red;">'.$status.'</span></p>';
-                        }
-                        if ($plan['access_number']) {
-                            $planData .= '<p>No. de accesos: '.$plan['access_number'].'</p>';
-                        }
-                        if ($plan['access_enabled']) {
-                            $planData .= '<p>No. de Accesos Habilitados: '.$plan['access_enabled'].'</p>';
-                        }
-                        $data[] = $planData;
-                    }
-                    $item[$this->getData('name')] = implode('<hr style="color: ghostwhite">', $data);
+                if ($customer->getCustomAttribute('client_local_access') && $customer->getCustomAttribute('client_local_access')->getValue()) {
+                    $item[$this->getData('name')] = 'Si';
                 } else {
-                    $item[$this->getData('name')] = '-';
+                    $item[$this->getData('name')] = 'No';
                 }
             }
         }

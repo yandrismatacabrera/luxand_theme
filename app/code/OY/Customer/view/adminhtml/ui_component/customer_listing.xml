@@ -30,8 +30,19 @@
         <column name="access_number" class="OY\Customer\Ui\Component\Listing\Column\AccessNumber">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
+                    <item name="filter" xsi:type="boolean">false</item>
                     <item name="label" translate="true" xsi:type="string">Planes</item>
+                </item>
+            </argument>
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </column>
+        <column name="client_local_access" class="OY\Customer\Ui\Component\Listing\Column\ClientLocalAccess">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="boolean">true</item>
+                    <item name="label" translate="true" xsi:type="string">Acceso al Local</item>
                 </item>
             </argument>
             <settings>
