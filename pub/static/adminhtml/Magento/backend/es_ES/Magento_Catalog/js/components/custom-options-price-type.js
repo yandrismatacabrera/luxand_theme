@@ -1,1 +1,0 @@
-/var/www/html/luxand_theme/vendor/magento/module-catalog/view/adminhtml/web/js/components/custom-options-price-type.js

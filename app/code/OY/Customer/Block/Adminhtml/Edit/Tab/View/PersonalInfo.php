@@ -492,4 +492,19 @@ class PersonalInfo extends \Magento\Backend\Block\Template
         }
         return 'No';
     }
+
+    /**
+     * Check if the user has access to the local
+     *
+     * @return boolean|null
+     */
+    public function getClientLocalAccess()
+    {
+        $customer = $this->getCustomer();
+        if($customer->getCustomAttribute('client_local_access') && $customer->getCustomAttribute('client_local_access')->getValue()){
+
+            return 'Si';
+        }
+        return 'No';
+    }
 }

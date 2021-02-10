@@ -25,15 +25,15 @@ class Luxand extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
-    private function getToken(){
+    public function getToken(){
         return $this->getConfig("luxand_general/config_general/token");
     }
 
-    private function getUrlRest(){
+    public function getUrlRest(){
         return $this->getConfig("luxand_general/config_general/url");
     }
 
-    private function getUrlBase(){
+    public function getUrlBase(){
         return $this->getConfig("luxand_general/config_general/host");
     }
 

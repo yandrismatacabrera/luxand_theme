@@ -1,1 +1,0 @@
-/var/www/html/luxand_theme/vendor/magento/module-cookie/view/base/web/js/jquery.storageapi.extended.js
