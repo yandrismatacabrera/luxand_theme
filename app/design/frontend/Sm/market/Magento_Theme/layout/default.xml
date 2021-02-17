@@ -42,8 +42,8 @@
 
                 <block class="Magento\Theme\Block\Html\Header\Logo" name="logo_theme">
                     <arguments>
-                        <argument name="logo_width" xsi:type="number">142</argument>
-                        <argument name="logo_height" xsi:type="number">42</argument>
+                        <argument name="logo_width" xsi:type="number">260</argument>
+                        <argument name="logo_height" xsi:type="number">56</argument>
                     </arguments>
                 </block>
 
