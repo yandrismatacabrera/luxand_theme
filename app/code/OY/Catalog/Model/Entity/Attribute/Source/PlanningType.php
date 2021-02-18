@@ -23,6 +23,14 @@ class PlanningType extends AbstractSource
                 'value' => 'Mensual'
             ],
             '2' => [
+                'label' => 'Trimestral',
+                'value' => 'Trimestral'
+            ],
+            '3' => [
+                'label' => 'Semestral',
+                'value' => 'Semestral'
+            ],
+            '' => [
                 'label' => 'Anual',
                 'value' => 'Anual'
             ]
