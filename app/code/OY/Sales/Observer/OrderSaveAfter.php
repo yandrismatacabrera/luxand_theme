@@ -69,6 +69,16 @@ class OrderSaveAfter implements ObserverInterface {
                                                 //$dateTo = date("+".$data['plan_month']." months", $strTo);
                                                 $dateTo=date("Y-m-d H:i:s", strtotime("+".$count." months", strtotime($strTo)));
                                                 break;
+                                            case 'Trimestral':
+                                                //$dateTo = date("+".$data['plan_month']." months", $strTo);
+                                                $count*=3;
+                                                $dateTo=date("Y-m-d H:i:s", strtotime("+".$count." months", strtotime($strTo)));
+                                                break;
+                                            case 'Semestral':
+                                                //$dateTo = date("+".$data['plan_month']." months", $strTo);
+                                                $count*=6;
+                                                $dateTo=date("Y-m-d H:i:s", strtotime("+".$count." months", strtotime($strTo)));
+                                                break;
                                             default:
                                                 //$dateTo = date("+".$count." weeks", $strTo);
                                                 $weeks = $count*7;

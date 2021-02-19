@@ -23,7 +23,9 @@ class Plan extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
         return array(
             array('value'=>'Semanal', 'label'=>'Semanal'),
             array('value'=>'Mensual', 'label'=>'Mensual'),
-            array('value'=>'Anual', 'label'=>'Anual')
+            array('value'=>'Anual', 'label'=>'Anual'),
+            array('value'=>'Trimestral', 'label'=>'Trimestral'),
+            array('value'=>'Semestral', 'label'=>'Semestral')
         );
     }
 }

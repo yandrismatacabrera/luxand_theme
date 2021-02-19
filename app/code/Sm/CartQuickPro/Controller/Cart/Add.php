@@ -185,7 +185,13 @@ class Add extends \Magento\Checkout\Controller\Cart implements HttpPostActionInt
 			
         }
 		$result['isAddToCartBtn'] =   (!isset($params['isCheckoutPage']) && $this->cart->getItemsCount()) ? true : false ;
-		
+
+        $resultRedirect = $this->resultRedirectFactory->create();
+
+        $urlCheckout = $this->_url->getUrl('checkout/index');
+        $resultRedirect->setUrl($urlCheckout);
+
+        $result['url']  =  $urlCheckout;
 		return $this->_jsonResponse($result);
     }
 

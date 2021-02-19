@@ -62,6 +62,10 @@ class Save extends Action
                     $typePlan = 'Anual';
                 if($data['plan']=='Mensual')
                     $typePlan = 'Mensual';
+                if($data['plan']=='Trimestral')
+                    $typePlan = 'Trimestral';
+                if($data['plan']=='Semestral')
+                    $typePlan = 'Semestral';
 
                 $plan = $typePlan;
 
@@ -74,6 +78,14 @@ class Save extends Action
                     case 'Mensual':
                         //$dateTo = date("+".$data['plan_month']." months", $strTo);
                         $dateTo=date("Y-m-d H:i:s", strtotime("+1 months", strtotime($strTo)));
+                        break;
+                    case 'Trimestral':
+                        //$dateTo = date("+".$data['plan_month']." months", $strTo);
+                        $dateTo=date("Y-m-d H:i:s", strtotime("+3 months", strtotime($strTo)));
+                        break;
+                    case 'Semestral':
+                        //$dateTo = date("+".$data['plan_month']." months", $strTo);
+                        $dateTo=date("Y-m-d H:i:s", strtotime("+6 months", strtotime($strTo)));
                         break;
                     default:
                         //$dateTo = date("+".$count." weeks", $strTo);
