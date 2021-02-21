@@ -26,11 +26,27 @@
       justify-content: center !important;
 
       .payment-services {
+        @media (min-width: 767px) {
+          .row {
+            flex-wrap: wrap !important;
+
+            .item {
+              width: 33% !important;
+            }
+          }
+        }
+
         .row {
+          flex-wrap: nowrap !important;
+
           .item {
             height: 58px !important;
             display: flex !important;
             align-items: center !important;
+            justify-content: center !important;
+            background-color: #E3E3E3;
+            justify-content: center;
+            border: 2px #F5F5F5 solid;
 
             .item-inner {
               height: 100% !important;
