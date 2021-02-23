@@ -13,6 +13,12 @@
         <referenceBlock name="catalog.product.related" remove="true"/>
         <referenceBlock name="product.info.upsell" remove="true"/>
         <referenceBlock name="product.info.details" remove="true" />
+        <move element="product.info.description" destination="product.custom.description" after="-"/>
+        <move element="product.custom.description" destination="product.info.main" after="product.info.overview"/>
+
+        <referenceContainer name="content">
+            <container name="product.custom.description" htmlTag="div" htmlClass="product custom description" after="-"></container>
+        </referenceContainer>
 
         <referenceContainer name="sidebar.additional">
             <block class="Magento\Cms\Block\Block" name="service-sidebar" before="-">
