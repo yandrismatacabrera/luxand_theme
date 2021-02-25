@@ -71,3 +71,23 @@
 .product.custom.description {
   margin-bottom: 25px;
 }
+
+.catalog-product-view {
+  #product-options-wrapper {
+    .field.date {
+      div.control {
+        display: flex;
+        flex-direction: row-reverse;
+
+        .ui-datepicker-trigger {
+          padding-left: 0px !important;
+        }
+
+        .ui-datepicker-trigger::before {
+          font-size: 65px !important;
+          line-height: 30px !important;
+        }
+      }
+    }
+  }
+}
