@@ -1,6 +1,59 @@
+.checkout-cart-index {
+  .header-container {
+    .header-top {
+      .container {
+        .row.row-topheader {
+          display: flex !important;
+        }
+      }
+    }
+
+    .header-middle {
+      .middle-content {
+        .row:first-of-type {
+          display: flex !important;
+        }
+      }
+    }
+
+    .header-bottom {
+      .container {
+        .row:first-of-type {
+          display: flex !important;
+        }
+      }
+    }
+  }
+}
+
+
 .header-container {
   .header-middle {
     .middle-content {
+      .row:first-of-type {
+        display: flex !important;
+
+        .logo-content {
+          a.logo {
+            img {
+              width: 100%;
+            }
+          }
+        }
+
+        #minicart-content-wrapper {
+          .block-content {
+            .actions {
+              .secondary {
+                a {
+                  margin-bottom: 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+
       .phone-header {
         .block-cms-link {
           a span {
@@ -18,6 +71,8 @@
   }
 
   .header-bottom {
+    display: none !important;
+
     .megamenu-content-sidebar {
       .btn-megamenu {
         a::after {

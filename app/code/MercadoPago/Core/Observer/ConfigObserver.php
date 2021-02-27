@@ -151,7 +151,7 @@ class ConfigObserver
         }
 
         if (!in_array(strtoupper($country), $this->available_transparent_credit_cart)) {
-            $this->_saveWebsiteConfig(\MercadoPago\Core\Helper\ConfigData::PATH_CUSTOM_ACTIVE, 0);
+            //$this->_saveWebsiteConfig(\MercadoPago\Core\Helper\ConfigData::PATH_CUSTOM_ACTIVE, 0);
         }
 
         if (!in_array(strtoupper($country), $this->available_transparent_ticket)) {

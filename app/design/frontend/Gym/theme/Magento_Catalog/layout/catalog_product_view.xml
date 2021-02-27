@@ -12,6 +12,21 @@
 
         <referenceBlock name="catalog.product.related" remove="true"/>
         <referenceBlock name="product.info.upsell" remove="true"/>
+        <referenceBlock name="product.info.details" remove="true" />
+        <move element="product.info.description" destination="product.custom.description" after="-"/>
+        <move element="product.custom.description" destination="product.info.main" after="product.info.overview"/>
+        <move element="product.custom.default.date" destination="product.info.main" after="-"/>
+
+        <referenceContainer name="content">
+            <container name="product.custom.description" htmlTag="div" htmlClass="product custom description" after="-"/>
+        </referenceContainer>
+
+        <referenceContainer name="content">
+            <container name="product.custom.default.date" htmlTag="div" htmlClass="product custom default date" after="-">
+                <block class="Magento\Framework\View\Element\Template" name="custom.default.date"
+                       after="-" template="Magento_Catalog::product/default-date.phtml"/>
+            </container>
+        </referenceContainer>
 
         <referenceContainer name="sidebar.additional">
             <block class="Magento\Cms\Block\Block" name="service-sidebar" before="-">

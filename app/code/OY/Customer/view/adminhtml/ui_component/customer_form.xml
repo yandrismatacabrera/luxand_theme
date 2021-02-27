@@ -42,5 +42,180 @@
                 </validation>
             </settings>
         </field>
+        <field name="luxand_id" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">Foto</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="website_id" component="Magento_Customer/js/form/element/website" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+            <settings>
+                <visible>false</visible>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <tooltip>
+                    <link>https://docs.magento.com/m2/ce/user_guide/configuration/scope.html</link>
+                    <description translate="true">If your Magento installation has multiple websites, you can edit the scope to associate the customer with a specific site.</description>
+                </tooltip>
+                <imports>
+                    <link name="customerId">${ $.provider }:data.customer.entity_id</link>
+                </imports>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Customer\ViewModel\Customer\Website"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="prefix" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <container name="container_group" component="Magento_Ui/js/form/components/group" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="type" xsi:type="string">group</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataScope" xsi:type="boolean">false</item>
+                    <item name="validateWholeGroup" xsi:type="boolean">true</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <field name="group_id" formElement="select">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="fieldGroup" xsi:type="string">group_id</item>
+                        <item name="source" xsi:type="string">customer</item>
+                    </item>
+                </argument>
+                <settings>
+                    <required>true</required>
+                    <dataType>number</dataType>
+                </settings>
+            </field>
+            <field name="disable_auto_group_change" formElement="checkbox" class="Magento\Customer\Ui\Component\Form\Field\DisableAutoGroupChange">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="fieldGroup" xsi:type="string">group_id</item>
+                        <item name="source" xsi:type="string">customer</item>
+                        <item name="default" xsi:type="number">0</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>boolean</dataType>
+                </settings>
+                <formElements>
+                    <checkbox>
+                        <settings>
+                            <description translate="true">Disable Automatic Group Change Based on VAT ID</description>
+                            <valueMap>
+                                <map name="false" xsi:type="string">0</map>
+                                <map name="true" xsi:type="string">1</map>
+                            </valueMap>
+                            <prefer>checkbox</prefer>
+                        </settings>
+                    </checkbox>
+                </formElements>
+            </field>
+        </container>
+        <field name="middlename" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="suffix" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="taxvat" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="luxand_registry" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+            <settings>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="customer_image" formElement="file">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+            <settings>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="extension_attributes.assistance_allowed" sortOrder="85" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Allow remote shopping assistance</label>
+                <visible>false</visible>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">1</map>
+                            <map name="true" xsi:type="number">2</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
     </fieldset>
 </form>

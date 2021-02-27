@@ -1,0 +1,93 @@
+.checkout-cart-index {
+  #maincontent {
+    .columns.col1-layout {
+      display: flex !important;
+    }
+
+    .cart-container {
+      .cart-summary {
+        #block-shipping, #block-discount {
+          display: none !important;
+        }
+      }
+    }
+  }
+}
+
+.banner1-id9.static-image {
+  ul > li > a > img {
+    display: none !important;
+  }
+}
+
+.footer-bottom {
+  .container {
+    .row {
+      justify-content: center !important;
+      display: flex !important;
+
+      .payment-services {
+        @media (max-width: 767px) {
+          .row {
+            flex-wrap: wrap !important;
+            display: flex !important;
+
+            .item {
+              width: 33% !important;
+            }
+          }
+        }
+
+        .row {
+          flex-wrap: nowrap;
+          display: flex !important;
+
+          .item {
+            height: 58px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background-color: #E3E3E3;
+            justify-content: center;
+            border: 2px #F5F5F5 solid;
+
+            .item-inner {
+              height: 100% !important;
+              display: flex !important;
+              justify-content: center !important;
+              align-items: center !important;
+
+              img {
+                height: max-content !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.product.custom.description {
+  margin-bottom: 25px;
+}
+
+.catalog-product-view {
+  #product-options-wrapper {
+    .field.date {
+      div.control {
+        display: flex;
+        flex-direction: row-reverse;
+
+        .ui-datepicker-trigger {
+          padding-left: 0px !important;
+        }
+
+        .ui-datepicker-trigger::before {
+          font-size: 65px !important;
+          line-height: 30px !important;
+        }
+      }
+    }
+  }
+}

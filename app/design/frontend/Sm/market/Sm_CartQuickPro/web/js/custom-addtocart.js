@@ -401,7 +401,8 @@ define([
 					}
 				}).done(function (json){
 					if (typeof json.url !== 'undefined' && json.url !== null){
-						_self._requestQuickview(json.url);
+						window.location.href=json.url
+						//_self._requestQuickview(json.url);
 					}else{
 						_self._afterAjax(json);
 						if (isaddtocart){
