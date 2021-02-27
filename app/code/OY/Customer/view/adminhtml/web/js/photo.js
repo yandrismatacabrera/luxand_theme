@@ -35,7 +35,8 @@ define([
         initialize: function () {
 
             this._super();
-            this.initApp()
+            
+            jQuery(document).on('click', '#enable-camera', _.bind(this.initApp, this));
             jQuery(document).on('click', '#made_photo', _.bind(this.takePhoto, this));
             jQuery(document).on('click', '#reload-video', _.bind(this.reloadVideo, this));
             _.delay(this.hideFields, 1500);
@@ -49,24 +50,7 @@ define([
             })
             return this;
         },
-
-        hideFields: function hideFields() {
-            jQuery('div[data-index="website_id"]').hide();
-            jQuery('div[data-index="group_id"]').hide();
-            jQuery('div[data-index="luxand_registry"]').hide();
-            jQuery('div[data-index="prefix"]').hide();
-            jQuery('div[data-index="middlename"]').hide();
-            jQuery('div[data-index="suffix"]').hide();
-            jQuery('div[data-index="extension_attributes.assistance_allowed"]').hide();
-            jQuery('div[data-index="taxvat"]').hide();
-            jQuery('div[data-index="sendemail_store_id"]').hide();
-            jQuery('input[name="customer[disable_auto_group_change]"]').parent().parent().hide();
-            jQuery('div[data-index="photo"]').hide();
-            jQuery('div[data-index="luxand_id"]').hide();
-            jQuery('input[name="customer[customer_image]"]').parent().parent().parent().parent().hide();
-
-        },
-
+        
         reloadVideo: function reloadVideo() {
             jQuery(this.image).addClass('hidden');
             jQuery(this.video).removeClass('hidden');
