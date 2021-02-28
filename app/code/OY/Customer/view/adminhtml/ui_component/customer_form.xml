@@ -36,9 +36,9 @@
             </argument>
             <settings>
                 <dataType>text</dataType>
-                <visible>true</visible>
+                <visible>false</visible>
                 <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
                 </validation>
             </settings>
         </field>

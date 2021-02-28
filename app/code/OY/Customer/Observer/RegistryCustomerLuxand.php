@@ -40,8 +40,9 @@ class RegistryCustomerLuxand implements ObserverInterface
         }
 
         if(!$customer->getCustomAttribute('photo')){
-            $this->messageManager->addError('Debe ingresar una imagen personal.');
-            throw new NoSuchEntityException(__('Debe ingresar una imagen personal.'));
+            return $this;
+            /*$this->messageManager->addError('Debe ingresar una imagen personal.');
+            throw new NoSuchEntityException(__('Debe ingresar una imagen personal.'));*/
         }
 
 
