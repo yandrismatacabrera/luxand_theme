@@ -389,5 +389,45 @@ class UpgradeData implements UpgradeDataInterface
                 // Do nothing
             }
         }
+
+        if (version_compare($context->getVersion(), '1.0.11') < 0) {
+
+            try{
+
+                $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+
+                $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
+                $attributeSetId = $customerEntity->getDefaultAttributeSetId();
+
+                /** @var $attributeSet AttributeSet */
+                $attributeSet = $this->attributeSetFactory->create();
+                $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+
+                $customerSetup->addAttribute(Customer::ENTITY, 'client_send_invoice', [
+                    'type' => 'int',
+                    'label' => 'Enviar Factura',
+                    'required' => false,
+                    'visible' => true,
+                    'user_defined' => false,
+                    'input' => 'boolean',
+                    'sort_order' => 28,
+                    'position' => 28,
+                    'system' => 0,
+                    'backend' => \Magento\Customer\Model\Attribute\Backend\Data\Boolean::class,
+                    'adminhtml_only' => true,
+                    'default' => 0,
+                ]);
+
+                $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'client_send_invoice')
+                    ->addData([
+                        'attribute_set_id' => $attributeSetId,
+                        'attribute_group_id' => $attributeGroupId,
+                        'used_in_forms' => ['adminhtml_customer'],
+                    ]);
+                $attribute->save();
+            }catch (\Exception $e) {
+                // Do nothing
+            }
+        }
     }
 }

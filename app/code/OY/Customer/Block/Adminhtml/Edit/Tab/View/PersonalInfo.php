@@ -507,4 +507,19 @@ class PersonalInfo extends \Magento\Backend\Block\Template
         }
         return 'No';
     }
+
+    /**
+     * Check if send the invoice to the user
+     *
+     * @return boolean|null
+     */
+    public function getClientSendInvoice()
+    {
+        $customer = $this->getCustomer();
+        if($customer->getCustomAttribute('client_send_invoice') && $customer->getCustomAttribute('client_send_invoice')->getValue()){
+
+            return 'Si';
+        }
+        return 'No';
+    }
 }
