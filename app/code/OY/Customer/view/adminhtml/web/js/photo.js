@@ -146,16 +146,12 @@ define([
                     err => console.error(err)
                 );
             } else {
-                navigator.mediaDevices.getUserMedia(
-                    { video: {} },
-                    function (stream) {
-                        self.video.srcObject = stream;
-                        self.video.addEventListener('playing', () => {
-                            self.initFaceDetection()
-                        });
-                    },
-                    err => console.error(err)
-                );
+                navigator.mediaDevices.getUserMedia( { video: true }).then(function (mediaSteam) {
+                    self.video.srcObject = stream;
+                    self.video.addEventListener('playing', () => {
+                        self.initFaceDetection()
+                    });
+                })
             }
         },
 
