@@ -56,34 +56,7 @@
                 </validation>
             </settings>
         </field>
-        <field name="website_id" component="Magento_Customer/js/form/element/website" formElement="select">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">customer</item>
-                </item>
-            </argument>
-            <settings>
-                <visible>false</visible>
-                <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
-                </validation>
-                <dataType>number</dataType>
-                <tooltip>
-                    <link>https://docs.magento.com/m2/ce/user_guide/configuration/scope.html</link>
-                    <description translate="true">If your Magento installation has multiple websites, you can edit the scope to associate the customer with a specific site.</description>
-                </tooltip>
-                <imports>
-                    <link name="customerId">${ $.provider }:data.customer.entity_id</link>
-                </imports>
-            </settings>
-            <formElements>
-                <select>
-                    <settings>
-                        <options class="Magento\Customer\ViewModel\Customer\Website"/>
-                    </settings>
-                </select>
-            </formElements>
-        </field>
+
         <field name="prefix" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
