@@ -147,7 +147,7 @@ define([
                 );
             } else {
                 navigator.mediaDevices.getUserMedia( { video: true }).then(function (mediaSteam) {
-                    self.video.srcObject = stream;
+                    self.video.srcObject = mediaSteam;
                     self.video.addEventListener('playing', () => {
                         self.initFaceDetection()
                     });
