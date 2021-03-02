@@ -134,16 +134,29 @@ define([
         initVideo: function initVideo() {
             var self = this;
 
-            navigator.getUserMedia(
-                { video: {} },
-                function (stream) {
-                    self.video.srcObject = stream;
-                    self.video.addEventListener('playing', () => {
-                        self.initFaceDetection()
-                    });
-                },
-                err => console.error(err)
-            );
+            if (navigator.getUserMedia) {
+                navigator.getUserMedia(
+                    { video: {} },
+                    function (stream) {
+                        self.video.srcObject = stream;
+                        self.video.addEventListener('playing', () => {
+                            self.initFaceDetection()
+                        });
+                    },
+                    err => console.error(err)
+                );
+            } else {
+                navigator.mediaDevices.getUserMedia(
+                    { video: {} },
+                    function (stream) {
+                        self.video.srcObject = stream;
+                        self.video.addEventListener('playing', () => {
+                            self.initFaceDetection()
+                        });
+                    },
+                    err => console.error(err)
+                );
+            }
         },
 
         initApp: function initApp() {
