@@ -3,4 +3,7 @@
     <event name="sales_order_save_after">
         <observer name="create_customer_plan_sales_order_save_after" instance="OY\Sales\Observer\OrderSaveAfter" />
     </event>
+    <event name="payment_method_is_active">
+        <observer name="disable_checkmo" instance="OY\Sales\Observer\DisableFrontCheckmo" />
+    </event>
 </config>
