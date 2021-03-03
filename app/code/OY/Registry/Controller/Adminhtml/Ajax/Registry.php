@@ -97,6 +97,8 @@ class Registry extends \Magento\Backend\App\Action
         if ($collection->getSize()) {
             foreach ($collection as $plan) {
                 $this->log("Customer Plan => " . $customer->getId() . " - RESULT => " . print_r($plan->getData('from') . ' - ' . $plan->getData('to'), true));
+                print_r($plan->getData('from') . ' - ' . $plan->getData('to'));
+                print_r(date("Y-m-d H:i:s"));
                 if ($this->statusPlan($plan->getData('from'), $plan->getData('to'))) {
                     if ($plan->getData('access_number')) {
                         if ($plan->getData('access_enabled')) {
@@ -111,7 +113,7 @@ class Registry extends \Magento\Backend\App\Action
                         $hasPlan = true;
                     }
                 }
-            }
+            }print_r('veamos');die;
         }
         return $planData;
     }
