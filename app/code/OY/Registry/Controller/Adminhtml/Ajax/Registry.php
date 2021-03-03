@@ -165,7 +165,7 @@ class Registry extends \Magento\Backend\App\Action
         $data['customer'] = $this->formatCustomerData($customer);
         $data['plan'] = $this->getPlanDataByCustomer($customer);
         $data['book'] = $this->getBookDataByCustomer($customer);
-print_r('veamos');die;
+
         return $result->setData($this->formatResponse($data));
     }
 
