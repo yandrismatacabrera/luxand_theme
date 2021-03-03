@@ -36,10 +36,9 @@ define([
 
             this._super();
             
-            jQuery(document).on('click', '#enable-camera', _.bind(this.initApp, this));
             jQuery(document).on('click', '#made_photo', _.bind(this.takePhoto, this));
             jQuery(document).on('click', '#reload-video', _.bind(this.reloadVideo, this));
-            _.delay(this.hideFields, 1500);
+            jQuery(document).on('click', '#enable-camera', _.bind(this.initApp, this));
             
             jQuery(document).on('click',function (){
                 if(jQuery('div[data-index="photo"]').hasClass('_error')){
@@ -50,7 +49,7 @@ define([
             })
             return this;
         },
-        
+
         reloadVideo: function reloadVideo() {
             jQuery(this.image).addClass('hidden');
             jQuery(this.video).removeClass('hidden');
@@ -110,7 +109,7 @@ define([
             var self = this;
             
             this.canvas = faceApi.createCanvasFromMedia(this.video);
-            this.canvas.style.position = 'absolute';
+            // this.canvas.style.position = 'absolute';
             this.video.parentElement.append(this.canvas)
 
             faceApi.matchDimensions(this.canvas, displaySize);
@@ -121,19 +120,19 @@ define([
                 
                 if (detection && detection.score > 0.96) {
                     resizedDetections = faceApi.resizeResults([detection], displaySize);
-                    faceApi.draw.drawDetections(self.canvas, resizedDetections);
-                }
-                if (detection && detection.score > 0.96) {
-                    self.faceDetected = true;
+                    //faceApi.draw.drawDetections(self.canvas, resizedDetections);
+                    self.drawBorder('green')
                 } else {
-                    self.faceDetected = false;
+                    self.drawBorder('red')
                 }
-            }, 100);
+            }, 400);
         },
 
         initVideo: function initVideo() {
-            var self = this;
+            console.log('here')
 
+            var self = this;
+            
             if (navigator.getUserMedia) {
                 navigator.getUserMedia(
                     { video: {} },
@@ -146,12 +145,18 @@ define([
                     err => console.error(err)
                 );
             } else {
-                navigator.mediaDevices.getUserMedia( { video: true }).then(function (mediaSteam) {
-                    self.video.srcObject = mediaSteam;
-                    self.video.addEventListener('playing', () => {
-                        self.initFaceDetection()
-                    });
+                navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                    self.video.src = window.URL.createObjectURL(stream);
+                        self.video.addEventListener('playing', () => {
+                            self.initFaceDetection()
+                        });
                 })
+            }
+        },
+
+        drawBorder: function drawBorder(color) {
+            if (this.video) {
+                this.video.style.border = '5px solid ' + color
             }
         },
 
@@ -165,6 +170,7 @@ define([
                 faceApi.nets.faceRecognitionNet.loadFromUri(mediaUrl+ '/models')
             ]).then(function () {
                 self.video = document.getElementById('customer-video');
+                self.video.style.border = '5px solid gray'
                 self.initVideo();
             });
         }
