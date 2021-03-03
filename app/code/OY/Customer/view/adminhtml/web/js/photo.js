@@ -15,12 +15,11 @@ define([
 ], function (Abstract,faceApi,jQuery,_) {
     'use strict';
 
+
+
     return Abstract.extend({
         defaults: {
             elementTmpl: 'OY_Customer/input',
-            componentsCustomerForm: {
-                comp_photo: 'customer_form.customer_form'
-            }
         },
 
         initObservable: function () {
@@ -36,30 +35,18 @@ define([
         initialize: function () {
 
             this._super();
-
-            jQuery(document).on('click', '#enable-camera', _.bind(this.initApp, this));
+            
             jQuery(document).on('click', '#made_photo', _.bind(this.takePhoto, this));
             jQuery(document).on('click', '#reload-video', _.bind(this.reloadVideo, this));
-
+            jQuery(document).on('click', '#enable-camera', _.bind(this.initApp, this));
+            
             jQuery(document).on('click',function (){
-                jQuery('div[data-index="photo"]').hide();
                 if(jQuery('div[data-index="photo"]').hasClass('_error')){
                     jQuery('.cl_photo-error').show();
                 }else{
                     jQuery('.cl_photo-error').hide();
                 }
             })
-
-            jQuery( document ).on('DOMNodeInserted',function() {
-
-                _.delay(function () {
-                    if(jQuery('div[data-index="photo"]').length){
-                        jQuery('div[data-index="photo"]').hide();
-                    }
-                }, 1000);
-
-            });
-
             return this;
         },
 
@@ -79,7 +66,7 @@ define([
             jQuery(this.video).addClass('hidden');
             return this.savePhoto(imgBase64);
         },
-
+        
         getImageFromVideo: function getImageFromVideo() {
             const canvas = document.createElement('canvas');
             canvas.width = this.video.videoWidth;
@@ -113,16 +100,16 @@ define([
         },
 
         initFaceDetection: async function initFaceDetection() {
-            const displaySize = {
-                width: this.video.clientWidth,
-                height: this.video.clientHeight
+            const displaySize = { 
+                width: this.video.clientWidth, 
+                height: this.video.clientHeight 
             };
             var detection = null;
             var resizedDetections;
             var self = this;
-
+            
             this.canvas = faceApi.createCanvasFromMedia(this.video);
-            this.canvas.style.position = 'absolute';
+            // this.canvas.style.position = 'absolute';
             this.video.parentElement.append(this.canvas)
 
             faceApi.matchDimensions(this.canvas, displaySize);
@@ -130,44 +117,58 @@ define([
             setInterval(async () => {
                 detection = await faceApi.detectSingleFace(self.video);
                 self.canvas.getContext('2d').clearRect(0, 0, self.canvas.width, self.canvas.height);
-
+                
                 if (detection && detection.score > 0.96) {
                     resizedDetections = faceApi.resizeResults([detection], displaySize);
-                    faceApi.draw.drawDetections(self.canvas, resizedDetections);
-                }
-                if (detection && detection.score > 0.96) {
-                    self.faceDetected = true;
+                    self.drawBorder('green')
                 } else {
-                    self.faceDetected = false;
+                    self.drawBorder('red')
                 }
-            }, 100);
+            }, 400);
         },
 
         initVideo: function initVideo() {
             var self = this;
-
-            navigator.getUserMedia(
-                { video: {} },
-                function (stream) {
+            if (navigator.getUserMedia) {
+                navigator.getUserMedia(
+                    { video: {} },
+                    function (stream) {
+                        self.video.srcObject = stream;
+                        self.video.addEventListener('playing', () => {
+                            self.initFaceDetection()
+                        });
+                    },
+                    err => console.error(err)
+                );
+            } else if (navigator.mediaDevices) {
+                navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
                     self.video.srcObject = stream;
-                    self.video.addEventListener('playing', () => {
-                        self.initFaceDetection()
-                    });
-                },
-                err => console.error(err)
-            );
+                        self.video.addEventListener('playing', () => {
+                            self.initFaceDetection()
+                        });
+                })
+            } else {
+                console.error('camera is not supported')
+            }
+        },
+
+        drawBorder: function drawBorder(color) {
+            if (this.video) {
+                this.video.style.border = '5px solid ' + color
+            }
         },
 
         initApp: function initApp() {
             var self = this;
             var mediaUrl = location.protocol+'//'+location.hostname+'/pub/media';
-
+            
             return Promise.all([
                 faceApi.nets.tinyFaceDetector.loadFromUri(mediaUrl + '/models'),
                 faceApi.nets.ssdMobilenetv1.loadFromUri(mediaUrl + '/models'),
                 faceApi.nets.faceRecognitionNet.loadFromUri(mediaUrl+ '/models')
             ]).then(function () {
                 self.video = document.getElementById('customer-video');
+                self.video.style.border = '5px solid gray'
                 self.initVideo();
             });
         }
