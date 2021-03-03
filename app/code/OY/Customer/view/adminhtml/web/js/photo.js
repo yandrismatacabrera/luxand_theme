@@ -129,10 +129,7 @@ define([
         },
 
         initVideo: function initVideo() {
-            console.log('here')
-
             var self = this;
-            
             if (navigator.getUserMedia) {
                 navigator.getUserMedia(
                     { video: {} },
