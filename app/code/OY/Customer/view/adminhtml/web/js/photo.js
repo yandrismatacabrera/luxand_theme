@@ -116,8 +116,7 @@ define([
 
             setInterval(async () => {
                 detection = await faceApi.detectSingleFace(self.video);
-                self.canvas.getContext('2d').clearRect(0, 0, self.canvas.width, self.canvas.height);
-                
+                //elf.canvas.getContext('2d').clearRect(0, 0, self.canvas.width, self.canvas.height);
                 if (detection && detection.score > 0.96) {
                     resizedDetections = faceApi.resizeResults([detection], displaySize);
                     self.drawBorder('green')
