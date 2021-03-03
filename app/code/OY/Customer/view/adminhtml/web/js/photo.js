@@ -15,11 +15,12 @@ define([
 ], function (Abstract,faceApi,jQuery,_) {
     'use strict';
 
-
-
     return Abstract.extend({
         defaults: {
             elementTmpl: 'OY_Customer/input',
+            componentsCustomerForm: {
+                comp_photo: 'customer_form.customer_form'
+            }
         },
 
         initObservable: function () {
@@ -39,7 +40,6 @@ define([
             jQuery(document).on('click', '#enable-camera', _.bind(this.initApp, this));
             jQuery(document).on('click', '#made_photo', _.bind(this.takePhoto, this));
             jQuery(document).on('click', '#reload-video', _.bind(this.reloadVideo, this));
-            _.delay(this.hideFields, 1500);
 
             jQuery(document).on('click',function (){
                 jQuery('div[data-index="photo"]').hide();
@@ -49,6 +49,17 @@ define([
                     jQuery('.cl_photo-error').hide();
                 }
             })
+
+            jQuery( document ).on('DOMNodeInserted',function() {
+
+                _.delay(function () {
+                    if(jQuery('div[data-index="photo"]').length){
+                        jQuery('div[data-index="photo"]').hide();
+                    }
+                }, 1000);
+
+            });
+
             return this;
         },
 
