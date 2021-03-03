@@ -166,6 +166,14 @@ class Registry extends \Magento\Backend\App\Action
         $data['plan'] = $this->getPlanDataByCustomer($customer);
         $data['book'] = $this->getBookDataByCustomer($customer);
 
+        if (isset($data['customer']['success']) && $data['customer']['success'] &&
+           isset($data['plan']['success']) && $data['plan']['success'] &&
+           isset($data['book']['success']) && $data['book']['success']) {
+            $data['success']=true;
+        } else {
+            $data['success']=false;
+        }
+
         return $result->setData($this->formatResponse($data));
     }
 
