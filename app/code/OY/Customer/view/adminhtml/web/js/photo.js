@@ -35,13 +35,14 @@ define([
         initialize: function () {
 
             this._super();
-            
+
             jQuery(document).on('click', '#enable-camera', _.bind(this.initApp, this));
             jQuery(document).on('click', '#made_photo', _.bind(this.takePhoto, this));
             jQuery(document).on('click', '#reload-video', _.bind(this.reloadVideo, this));
             _.delay(this.hideFields, 1500);
-            
+
             jQuery(document).on('click',function (){
+                jQuery('div[data-index="photo"]').hide();
                 if(jQuery('div[data-index="photo"]').hasClass('_error')){
                     jQuery('.cl_photo-error').show();
                 }else{
@@ -50,7 +51,12 @@ define([
             })
             return this;
         },
-        
+
+        hideFields: function hideFields() {
+            jQuery('div[data-index="photo"]').hide();
+
+        },
+
         reloadVideo: function reloadVideo() {
             jQuery(this.image).addClass('hidden');
             jQuery(this.video).removeClass('hidden');
@@ -67,7 +73,7 @@ define([
             jQuery(this.video).addClass('hidden');
             return this.savePhoto(imgBase64);
         },
-        
+
         getImageFromVideo: function getImageFromVideo() {
             const canvas = document.createElement('canvas');
             canvas.width = this.video.videoWidth;
@@ -101,14 +107,14 @@ define([
         },
 
         initFaceDetection: async function initFaceDetection() {
-            const displaySize = { 
-                width: this.video.clientWidth, 
-                height: this.video.clientHeight 
+            const displaySize = {
+                width: this.video.clientWidth,
+                height: this.video.clientHeight
             };
             var detection = null;
             var resizedDetections;
             var self = this;
-            
+
             this.canvas = faceApi.createCanvasFromMedia(this.video);
             this.canvas.style.position = 'absolute';
             this.video.parentElement.append(this.canvas)
@@ -118,7 +124,7 @@ define([
             setInterval(async () => {
                 detection = await faceApi.detectSingleFace(self.video);
                 self.canvas.getContext('2d').clearRect(0, 0, self.canvas.width, self.canvas.height);
-                
+
                 if (detection && detection.score > 0.96) {
                     resizedDetections = faceApi.resizeResults([detection], displaySize);
                     faceApi.draw.drawDetections(self.canvas, resizedDetections);
@@ -149,7 +155,7 @@ define([
         initApp: function initApp() {
             var self = this;
             var mediaUrl = location.protocol+'//'+location.hostname+'/pub/media';
-            
+
             return Promise.all([
                 faceApi.nets.tinyFaceDetector.loadFromUri(mediaUrl + '/models'),
                 faceApi.nets.ssdMobilenetv1.loadFromUri(mediaUrl + '/models'),
