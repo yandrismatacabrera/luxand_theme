@@ -52,11 +52,6 @@ define([
             return this;
         },
 
-        hideFields: function hideFields() {
-            jQuery('div[data-index="photo"]').hide();
-
-        },
-
         reloadVideo: function reloadVideo() {
             jQuery(this.image).addClass('hidden');
             jQuery(this.video).removeClass('hidden');
