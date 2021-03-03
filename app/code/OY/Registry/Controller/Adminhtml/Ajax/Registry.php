@@ -92,28 +92,25 @@ class Registry extends \Magento\Backend\App\Action
         ];
         $collection = $this->collectionPlanFactory->create();
         $collection->addFieldToFilter('customer_id', $customer->getId());
-        $hasPlan = false;
 
         if ($collection->getSize()) {
             foreach ($collection as $plan) {
-                $this->log("Customer Plan => " . $customer->getId() . " - RESULT => " . print_r($plan->getData('from') . ' - ' . $plan->getData('to'), true));
-                print_r($plan->getData('from') . ' - ' . $plan->getData('to'));
-                print_r(date("Y-m-d H:i:s"));
                 if ($this->statusPlan($plan->getData('from'), $plan->getData('to'))) {
                     if ($plan->getData('access_number')) {
                         if ($plan->getData('access_enabled')) {
                             $plan->setData('access_enabled', (int) $plan->getData('access_enabled') - 1);
                             $this->planRepository->save($plan);
-                            $planData['plan'] = $plan;
+                            $planData['plan'] = $plan->getData('from') . ' - ' . $plan->getData('to');
                             $planData['success'] = true;
                             unset($planData['msg']);
-                            $hasPlan = true;
                         }
                     } else {
-                        $hasPlan = true;
+                        $planData['plan'] = $plan->getData('from') . ' - ' . $plan->getData('to');
+                        $planData['success'] = true;
+                        unset($planData['msg']);
                     }
                 }
-            }print_r('veamos');die;
+            }
         }
         return $planData;
     }
@@ -164,6 +161,7 @@ class Registry extends \Magento\Backend\App\Action
         } elseif ($ci) {
             $customer = $this->getCustomerDataByCi($ci);
         }
+
         $data['customer'] = $this->formatCustomerData($customer);
         $data['plan'] = $this->getPlanDataByCustomer($customer);
         $data['book'] = $this->getBookDataByCustomer($customer);
@@ -194,7 +192,7 @@ class Registry extends \Magento\Backend\App\Action
     public function statusPlan($from, $to)
     {
         $today =date("Y-m-d H:i:s");
-        $this->log("Customer Plan => RESULT TODAY => " . print_r($today, true));
+
         if (strtotime($from) <= strtotime($today) && strtotime($to) >= strtotime($today)) {
             return true;
         }
@@ -213,14 +211,5 @@ class Registry extends \Magento\Backend\App\Action
     private function isEnableReserve()
     {
         return $this->getConfig("reserve_general/config_general/enable");
-    }
-
-    public function log($mensaje)
-    {
-        $nombre='registry_' . date('Y_m');
-        $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/' . $nombre . '.log');
-        $logger = new \Zend\Log\Logger();
-        $logger->addWriter($writer);
-        $logger->info($mensaje);
     }
 }
