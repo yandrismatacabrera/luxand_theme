@@ -170,6 +170,12 @@ class Registry extends \Magento\Backend\App\Action
            isset($data['plan']['success']) && $data['plan']['success'] &&
            isset($data['book']['success']) && $data['book']['success']) {
             $data['success']=true;
+
+            $registryRecord = $this->registryFactory->create();
+            $registryRecord->setCustomerId($customerId);
+            $registryRecord->setFullname($customer->getFirstname() . ' ' . $customer->getLastname());
+            $registryRecord->setDateTime(date("Y-m-d H:i:s"));
+            $this->registryRepository->save($registryRecord);
         } else {
             $data['success']=false;
         }
