@@ -41,7 +41,7 @@ class Index extends \Magento\Backend\App\Action
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('OY_Registry::registry');
         $resultPage->addBreadcrumb(__('Registry'), __('Registry'));
-        $resultPage->getConfig()->getTitle()->prepend(__('Registry'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Registros'));
 
         return $resultPage;
     }

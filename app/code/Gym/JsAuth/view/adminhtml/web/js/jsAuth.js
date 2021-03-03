@@ -63,17 +63,28 @@ define([
             }, 
             methods: {
                 initVideo: function initVideo() {
-                    var self = this; 
-                    return navigator.getUserMedia(
-                        { video: {} },
-                        function (stream) {
+                    var self = this;
+                    if (navigator.getUserMedia) {
+                        navigator.getUserMedia(
+                            { video: {} },
+                            function (stream) {
+                                self.video.srcObject = stream;
+                                self.video.addEventListener('playing', () => {
+                                    self.initFaceDetection()
+                                });
+                            },
+                            err => console.error(err)
+                        );
+                    } else if (navigator.mediaDevices) {
+                        navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
                             self.video.srcObject = stream;
-                            self.video.addEventListener('playing', () => {
-                                self.initFaceDetection()
-                            });
-                        },
-                        err => console.error(err)
-                    );
+                                self.video.addEventListener('playing', () => {
+                                    self.initFaceDetection()
+                                });
+                        })
+                    } else {
+                        console.error('Camara no soportada por el navegador')
+                    }
                 },
                 initFaceDetection: async function initFaceDetection() {
                     const displaySize = { 
@@ -104,7 +115,7 @@ define([
                         } else {
                             self.faceDetected = false;
                         }
-                    });
+                    }, 300);
                 },
                 registerWithFace: function registerWithFace() {
                     this.identifiedPerson = null;
