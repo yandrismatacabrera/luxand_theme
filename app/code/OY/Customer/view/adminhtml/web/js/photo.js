@@ -144,13 +144,15 @@ define([
                     },
                     err => console.error(err)
                 );
-            } else {
+            } else if (navigator.mediaDevices) {
                 navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
-                    self.video.src = window.URL.createObjectURL(stream);
+                    self.video.srcObject = stream;
                         self.video.addEventListener('playing', () => {
                             self.initFaceDetection()
                         });
                 })
+            } else {
+                console.error('Camara no soportada por el navegador')
             }
         },
 
