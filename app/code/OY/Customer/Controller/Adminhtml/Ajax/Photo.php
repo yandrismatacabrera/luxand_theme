@@ -38,7 +38,7 @@ class Photo extends \Magento\Backend\App\Action
                 mkdir($mediaDir.'/customer/luxand', 0777, true);
             }
 
-            if($this->getRequest()->getParam('current')){
+            if($this->getRequest()->getParam('current') && is_file($mediaDir.$this->getRequest()->getParam('current'))){
                 unlink($mediaDir.$this->getRequest()->getParam('current'));
             }
 

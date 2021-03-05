@@ -15,11 +15,10 @@ define([
 ], function (Abstract,faceApi,jQuery,_) {
     'use strict';
 
-
-
     return Abstract.extend({
         defaults: {
             elementTmpl: 'OY_Customer/input',
+            active_video: false
         },
 
         initObservable: function () {
@@ -35,11 +34,11 @@ define([
         initialize: function () {
 
             this._super();
-            
+
             jQuery(document).on('click', '#made_photo', _.bind(this.takePhoto, this));
             jQuery(document).on('click', '#reload-video', _.bind(this.reloadVideo, this));
             jQuery(document).on('click', '#enable-camera', _.bind(this.initApp, this));
-            
+
             jQuery(document).on('click',function (){
                 if(jQuery('div[data-index="photo"]').hasClass('_error')){
                     jQuery('.cl_photo-error').show();
@@ -47,12 +46,46 @@ define([
                     jQuery('.cl_photo-error').hide();
                 }
             })
+
+            var self = this;
+            jQuery( document ).on('DOMNodeInserted',function() {
+
+                _.delay(function () {
+                    if(jQuery('div[data-index="photo"]').length){
+                        jQuery('div[data-index="photo"]').hide();
+                        self.showImg();
+                    }
+                }, 1000);
+
+            });
+
             return this;
+        },
+
+        showImg: function (){
+
+            if(!this.active_video){
+
+                var imgUrl = location.protocol+'//'+location.hostname+'/pub/media'+jQuery('input[name="customer[photo]"]').val();
+                jQuery('#customer-image').attr("src",imgUrl);
+                jQuery('#customer-image').show();
+                jQuery('#customer-image').removeClass('hidden');
+                jQuery('#customer-video').hide();
+
+            }
+
+        },
+
+        hideImg: function (){
+            jQuery('#customer-image').hide();
+            jQuery('#customer-image').addClass('hidden');
+            jQuery('#customer-video').show();
         },
 
         reloadVideo: function reloadVideo() {
             jQuery(this.image).addClass('hidden');
             jQuery(this.video).removeClass('hidden');
+            jQuery(this.video).show();
         },
 
         takePhoto: function takePhoto() {
@@ -61,12 +94,14 @@ define([
             jQuery(this.image).attr('width', this.video.clientWidth);
             jQuery(this.image).attr('height', this.video.clientHeight);
             jQuery(this.image).attr('src', 'data:image/png;base64, ' + imgBase64);
+            jQuery(this.image).show();
             jQuery(this.canvas).remove();
             jQuery(this.image).removeClass('hidden');
             jQuery(this.video).addClass('hidden');
+            jQuery(this.video).hide();
             return this.savePhoto(imgBase64);
         },
-        
+
         getImageFromVideo: function getImageFromVideo() {
             const canvas = document.createElement('canvas');
             canvas.width = this.video.videoWidth;
@@ -100,14 +135,14 @@ define([
         },
 
         initFaceDetection: async function initFaceDetection() {
-            const displaySize = { 
-                width: this.video.clientWidth, 
-                height: this.video.clientHeight 
+            const displaySize = {
+                width: this.video.clientWidth,
+                height: this.video.clientHeight
             };
             var detection = null;
             var resizedDetections;
             var self = this;
-            
+
             this.canvas = faceApi.createCanvasFromMedia(this.video);
             // this.canvas.style.position = 'absolute';
             this.video.parentElement.append(this.canvas)
@@ -158,9 +193,11 @@ define([
         },
 
         initApp: function initApp() {
+            this.active_video=true;
+            this.hideImg();
             var self = this;
             var mediaUrl = location.protocol+'//'+location.hostname+'/pub/media';
-            
+
             return Promise.all([
                 faceApi.nets.tinyFaceDetector.loadFromUri(mediaUrl + '/models'),
                 faceApi.nets.ssdMobilenetv1.loadFromUri(mediaUrl + '/models'),
