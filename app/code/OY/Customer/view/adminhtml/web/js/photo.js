@@ -145,7 +145,7 @@ define([
             var detection = null;
             var resizedDetections;
             var self = this;
-            const detectionsOptions = new faceapi.TinyFaceDetectorOptions({ inputSize: 160 })
+            const detectionsOptions = new faceApi.TinyFaceDetectorOptions({ inputSize: 160 })
 
             this.canvas = faceApi.createCanvasFromMedia(this.video);
             // this.canvas.style.position = 'absolute';
@@ -154,7 +154,7 @@ define([
             faceApi.matchDimensions(this.canvas, displaySize);
             while (this.activeDetection) {
                 detection = await faceApi.detectSingleFace(self.video, detectionsOptions);
-                if (detection && detection.score > 0.96) {
+                if (detection && detection.score > 0.8) {
                     self.drawBorder('green')
                 } else {
                     self.drawBorder('red')
