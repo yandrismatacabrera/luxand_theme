@@ -38,6 +38,7 @@ define([
             jQuery(document).on('click', '#made_photo', _.bind(this.takePhoto, this));
             jQuery(document).on('click', '#reload-video', _.bind(this.reloadVideo, this));
             jQuery(document).on('click', '#enable-camera', _.bind(this.initApp, this));
+            this.activeDetection = false;
 
             jQuery(document).on('click',function (){
                 if(jQuery('div[data-index="photo"]').hasClass('_error')){
@@ -86,6 +87,7 @@ define([
             jQuery(this.image).addClass('hidden');
             jQuery(this.video).removeClass('hidden');
             jQuery(this.video).show();
+            this.activeDetection = true;
         },
 
         takePhoto: function takePhoto() {
@@ -99,6 +101,7 @@ define([
             jQuery(this.image).removeClass('hidden');
             jQuery(this.video).addClass('hidden');
             jQuery(this.video).hide();
+            this.activeDetection = false;
             return this.savePhoto(imgBase64);
         },
 
@@ -148,21 +151,19 @@ define([
             this.video.parentElement.append(this.canvas)
 
             faceApi.matchDimensions(this.canvas, displaySize);
-
-            setInterval(async () => {
+            while (this.activeDetection) {
                 detection = await faceApi.detectSingleFace(self.video);
-                //elf.canvas.getContext('2d').clearRect(0, 0, self.canvas.width, self.canvas.height);
                 if (detection && detection.score > 0.96) {
-                    // resizedDetections = faceApi.resizeResults([detection], displaySize);
                     self.drawBorder('green')
                 } else {
                     self.drawBorder('red')
                 }
-            }, 400);
+            }
         },
 
         initVideo: function initVideo() {
             var self = this;
+            this.activeDetection = true;
             if (navigator.getUserMedia) {
                 navigator.getUserMedia(
                     { video: {} },
@@ -177,9 +178,9 @@ define([
             } else if (navigator.mediaDevices) {
                 navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
                     self.video.srcObject = stream;
-                        self.video.addEventListener('playing', () => {
-                            self.initFaceDetection()
-                        });
+                    self.video.addEventListener('playing', () => {
+                        self.initFaceDetection()
+                    });
                 })
             } else {
                 console.error('camera is not supported')
