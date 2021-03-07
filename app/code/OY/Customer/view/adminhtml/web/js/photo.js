@@ -97,7 +97,6 @@ define([
             jQuery(this.image).attr('height', this.video.clientHeight);
             jQuery(this.image).attr('src', 'data:image/png;base64, ' + imgBase64);
             jQuery(this.image).show();
-            jQuery(this.canvas).remove();
             jQuery(this.image).removeClass('hidden');
             jQuery(this.video).addClass('hidden');
             jQuery(this.video).hide();
@@ -138,26 +137,14 @@ define([
         },
 
         initFaceDetection: async function initFaceDetection() {
-            const displaySize = {
-                width: this.video.clientWidth,
-                height: this.video.clientHeight
-            };
             var detection = null;
-            var resizedDetections;
-            var self = this;
-            const detectionsOptions = new faceApi.TinyFaceDetectorOptions({ inputSize: 160 })
-
-            this.canvas = faceApi.createCanvasFromMedia(this.video);
-            // this.canvas.style.position = 'absolute';
-            this.video.parentElement.append(this.canvas)
-
-            faceApi.matchDimensions(this.canvas, displaySize);
+            const detectionsOptions = new faceApi.TinyFaceDetectorOptions({ inputSize: 224 })
             while (this.activeDetection) {
                 detection = await faceApi.detectSingleFace(self.video, detectionsOptions);
-                if (detection && detection.score > 0.8) {
-                    self.drawBorder('green')
+                if (detection && detection.score > 0.7) {
+                    this.drawBorder('green')
                 } else {
-                    self.drawBorder('red')
+                    this.drawBorder('red')
                 }
             }
         },
