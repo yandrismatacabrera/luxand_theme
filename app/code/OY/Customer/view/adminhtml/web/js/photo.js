@@ -140,7 +140,7 @@ define([
             var detection = null;
             const detectionsOptions = new faceApi.TinyFaceDetectorOptions({ inputSize: 224 })
             while (this.activeDetection) {
-                detection = await faceApi.detectSingleFace(self.video, detectionsOptions);
+                detection = await faceApi.detectSingleFace(this.video, detectionsOptions);
                 if (detection && detection.score > 0.7) {
                     this.drawBorder('green')
                 } else {
