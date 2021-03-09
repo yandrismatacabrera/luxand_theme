@@ -22,9 +22,9 @@ define([
                 ctx.fillRect(x, y, width, height)
                 const { label } = this.options
                 if (label) {
-                  new faceApi.draw.DrawTextField([label], { x: x - (lineWidth / 2), y }, this.options.drawLabelOptions).draw(canvasArg)
+                    new faceApi.draw.DrawTextField([label], { x: x - (lineWidth / 2), y }, this.options.drawLabelOptions).draw(canvasArg)
                 }
-              }
+            }
         }
 
 
@@ -60,7 +60,7 @@ define([
                 showUserData: function showUserData() {
                     return this.identifiedPerson;
                 }
-            }, 
+            },
             methods: {
                 initVideo: function initVideo() {
                     var self = this;
@@ -78,39 +78,40 @@ define([
                     } else if (navigator.mediaDevices) {
                         navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
                             self.video.srcObject = stream;
-                                self.video.addEventListener('playing', () => {
-                                    self.initFaceDetection()
-                                });
+                            self.video.addEventListener('playing', () => {
+                                self.initFaceDetection()
+                            });
                         })
                     } else {
                         console.error('Camara no soportada por el navegador')
                     }
                 },
                 initFaceDetection: async function initFaceDetection() {
-                    const displaySize = { 
-                        width: this.video.clientWidth, 
-                        height: this.video.clientHeight 
+                    const displaySize = {
+                        width: this.video.clientWidth,
+                        height: this.video.clientHeight
                     };
                     var detection = null;
                     var resizedDetections;
                     var self = this;
-                    
+                    const detectionsOptions = new faceApi.TinyFaceDetectorOptions({ inputSize: 224 })
+
                     this.faceDetected = null;
                     this.identifiedPerson = null;
                     this.canvas = faceApi.createCanvasFromMedia(this.video);
                     this.video.parentElement.append(this.canvas)
-        
+
                     faceApi.matchDimensions(this.canvas, displaySize);
 
                     setInterval(async () => {
-                        detection = await faceApi.detectSingleFace(self.video);
+                        detection = await faceApi.detectSingleFace(self.video, detectionsOptions);
                         self.canvas.getContext('2d').clearRect(0, 0, self.canvas.width, self.canvas.height);
-                        
-                        if (detection && detection.score > 0.96) {
+
+                        if (detection && detection.score > 0.7) {
                             resizedDetections = faceApi.resizeResults([detection], displaySize);
                             faceApi.draw.drawDetections(self.canvas, resizedDetections);
                         }
-                        if (detection && detection.score > 0.96) {
+                        if (detection && detection.score > 0.7) {
                             self.faceDetected = true;
                         } else {
                             self.faceDetected = false;
@@ -151,7 +152,7 @@ define([
                             self.setInfo(false, 'No se pudo identificar.', 'danger');
                             self.isProcessing = false;
                         })
-                        
+
 
                 },
                 accessRegister: function accessRegister() {
@@ -180,7 +181,7 @@ define([
                 setInfo: function setInfo (showSpinner, msg, style) {
                     this.info = Object.assign({}, {
                         msg: msg, type: style, showSpinner: showSpinner
-                    })            
+                    })
                 },
                 isValidCi: function isValidCi() {
                     if (!this.ci) {
@@ -192,8 +193,8 @@ define([
                     try {
                         return !!(parseInt(this.ci, 10) && parseInt(this.ci, 10) > 100);
                     } catch (e) {
-                       console.log("invalid ci");     
-                    }   
+                        console.log("invalid ci");
+                    }
                     return false;
                 },
                 registerWithCi: function registerWithCi () {
@@ -229,7 +230,7 @@ define([
                                 self.isProcessing = false;
                             })
                     }
-                    
+
                 },
                 resetValues: function resetValues() {
                     this.faceDetected = null;
@@ -282,7 +283,7 @@ define([
                     return false;
                 }
             }
-         });
+        });
     };
 
 })
