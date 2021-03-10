@@ -31,3 +31,9 @@
 canvas {
     position: absolute;
 }
+.menu-wrapper {
+    display: none;
+}
+.notices-wrapper {
+    display: none;
+}
