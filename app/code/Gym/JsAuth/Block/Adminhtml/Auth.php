@@ -44,6 +44,12 @@ class Auth extends Template
         return $this->luxandHelper->getToken();
     }
 
+    public function getTimeToMakeRegister()
+    {
+        // this is used to make a call to recognition api
+        return 3;
+    }
+
     public function getUrlRegistry()
     {
         return $this->getUrl('registry/ajax/registry', []);

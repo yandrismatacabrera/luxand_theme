@@ -6,14 +6,17 @@
     </head>
     <referenceBlock name="page.title">
         <action method="setPageTitle">
-            <argument name="title" xsi:type="string">Reconocimiento</argument>
+            <argument name="title" xsi:type="string">Control de acceso al local</argument>
         </action>
     </referenceBlock>
     <body>
         <referenceContainer name="page.main.actions" remove="true"/>
+        <referenceContainer name="footer" remove="true"/>
+        <referenceContainer name="page.menu" remove="true"/>
         <referenceContainer name="content">
             <block class="Gym\JsAuth\Block\Adminhtml\Auth" template="Gym_JsAuth::auth.phtml"/>
         </referenceContainer>
+
     </body>
 
 </page>
