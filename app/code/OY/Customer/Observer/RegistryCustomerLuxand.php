@@ -8,12 +8,11 @@
 namespace OY\Customer\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
-use Lentesplus\Stores\Api\Data\StoresInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 class RegistryCustomerLuxand implements ObserverInterface
 {
-    public function __construct (
+    public function __construct(
         \OY\Registry\Helper\Luxand $luxand,
         \Magento\Framework\App\Filesystem\DirectoryList $directoryList,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -31,39 +30,38 @@ class RegistryCustomerLuxand implements ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-
         $customer = $this->customerRepository->getById($observer->getCustomer()->getId());
 
-        if($customer->getCustomAttribute('luxand_registry') && $customer->getCustomAttribute('luxand_registry')->getValue()){
-
+        if ($customer->getCustomAttribute('luxand_registry') && $customer->getCustomAttribute('luxand_registry')->getValue()) {
             return $this;
         }
 
-        if(!$customer->getCustomAttribute('photo')){
+        if (!$customer->getCustomAttribute('photo')) {
             return $this;
-            /*$this->messageManager->addError('Debe ingresar una imagen personal.');
-            throw new NoSuchEntityException(__('Debe ingresar una imagen personal.'));*/
         }
 
+        if (!$customer->getCustomAttribute('ci')) {
+            return $this;
+        }
 
         $img=$customer->getCustomAttribute('photo')->getValue();
 
-        $imagePub ='pub/media'.$img;
+        $imagePub ='pub/media' . $img;
 
         //{ name: "Denis", ci: "62996855", email: "dlespinosa365@gmail.com", id: 20}
         $nameCustomer = [];
         $nameCustomer['id']=$customer->getId();
         $nameCustomer['email']=$customer->getEmail();
-        $nameCustomer['name']=$customer->getFirstname().' '.$customer->getLastname();
+        $nameCustomer['name']=$customer->getFirstname() . ' ' . $customer->getLastname();
         $nameCustomer['ci']=$customer->getCustomAttribute('ci')->getValue();
 
         $name=(string)json_encode($nameCustomer);
         $registry = $this->luxand->createCustomer($name, 0, $imagePub);
 
-        if($registry){
-          $customer->setCustomAttribute('luxand_registry',1);
-          $customer->setCustomAttribute('luxand_id',$registry);
-          $this->customerRepository->save($customer);
+        if ($registry) {
+            $customer->setCustomAttribute('luxand_registry', 1);
+            $customer->setCustomAttribute('luxand_id', $registry);
+            $this->customerRepository->save($customer);
         }
 
         return $this;
