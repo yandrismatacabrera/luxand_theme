@@ -207,7 +207,7 @@ class Registry extends \Magento\Backend\App\Action
     {
         $today =date("Y-m-d H:i:s");
 
-        if (strtotime($from) <= strtotime($today) && strtotime($to) >= strtotime($today)) {
+        if (/*strtotime($from) <= strtotime($today) &&*/ strtotime($to) >= strtotime($today)) {
             return true;
         }
 

@@ -429,5 +429,98 @@ class UpgradeData implements UpgradeDataInterface
                 // Do nothing
             }
         }
+
+
+        if (version_compare($context->getVersion(), '1.0.12') < 0) {
+
+            $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+
+            $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
+            $attributeSetId = $customerEntity->getDefaultAttributeSetId();
+
+            /** @var $attributeSet AttributeSet */
+            $attributeSet = $this->attributeSetFactory->create();
+            $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'address_street_1', [
+                'type' => 'text',
+                'label' => 'Dirección',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => true,
+                'position' => 1050,
+                'system' => 0,
+                'is_used_in_grid' => false,
+                'is_visible_in_grid' => false,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'address_street_1')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'address_street_2', [
+                'type' => 'text',
+                'label' => 'Número',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => true,
+                'position' => 1100,
+                'system' => 0,
+                'is_used_in_grid' => false,
+                'is_visible_in_grid' => false,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'address_street_2')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'address_city', [
+                'type' => 'text',
+                'label' => 'Ciudad',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => true,
+                'position' => 1150,
+                'system' => 0,
+                'is_used_in_grid' => false,
+                'is_visible_in_grid' => false,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'address_city')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'address_postal_code', [
+                'type' => 'text',
+                'label' => 'Código postal',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => true,
+                'position' => 1200,
+                'system' => 0,
+                'is_used_in_grid' => false,
+                'is_visible_in_grid' => false,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'address_postal_code')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+        }
     }
 }
