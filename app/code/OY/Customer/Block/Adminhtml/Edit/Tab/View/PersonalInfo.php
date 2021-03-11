@@ -522,4 +522,19 @@ class PersonalInfo extends \Magento\Backend\Block\Template
         }
         return 'No';
     }
+
+    /**
+     * Check if client is a professor
+     *
+     * @return boolean|null
+     */
+    public function getClientIsProfessor()
+    {
+        $customer = $this->getCustomer();
+        if($customer->getCustomAttribute('client_is_professor') && $customer->getCustomAttribute('client_is_professor')->getValue()){
+
+            return 'Si';
+        }
+        return 'No';
+    }
 }

@@ -7,7 +7,7 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Ui\Component\Listing\Columns\Column;
 
-class ClientLocalAccess extends Column
+class ClientIsProfessor extends Column
 {
     protected $_customerRepository;
     protected $_searchCriteria;
@@ -31,7 +31,7 @@ class ClientLocalAccess extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 $customer  = $this->_customerRepository->getById($item["entity_id"]);
-                if ($customer->getCustomAttribute('client_local_access') && $customer->getCustomAttribute('client_local_access')->getValue()) {
+                if ($customer->getCustomAttribute('client_is_professor') && $customer->getCustomAttribute('client_is_professor')->getValue()) {
                     $item[$this->getData('name')] = 'Si';
                 } else {
                     $item[$this->getData('name')] = 'No';

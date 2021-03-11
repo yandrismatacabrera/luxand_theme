@@ -65,6 +65,18 @@
                 <bodyTmpl>ui/grid/cells/html</bodyTmpl>
             </settings>
         </column>
+        <column name="client_is_professor" class="OY\Customer\Ui\Component\Listing\Column\ClientIsProfessor">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="boolean">true</item>
+                    <item name="label" translate="true" xsi:type="string">Profesor</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </column>
         <column name="taxvat">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

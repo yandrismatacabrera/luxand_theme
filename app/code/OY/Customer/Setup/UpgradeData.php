@@ -521,6 +521,30 @@ class UpgradeData implements UpgradeDataInterface
                     'used_in_forms' => ['adminhtml_customer'],
                 ]);
             $attribute->save();
+
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'client_is_professor', [
+                'type' => 'int',
+                'label' => 'Profesor',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => false,
+                'input' => 'boolean',
+                'sort_order' => 28,
+                'position' => 28,
+                'system' => 0,
+                'backend' => \Magento\Customer\Model\Attribute\Backend\Data\Boolean::class,
+                'adminhtml_only' => true,
+                'default' => 0,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'client_is_professor')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
         }
     }
 }
