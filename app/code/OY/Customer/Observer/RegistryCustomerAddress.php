@@ -47,11 +47,6 @@ class RegistryCustomerAddress implements ObserverInterface
                     $street1 = $customer->getCustomAttribute('address_street_1')->getValue();
                 }
 
-                $street2 = '';
-                if ($customer->getCustomAttribute('address_street_2') && $customer->getCustomAttribute('address_street_2')->getValue()) {
-                    $street2 = $customer->getCustomAttribute('address_street_2')->getValue();
-                }
-
                 $address = $this->addressDataFactory->create();
                 $address->setFirstname($customer->getFirstname())
                     ->setLastname($customer->getLastname())
@@ -59,7 +54,7 @@ class RegistryCustomerAddress implements ObserverInterface
                     ->setCity($city)
                     ->setPostcode($postcode)
                     ->setCustomerId($customer->getId())
-                    ->setStreet([$street1, $street2])
+                    ->setStreet([$street1])
                     ->setIsDefaultBilling('1');
 
                 $this->addressRepository->save($address);

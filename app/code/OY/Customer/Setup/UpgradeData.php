@@ -553,6 +553,11 @@ class UpgradeData implements UpgradeDataInterface
                 Customer::ENTITY,
                 'client_is_professor'
             );
+
+            $customerSetup->removeAttribute(
+                Customer::ENTITY,
+                'address_street_2'
+            );
         }
     }
 }
