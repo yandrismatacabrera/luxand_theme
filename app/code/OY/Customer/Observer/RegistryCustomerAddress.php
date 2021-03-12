@@ -37,7 +37,7 @@ class RegistryCustomerAddress implements ObserverInterface
                     $city = $customer->getCustomAttribute('address_city')->getValue();
                 }
 
-                $postcode = '';
+                $postcode = '11300';
                 if ($customer->getCustomAttribute('address_postal_code') && $customer->getCustomAttribute('address_postal_code')->getValue()) {
                     $postcode = $customer->getCustomAttribute('address_postal_code')->getValue();
                 }
