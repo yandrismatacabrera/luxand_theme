@@ -558,6 +558,11 @@ class UpgradeData implements UpgradeDataInterface
                 Customer::ENTITY,
                 'address_street_2'
             );
+
+            $customerSetup->removeAttribute(
+                Customer::ENTITY,
+                'address_postal_code'
+            );
         }
     }
 }

@@ -37,6 +37,10 @@ class Luxand extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->getConfig("luxand_general/config_general/host");
     }
 
+    public function getPostalCode(){
+        return $this->getConfig("luxand_general/config_general/postalcode");
+    }
+
     public function callRecognition($img){
 
         $curl = curl_init();

@@ -20,11 +20,13 @@ class RegistryCustomerAddress implements ObserverInterface
     public function __construct (
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Customer\Api\AddressRepositoryInterface $addressRepository,
-        \Magento\Customer\Api\Data\AddressInterfaceFactory $addressDataFactory
+        \Magento\Customer\Api\Data\AddressInterfaceFactory $addressDataFactory,
+        \OY\Registry\Helper\Luxand $luxand
     ) {
         $this->customerRepository = $customerRepository;
         $this->addressRepository = $addressRepository;
         $this->addressDataFactory = $addressDataFactory;
+        $this->luxandHelper = $luxand;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -38,8 +40,8 @@ class RegistryCustomerAddress implements ObserverInterface
                 }
 
                 $postcode = '11300';
-                if ($customer->getCustomAttribute('address_postal_code') && $customer->getCustomAttribute('address_postal_code')->getValue()) {
-                    $postcode = $customer->getCustomAttribute('address_postal_code')->getValue();
+                if ($this->luxandHelper->getPostalCode() != '') {
+                    $postcode = $this->luxandHelper->getPostalCode();
                 }
 
                 $street1 = '';
