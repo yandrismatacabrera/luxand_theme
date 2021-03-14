@@ -8,6 +8,7 @@
 namespace OY\Registry\Controller\Adminhtml\Ajax;
 
 use Magento\Backend\App\Action;
+use OY\Registry\Api\RegistryRepositoryInterface;
 
 class Registry extends \Magento\Backend\App\Action
 {
@@ -74,7 +75,7 @@ class Registry extends \Magento\Backend\App\Action
         return [
             'success' => true,
             'id' => $customer->getId(),
-            'image' => $customer->getCustomAttribute('photo')->getValue(),
+            'image' => $customer->getCustomAttribute('photo')? $customer->getCustomAttribute('photo')->getValue() : '',
             'name' => $customer->getFirstname() . ' ' . $customer->getLastname(),
             'email' => $customer->getEmail(),
             'ci' => $customer->getCustomAttribute('ci')->getValue()
@@ -146,7 +147,7 @@ class Registry extends \Magento\Backend\App\Action
     {
         $result = $this->resultJsonFactory->create();
         $data = [];
-        $customer;
+        $customer = null;
         $customerId = $this->getRequest()->getParam('customer_id');
         $ci = $this->getRequest()->getParam('ci');
 
@@ -156,31 +157,45 @@ class Registry extends \Magento\Backend\App\Action
             return $result->setData($data);
         }
 
+        $method = '';
         if ($customerId) {
             $customer = $this->getCustomerDataById((int)$customerId);
+            $method = RegistryRepositoryInterface::METHOD_FACE;
         } elseif ($ci) {
             $customer = $this->getCustomerDataByCi($ci);
+            $method = RegistryRepositoryInterface::METHOD_CI;
         }
 
         $data['customer'] = $this->formatCustomerData($customer);
         $data['plan'] = $this->getPlanDataByCustomer($customer);
         $data['book'] = $this->getBookDataByCustomer($customer);
 
+        $registryRecord = $this->registryFactory->create();
+        $registryRecord->setDateTime(date("Y-m-d H:i:s"));
+        $registryRecord->setMethod($method);
+
         if (isset($data['customer']['success']) && $data['customer']['success'] &&
            isset($data['plan']['success']) && $data['plan']['success'] &&
            isset($data['book']['success']) && $data['book']['success']) {
             $data['success']=true;
-
-            $registryRecord = $this->registryFactory->create();
             $registryRecord->setCustomerId($customerId);
             $registryRecord->setFullname($customer->getFirstname() . ' ' . $customer->getLastname());
-            $registryRecord->setDateTime(date("Y-m-d H:i:s"));
-            $this->registryRepository->save($registryRecord);
+            $registryRecord->setValid(1);
         } else {
             $data['success']=false;
+            $registryRecord->setValid(0);
+            if ($data['customer'] && $data['customer']['success']) {
+                $registryRecord->setCustomerId($customerId);
+                $registryRecord->setFullname($customer->getFirstname() . ' ' . $customer->getLastname());
+            }
         }
+        $formatedData = $this->formatResponse($data);
+        if (isset($formatedData['success']) && $formatedData['success'] == false && isset($formatedData['msg'])) {
+            $registryRecord->setMessage($formatedData['msg']);
+        }
+        $this->registryRepository->save($registryRecord);
 
-        return $result->setData($this->formatResponse($data));
+        return $result->setData($formatedData);
     }
 
     public function formatResponse($data)

@@ -49,35 +49,49 @@
             </argument>
         </filters>
 
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="data" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">registry_listing.registry_listing.registry_grid_columns.ids</item>
+                    <item name="displayArea" xsi:type="string">bottom</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="registry/registry/massDelete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete items</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to delete selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+
         <paging name="listing_paging"/>
     </listingToolbar>
 
     <columns name="registry_grid_columns">
-
         <settings>
-            <childDefaults>
-                <param name="fieldAction" xsi:type="array">
-                    <item name="provider" xsi:type="string">registry_listing.registry_listing.registry_columns.actions</item>
-                    <item name="target" xsi:type="string">applyAction</item>
-                    <item name="params" xsi:type="array">
-                        <item name="0" xsi:type="string">edit</item>
-                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
-                    </item>
-                </param>
-            </childDefaults>
+            <editorConfig>
+                <param name="indexField" xsi:type="string">entity_id</param>
+                <param name="enabled" xsi:type="boolean">true</param>
+                <param name="selectProvider" xsi:type="string">${ $.columnsProvider }.ids</param>
+            </editorConfig>
         </settings>
 
-        <column name="entity_id">
+        <selectionsColumn name="ids">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="sorting" xsi:type="string">asc</item>
-                    <item name="sortOrder" xsi:type="number">0</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="indexField" xsi:type="string">entity_id</item>
                 </item>
             </argument>
-        </column>
+        </selectionsColumn>
 
         <column name="fullname">
             <argument name="data" xsi:type="array">
@@ -95,6 +109,53 @@
                 <dataType>date</dataType>
                 <label translate="true">Fecha de Registro</label>
             </settings>
+        </column>
+
+        <column name="method" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Método</label>
+                <visible>true</visible>
+                <options>
+                    <option name="0" xsi:type="array">
+                        <item name="value" xsi:type="string">Cédula</item>
+                        <item name="label" xsi:type="string" translate="true">Cédula</item>
+                    </option>
+                    <option name="1" xsi:type="array">
+                        <item name="value" xsi:type="string">Reconocimiento Facial</item>
+                        <item name="label" xsi:type="string" translate="true">Reconocimiento Facial</item>
+                    </option>
+                </options>
+            </settings>
+        </column>
+
+        <column name="valid" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Válido</label>
+                <visible>true</visible>
+                <options>
+                    <option name="0" xsi:type="array">
+                        <item name="value" xsi:type="number">0</item>
+                        <item name="label" xsi:type="string" translate="true">No</item>
+                    </option>
+                    <option name="1" xsi:type="array">
+                        <item name="value" xsi:type="number">1</item>
+                        <item name="label" xsi:type="string" translate="true">Sí</item>
+                    </option>
+                </options>
+            </settings>
+        </column>
+
+        <column name="message">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Mensaje</item>
+                </item>
+            </argument>
         </column>
 
         <!--<column name="date_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">

@@ -42,6 +42,21 @@ class Registry extends \Magento\Framework\Model\AbstractModel implements Registr
         return $this->getData(self::FULLNAME);
     }
 
+    public function getMethod()
+    {
+        return $this->getData(self::METHOD);
+    }
+
+    public function getValid()
+    {
+        return $this->getData(self::VALID);
+    }
+
+    public function getMessage()
+    {
+        return $this->getData(self::MESSAGE);
+    }
+
 
     public function setId($id)
     {
@@ -66,5 +81,18 @@ class Registry extends \Magento\Framework\Model\AbstractModel implements Registr
         return $this->setData(self::FULLNAME, $fullname);
     }
 
+    public function setMethod($method)
+    {
+        return $this->setData(self::METHOD, $method);
+    }
 
+    public function setValid($valid)
+    {
+        return $this->setData(self::VALID, $valid);
+    }
+
+    public function setMessage($message)
+    {
+        return $this->setData(self::MESSAGE, $message);
+    }
 }
