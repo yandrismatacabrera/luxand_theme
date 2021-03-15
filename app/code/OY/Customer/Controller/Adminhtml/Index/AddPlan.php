@@ -101,10 +101,10 @@ class AddPlan extends \Magento\Customer\Controller\Adminhtml\Index implements Ht
         $addressShipping = $addresses[0]->__toArray();
         foreach ($addresses as $address) {
             $data = $address->__toArray();
-            if ($data['default_billing']) {
+            if (isset($data['default_billing']) && $data['default_billing']) {
                 $addressBilling = $data;
             }
-            if ($data['default_shipping']) {
+            if (isset($data['default_shipping']) && $data['default_shipping']) {
                 $addressShipping = $data;
             }
         }
