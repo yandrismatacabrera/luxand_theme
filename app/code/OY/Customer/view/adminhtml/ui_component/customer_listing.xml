@@ -119,5 +119,20 @@
                 </item>
             </argument>
         </column>
+        <actionsColumn name="Plan" class="OY\Customer\Ui\Component\Listing\Column\ActionsPlan">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" translate="true" xsi:type="string">Adicionar Plan</item>
+                    <item name="confirm" xsi:type="array">
+                        <item name="title" xsi:type="string" translate="true">Delete Orders</item>
+                        <item name="message" xsi:type="string" translate="true">Do you really want to delete this orders?</item>
+                    </item>
+
+                </item>
+            </argument>
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
     </columns>
 </listing>
