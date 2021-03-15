@@ -151,14 +151,8 @@ define([
                     self.setInfo(true, 'Procesando...', 'warning');
                     return jQuery.ajax(settings)
                         .done(function(response) {
-                            self.identifiedPerson = self.handleResponseApi(response);
-                            if (self.identifiedPerson) {
-                                self.accessRegister();
-                            } else {
-                                self.setInfo(false, 'No se pudo identificar.', 'danger');
-                                self.isProcessing = false;
-                                self.timeDetecting = 0;
-                            }
+                            self.identifiedPerson = self.handleResponseApi(response) || { id: null };
+                            self.accessRegister();
                         })
                         .fail(function () {
                             self.setInfo(false, 'No se pudo identificar.', 'danger');
@@ -174,7 +168,10 @@ define([
                         "dataType": "json",
                         "url": this.config.registerUrl,
                         "method": "POST",
-                        "data": { "customer_id": this.identifiedPerson.id }
+                        "data": { 
+                            "customer_id": this.identifiedPerson.id,
+                            "image": this.faceDetectedImg
+                        }
                     }
                     const self = this;
                     return jQuery.ajax(settings)
