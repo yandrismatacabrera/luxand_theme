@@ -6,8 +6,9 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Ui\Component\Listing\Columns\Column;
+use Magento\Store\Model\StoreManagerInterface;
 
-class ClientLocalAccess extends Column
+class Photo extends Column
 {
     protected $_customerRepository;
     protected $_searchCriteria;
@@ -17,25 +18,30 @@ class ClientLocalAccess extends Column
         UiComponentFactory $uiComponentFactory,
         CustomerRepositoryInterface $customerRepository,
         SearchCriteriaBuilder $criteria,
-        \OY\Plan\Model\ResourceModel\Plan\CollectionFactory $collectionPlanFactory,
+        StoreManagerInterface $storeManager,
         array $components = [],
         array $data = []
     ) {
         $this->_customerRepository = $customerRepository;
         $this->_searchCriteria  = $criteria;
-        $this->collectionPlanFactory = $collectionPlanFactory;
+        $this->_storeManager = $storeManager;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
     public function prepareDataSource(array $dataSource) {
         if (isset($dataSource['data']['items'])) {
+            $fieldName = $this->getData('name');
             foreach ($dataSource['data']['items'] as & $item) {
+                $url = '';
                 $customer  = $this->_customerRepository->getById($item["entity_id"]);
-                if ($customer->getCustomAttribute('client_local_access') && $customer->getCustomAttribute('client_local_access')->getValue()) {
-                    $item[$this->getData('name')] = 'Si';
-                } else {
-                    $item[$this->getData('name')] = 'No';
+                if ($customer->getCustomAttribute('photo') && $customer->getCustomAttribute('photo')->getValue()) {
+                    $url = $this->_storeManager->getStore()->getBaseUrl(
+                        \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
+                    ) . $customer->getCustomAttribute('photo')->getValue();
                 }
+
+                $item[$fieldName . '_src'] = $url;
+                $item[$fieldName . '_orig_src'] = $url;
             }
         }
         return $dataSource;

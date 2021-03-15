@@ -3,5 +3,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="adminhtml_customer_save_after">
         <observer name="registry_customer_luxand" instance="OY\Customer\Observer\RegistryCustomerLuxand" />
+        <observer name="registry_customer_address" instance="OY\Customer\Observer\RegistryCustomerAddress" />
     </event>
 </config>

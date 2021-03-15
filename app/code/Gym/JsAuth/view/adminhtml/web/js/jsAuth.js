@@ -51,7 +51,9 @@ define([
                 identifiedPerson: null,
                 info: { msg: 'Bienvenido', type: 'primary' },
                 ci: null,
-                isProcessing: false
+                isProcessing: false,
+                timeToMakeRegister: parseInt(config.timeToMakeRegister, 10) || 3,
+                timeDetecting: 0
             },
             computed: {
                 disableRegisterWithFace: function disableRegisterWithFace() {
@@ -111,18 +113,27 @@ define([
                             resizedDetections = faceApi.resizeResults([detection], displaySize);
                             faceApi.draw.drawDetections(self.canvas, resizedDetections);
                         }
-                        if (detection && detection.score > 0.7) {
+                        if (detection && detection.score > 0.7 && !self.isProcessing) {
                             self.faceDetected = true;
+                            if (self.timeDetecting < self.timeToMakeRegister) {
+                                self.timeDetecting += 0.3;
+                            } else {
+                                self.timeDetecting = self.timeToMakeRegister;
+                                self.registerWithFace();
+                            }
                         } else {
                             self.faceDetected = false;
+                            self.timeDetecting = 0
                         }
                     }, 300);
                 },
                 registerWithFace: function registerWithFace() {
-                    this.identifiedPerson = null;
-                    this.isProcessing = true;
-                    this.faceDetectedImg = this.getImageFromVideo();
-                    this.checkFaceWithLuxand();
+                    if (!this.isProcessing) {
+                        this.identifiedPerson = null;
+                        this.isProcessing = true;
+                        this.faceDetectedImg = this.getImageFromVideo();
+                        this.checkFaceWithLuxand();
+                    }
                 },
                 checkFaceWithLuxand: function checkFaceWithLuxand() {
                     const self = this;
@@ -146,11 +157,13 @@ define([
                             } else {
                                 self.setInfo(false, 'No se pudo identificar.', 'danger');
                                 self.isProcessing = false;
+                                self.timeDetecting = 0;
                             }
                         })
                         .fail(function () {
                             self.setInfo(false, 'No se pudo identificar.', 'danger');
                             self.isProcessing = false;
+                            self.timeDetecting = 0;
                         })
 
 
@@ -172,10 +185,12 @@ define([
                                 self.setInfo(false, response.msg || 'El registro no se pudo completar.', 'danger');
                             }
                             self.isProcessing = false;
+                            self.timeDetecting = 0;
                         })
                         .fail(function () {
                             self.setInfo(false, 'El registro no se pudo completar.', 'danger');
                             self.isProcessing = false;
+                            self.timeDetecting = 0;
                         })
                 },
                 setInfo: function setInfo (showSpinner, msg, style) {

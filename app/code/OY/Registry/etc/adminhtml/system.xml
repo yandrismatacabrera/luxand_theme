@@ -20,6 +20,9 @@
                 <field id="host" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label" type="text">
                     <label>Url Base</label>
                 </field>
+                <field id="postalcode" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label" type="text">
+                    <label>Código Postal</label>
+                </field>
             </group>
         </section>
     </system>

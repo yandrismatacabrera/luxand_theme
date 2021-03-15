@@ -36,11 +36,12 @@ class UpgradeData implements UpgradeDataInterface
         $this->attributeSetFactory = $attributeSetFactory;
     }
 
-    public function upgrade( ModuleDataSetupInterface $setup, ModuleContextInterface $context ) {
+    public function upgrade( ModuleDataSetupInterface $setup, ModuleContextInterface $context )
+    {
 
-        if (version_compare($context->getVersion(), '1.0.1') < 0){
+        if (version_compare($context->getVersion(), '1.0.1') < 0) {
 
-            try{
+            try {
 
                 $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -75,14 +76,13 @@ class UpgradeData implements UpgradeDataInterface
                 $attribute->save();
 
 
-
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 // Do nothing
             }
 
         }
 
-        if (version_compare($context->getVersion(), '1.0.2') < 0){
+        if (version_compare($context->getVersion(), '1.0.2') < 0) {
 
             $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -113,7 +113,7 @@ class UpgradeData implements UpgradeDataInterface
 
         }
 
-        if (version_compare($context->getVersion(), '1.0.3') < 0){
+        if (version_compare($context->getVersion(), '1.0.3') < 0) {
 
             $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -143,7 +143,7 @@ class UpgradeData implements UpgradeDataInterface
             $attribute->save();
 
         }
-        if (version_compare($context->getVersion(), '1.0.4') < 0){
+        if (version_compare($context->getVersion(), '1.0.4') < 0) {
 
             $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -173,7 +173,7 @@ class UpgradeData implements UpgradeDataInterface
             $attribute->save();
 
         }
-        if (version_compare($context->getVersion(), '1.0.5') < 0){
+        if (version_compare($context->getVersion(), '1.0.5') < 0) {
 
             $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -203,7 +203,7 @@ class UpgradeData implements UpgradeDataInterface
             $attribute->save();
 
         }
-        if (version_compare($context->getVersion(), '1.0.6') < 0){
+        if (version_compare($context->getVersion(), '1.0.6') < 0) {
 
             $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -234,7 +234,7 @@ class UpgradeData implements UpgradeDataInterface
 
         }
 
-        if (version_compare($context->getVersion(), '1.0.7') < 0){
+        if (version_compare($context->getVersion(), '1.0.7') < 0) {
 
             $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -266,7 +266,7 @@ class UpgradeData implements UpgradeDataInterface
         }
 
 
-        if (version_compare($context->getVersion(), '1.0.8') < 0){
+        if (version_compare($context->getVersion(), '1.0.8') < 0) {
 
             $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -298,7 +298,7 @@ class UpgradeData implements UpgradeDataInterface
         }
 
 
-	    if (version_compare($context->getVersion(), '1.0.9') < 0){
+        if (version_compare($context->getVersion(), '1.0.9') < 0) {
 
             $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -317,8 +317,8 @@ class UpgradeData implements UpgradeDataInterface
                 'user_defined' => true,
                 'position' => 999,
                 'system' => 0,
-		'is_used_in_grid' => true,
-    		'is_visible_in_grid' => true,
+                'is_used_in_grid' => true,
+                'is_visible_in_grid' => true,
             ]);
 
             $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'phone_number')
@@ -329,7 +329,7 @@ class UpgradeData implements UpgradeDataInterface
                 ]);
             $attribute->save();
 
-	    $customerSetup->addAttribute(Customer::ENTITY, 'ci', [
+            $customerSetup->addAttribute(Customer::ENTITY, 'ci', [
                 'type' => 'text',
                 'label' => 'CI',
                 'required' => false,
@@ -337,8 +337,8 @@ class UpgradeData implements UpgradeDataInterface
                 'user_defined' => true,
                 'position' => 999,
                 'system' => 0,
-		'is_used_in_grid' => true,
-    		'is_visible_in_grid' => true,
+                'is_used_in_grid' => true,
+                'is_visible_in_grid' => true,
             ]);
 
             $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'ci')
@@ -352,7 +352,7 @@ class UpgradeData implements UpgradeDataInterface
 
         if (version_compare($context->getVersion(), '1.0.10') < 0) {
 
-            try{
+            try {
 
                 $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -385,14 +385,14 @@ class UpgradeData implements UpgradeDataInterface
                         'used_in_forms' => ['adminhtml_customer'],
                     ]);
                 $attribute->save();
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 // Do nothing
             }
         }
 
         if (version_compare($context->getVersion(), '1.0.11') < 0) {
 
-            try{
+            try {
 
                 $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
@@ -425,7 +425,182 @@ class UpgradeData implements UpgradeDataInterface
                         'used_in_forms' => ['adminhtml_customer'],
                     ]);
                 $attribute->save();
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
+                // Do nothing
+            }
+        }
+
+
+        if (version_compare($context->getVersion(), '1.0.12') < 0) {
+
+            $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+
+            $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
+            $attributeSetId = $customerEntity->getDefaultAttributeSetId();
+
+            /** @var $attributeSet AttributeSet */
+            $attributeSet = $this->attributeSetFactory->create();
+            $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'address_street_1', [
+                'type' => 'text',
+                'label' => 'Dirección',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => true,
+                'position' => 1050,
+                'system' => 0,
+                'is_used_in_grid' => false,
+                'is_visible_in_grid' => false,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'address_street_1')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'address_street_2', [
+                'type' => 'text',
+                'label' => 'Número',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => true,
+                'position' => 1100,
+                'system' => 0,
+                'is_used_in_grid' => false,
+                'is_visible_in_grid' => false,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'address_street_2')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'address_city', [
+                'type' => 'text',
+                'label' => 'Ciudad',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => true,
+                'position' => 1150,
+                'system' => 0,
+                'is_used_in_grid' => false,
+                'is_visible_in_grid' => false,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'address_city')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'address_postal_code', [
+                'type' => 'text',
+                'label' => 'Código postal',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => true,
+                'position' => 1200,
+                'system' => 0,
+                'is_used_in_grid' => false,
+                'is_visible_in_grid' => false,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'address_postal_code')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'client_is_professor', [
+                'type' => 'int',
+                'label' => 'Profesor',
+                'required' => false,
+                'visible' => true,
+                'user_defined' => false,
+                'input' => 'boolean',
+                'sort_order' => 28,
+                'position' => 28,
+                'system' => 0,
+                'backend' => \Magento\Customer\Model\Attribute\Backend\Data\Boolean::class,
+                'adminhtml_only' => true,
+                'default' => 0,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'client_is_professor')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => ['adminhtml_customer'],
+                ]);
+            $attribute->save();
+        }
+
+        if (version_compare($context->getVersion(), '1.0.13') < 0) {
+            $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+            $customerSetup->removeAttribute(
+                Customer::ENTITY,
+                'client_is_professor'
+            );
+
+            $customerSetup->removeAttribute(
+                Customer::ENTITY,
+                'address_street_2'
+            );
+
+            $customerSetup->removeAttribute(
+                Customer::ENTITY,
+                'address_postal_code'
+            );
+        }
+
+        if (version_compare($context->getVersion(), '1.0.14') < 0) {
+
+            try {
+
+                $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+
+                $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
+                $attributeSetId = $customerEntity->getDefaultAttributeSetId();
+
+                /** @var $attributeSet AttributeSet */
+                $attributeSet = $this->attributeSetFactory->create();
+                $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+
+                $customerSetup->addAttribute(Customer::ENTITY, 'client_local_access', [
+                    'type' => 'int',
+                    'label' => 'Acceso al Local',
+                    'required' => false,
+                    'visible' => true,
+                    'user_defined' => false,
+                    'input' => 'boolean',
+                    'sort_order' => 28,
+                    'position' => 28,
+                    'system' => 0,
+                    'backend' => \Magento\Customer\Model\Attribute\Backend\Data\Boolean::class,
+                    'adminhtml_only' => true,
+                    'default' => 0,
+                ]);
+
+                $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'client_local_access')
+                    ->addData([
+                        'attribute_set_id' => $attributeSetId,
+                        'attribute_group_id' => $attributeGroupId,
+                        'used_in_forms' => ['adminhtml_customer'],
+                    ]);
+                $attribute->save();
+            } catch (\Exception $e) {
                 // Do nothing
             }
         }
