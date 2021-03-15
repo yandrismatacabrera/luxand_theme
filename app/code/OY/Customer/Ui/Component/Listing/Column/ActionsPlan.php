@@ -74,7 +74,7 @@ class ActionsPlan extends Column
                     'plansemestral' => [
                         'href' => $this->urlBuilder->getUrl(
                             'customer/*/addplan',
-                            ['type' => 'Semestral']
+                            ['id' => $item['entity_id'], 'type' => 'Semestral']
                         ),
                         'label' => __('Semestral'),
                         'confirm' => [
