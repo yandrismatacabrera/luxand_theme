@@ -9,6 +9,7 @@
         <column xsi:type="varchar" name="method" nullable="false" comment="Método"/>
         <column xsi:type="boolean" name="valid" nullable="false" comment="Válido"/>
         <column xsi:type="varchar" name="message" nullable="true" comment="Mensaje"/>
+        <column xsi:type="varchar" name="photo" nullable="true" comment="Foto"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>

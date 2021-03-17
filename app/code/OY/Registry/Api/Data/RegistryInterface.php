@@ -12,6 +12,7 @@ interface RegistryInterface
     const METHOD = 'method';
     const VALID = 'valid';
     const MESSAGE = 'message';
+    const PHOTO = 'photo';
 
     /**
      * @return int
@@ -47,6 +48,11 @@ interface RegistryInterface
      * @return string
      */
     public function getMessage();
+
+    /**
+     * @return string
+     */
+    public function getPhoto();
 
     /**
      * @param int $id
@@ -89,4 +95,10 @@ interface RegistryInterface
      * @return $this
      */
     public function setMessage($message);
+
+    /**
+     * @param string $photo
+     * @return $this
+     */
+    public function setPhoto($photo);
 }

@@ -57,6 +57,11 @@ class Registry extends \Magento\Framework\Model\AbstractModel implements Registr
         return $this->getData(self::MESSAGE);
     }
 
+    public function getPhoto()
+    {
+        return $this->getData(self::PHOTO);
+    }
+
 
     public function setId($id)
     {
@@ -94,5 +99,10 @@ class Registry extends \Magento\Framework\Model\AbstractModel implements Registr
     public function setMessage($message)
     {
         return $this->setData(self::MESSAGE, $message);
+    }
+
+    public function setPhoto($photo)
+    {
+        return $this->setData(self::PHOTO, $photo);
     }
 }
