@@ -25,7 +25,8 @@ class Registry extends \Magento\Backend\App\Action
         \OY\Plan\Api\PlanRepositoryInterface $planRepository,
         \Magento\Framework\App\Config\ScopeConfigInterface $config,
         \Webkul\BookingSystem\Model\ResourceModel\Booked\CollectionFactory $bookedCollectionFactory,
-        \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory $customerCollectionFactory
+        \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory $customerCollectionFactory,
+        \Magento\Framework\App\Filesystem\DirectoryList $directoryList
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
@@ -39,6 +40,7 @@ class Registry extends \Magento\Backend\App\Action
         $this->config=$config;
         $this->bookedCollectionFactory=$bookedCollectionFactory;
         $this->customerCollectionFactory=$customerCollectionFactory;
+        $this->directoryList=$directoryList;
     }
 
     public function getCustomerDataByCi($ci)
@@ -150,10 +152,20 @@ class Registry extends \Magento\Backend\App\Action
         $customer = null;
         $customerId = $this->getRequest()->getParam('customer_id');
         $ci = $this->getRequest()->getParam('ci');
+        $image = $this->getRequest()->getParam('image');
+
+        $registryRecord = $this->registryFactory->create();
+        $registryRecord->setDateTime(date("Y-m-d H:i:s"));
 
         if (!$customerId && !$ci) {
             $data['success'] = false;
             $data['msg'] = 'Se debe indicar ci o identificador de cliente.';
+            if ($image) {
+                $registryRecord->setPhoto($this->savePhoto($image));
+            }
+            $registryRecord->setMessage($data['msg']);
+            $registryRecord->setMethod(RegistryRepositoryInterface::METHOD_FACE);
+            $this->registryRepository->save($registryRecord);
             return $result->setData($data);
         }
 
@@ -170,10 +182,7 @@ class Registry extends \Magento\Backend\App\Action
         $data['plan'] = $this->getPlanDataByCustomer($customer);
         $data['book'] = $this->getBookDataByCustomer($customer);
 
-        $registryRecord = $this->registryFactory->create();
-        $registryRecord->setDateTime(date("Y-m-d H:i:s"));
         $registryRecord->setMethod($method);
-
         if (isset($data['customer']['success']) && $data['customer']['success'] &&
            isset($data['plan']['success']) && $data['plan']['success'] &&
            isset($data['book']['success']) && $data['book']['success']) {
@@ -240,5 +249,19 @@ class Registry extends \Magento\Backend\App\Action
     private function isEnableReserve()
     {
         return $this->getConfig("reserve_general/config_general/enable");
+    }
+
+    private function savePhoto($image) {
+        $mediaDir = $this->directoryList->getPath('media');
+
+        if (!is_dir($mediaDir.'/customer/luxand/unidentified')) {
+            mkdir($mediaDir.'/customer/luxand/unidentified', 0777, true);
+        }
+
+        $photoId = rand(100000000, 999999999);
+        $imgName='img'.$photoId.'.png';
+
+        file_put_contents($mediaDir.'/customer/luxand/unidentified/'.$imgName, base64_decode($image));
+        return '/customer/luxand/unidentified/'.$imgName;
     }
 }
