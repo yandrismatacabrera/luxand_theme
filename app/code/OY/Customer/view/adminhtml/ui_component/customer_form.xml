@@ -56,7 +56,6 @@
                 </validation>
             </settings>
         </field>
-
         <field name="prefix" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -68,52 +67,6 @@
                 <visible>false</visible>
             </settings>
         </field>
-        <container name="container_group" component="Magento_Ui/js/form/components/group" sortOrder="20">
-            <argument name="data" xsi:type="array">
-                <item name="type" xsi:type="string">group</item>
-                <item name="config" xsi:type="array">
-                    <item name="dataScope" xsi:type="boolean">false</item>
-                    <item name="validateWholeGroup" xsi:type="boolean">true</item>
-                    <item name="visible" xsi:type="boolean">false</item>
-                </item>
-            </argument>
-            <field name="group_id" formElement="select">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="fieldGroup" xsi:type="string">group_id</item>
-                        <item name="source" xsi:type="string">customer</item>
-                    </item>
-                </argument>
-                <settings>
-                    <required>true</required>
-                    <dataType>number</dataType>
-                </settings>
-            </field>
-            <field name="disable_auto_group_change" formElement="checkbox" class="Magento\Customer\Ui\Component\Form\Field\DisableAutoGroupChange">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="fieldGroup" xsi:type="string">group_id</item>
-                        <item name="source" xsi:type="string">customer</item>
-                        <item name="default" xsi:type="number">0</item>
-                    </item>
-                </argument>
-                <settings>
-                    <dataType>boolean</dataType>
-                </settings>
-                <formElements>
-                    <checkbox>
-                        <settings>
-                            <description translate="true">Disable Automatic Group Change Based on VAT ID</description>
-                            <valueMap>
-                                <map name="false" xsi:type="string">0</map>
-                                <map name="true" xsi:type="string">1</map>
-                            </valueMap>
-                            <prefer>checkbox</prefer>
-                        </settings>
-                    </checkbox>
-                </formElements>
-            </field>
-        </container>
         <field name="middlename" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
