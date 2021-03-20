@@ -604,5 +604,55 @@ class UpgradeData implements UpgradeDataInterface
                 // Do nothing
             }
         }
+
+        if (version_compare($context->getVersion(), '1.0.15') < 0) {
+
+            $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+
+            $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
+            $attributeSetId = $customerEntity->getDefaultAttributeSetId();
+
+            /** @var $attributeSet AttributeSet */
+            $attributeSet = $this->attributeSetFactory->create();
+            $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'luxand_photo_id', [
+                'type' => 'text',
+                'label' => 'Luxand Photo ID',
+                'required' => false,
+                'visible' => false,
+                'user_defined' => true,
+                'position' => 30,
+                'system' => 0,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'luxand_photo_id')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => [],
+                ]);
+            $attribute->save();
+
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'previous_photo', [
+                'type' => 'text',
+                'label' => 'Foto anterior',
+                'required' => false,
+                'visible' => false,
+                'user_defined' => false,
+                'position' => 999,
+                'system' => 0,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'previous_photo')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => [],
+                ]);
+            $attribute->save();
+
+        }
     }
 }
