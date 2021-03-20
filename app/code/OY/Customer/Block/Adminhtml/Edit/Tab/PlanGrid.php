@@ -83,7 +83,7 @@ class PlanGrid extends \Magento\Backend\Block\Widget\Grid\Extended
                     ) . '\')',
                 'class'   => 'task'
             ))->toHtml();
-        return $html.$addButton;
+        return $html/*.$addButton*/;
     }
 
     protected function _addColumnFilterToCollection($column)

@@ -42,51 +42,20 @@ class OrderSaveAfter implements ObserverInterface
                                 $product = $this->productRepository->getById($orderItem->getProductId());
                                 $model = $this->planFactory->create();
 
-                                if ($product->getData('planning_type')) {
+                                if ($product->getData('code_interval')) {
                                     try {
 
-                                        //$splitDate = explode('/',$opt['date']);
-                                        $dateFormatNew = $opt['date'];//$splitDate[1].'/'.$splitDate[0].'/'.$splitDate[2];
+                                        $strFrom =$this->dateFilter->filter($opt['date']);
 
-                                        $strTo =$this->dateFilter->filter($dateFormatNew);
-
-                                        $typePlan = $product->getData('planning_type');
-
-                                        $count = $orderItem->getQtyOrdered();
-
-                                        $plan = $typePlan;
-
-                                        switch ($typePlan) {
-                                            case 'Anual':
-                                                //$dateTo = date("+".$data['plan_year']." years", $strTo);
-                                                $dateTo=date("Y-m-d H:i:s", strtotime("+" . intval($count) . " years", strtotime($strTo)));
-                                                break;
-                                            case 'Mensual':
-                                                //$dateTo = date("+".$data['plan_month']." months", $strTo);
-                                                $dateTo=date("Y-m-d H:i:s", strtotime("+" . intval($count) . " months", strtotime($strTo)));
-                                                break;
-                                            case 'Trimestral':
-                                                //$dateTo = date("+".$data['plan_month']." months", $strTo);
-                                                $count*=3;
-                                                $dateTo=date("Y-m-d H:i:s", strtotime("+" . intval($count) . " months", strtotime($strTo)));
-                                                break;
-                                            case 'Semestral':
-                                                //$dateTo = date("+".$data['plan_month']." months", $strTo);
-                                                $count*=6;
-                                                $dateTo=date("Y-m-d H:i:s", strtotime("+" . intval($count) . " months", strtotime($strTo)));
-                                                break;
-                                            default:
-                                                //$dateTo = date("+".$count." weeks", $strTo);
-                                                $weeks = intval($count)*7;
-                                                $dateTo=date("Y-m-d H:i:s", strtotime("+" . $weeks . " days", strtotime($strTo)));
-                                        }
+                                        $strTo = new \DateTime($strFrom);
+                                        $strTo->add(new \DateInterval($product->getData('code_interval')));
 
                                         $model->setData('customer_id', $customerId);
-                                        $model->setData('plan', $plan);
+                                        $model->setData('plan', $product->getName());
 
-                                        $model->setData('from', date("Y-m-d H:i:s", strtotime("+3 hours", strtotime($strTo))));
+                                        $model->setData('from', date("Y-m-d H:i:s", strtotime("+3 hours", strtotime($strFrom))));
 
-                                        $model->setData('to', $dateTo);
+                                        $model->setData('to', $strTo->format("Y-m-d H:i:s"));
 
                                         $model->setData('access_number', 0);
                                         $model->setData('access_enabled', 0);

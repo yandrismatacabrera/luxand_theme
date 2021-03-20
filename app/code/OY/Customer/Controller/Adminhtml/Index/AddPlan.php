@@ -86,7 +86,7 @@ class AddPlan extends \Magento\Customer\Controller\Adminhtml\Index implements Ht
     {
         $resultRedirect = $this->resultRedirectFactory->create();
         $collection = $this->collectionProductFactory->create();
-        $collection->addAttributeToFilter('planning_type', $this->_request->getParam('type'));
+        $collection->addFieldToFilter('entity_id', $this->_request->getParam('id_product'));
 
         $customer= $this->_customerRepository->getById((int)$this->_request->getParam('id'));
 
