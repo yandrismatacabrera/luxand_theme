@@ -45,7 +45,8 @@ class AddPlan extends \Magento\Customer\Controller\Adminhtml\Index implements Ht
         \Magento\Quote\Model\QuoteManagement $quoteManagement,
         \Magento\Sales\Model\Service\OrderService $orderService,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionProductFactory,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
     ) {
         parent::__construct(
             $context,
@@ -80,6 +81,7 @@ class AddPlan extends \Magento\Customer\Controller\Adminhtml\Index implements Ht
         $this->orderService = $orderService;
         $this->collectionProductFactory=$collectionProductFactory;
         $this->productRepository = $productRepository;
+        $this->groupRepository=$groupRepository;
     }
 
     public function execute()
@@ -114,13 +116,11 @@ class AddPlan extends \Magento\Customer\Controller\Adminhtml\Index implements Ht
             $product = $collection->getFirstItem();
             $productRepo = $this->productRepository->getById($collection->getFirstItem()->getId());
 
-            foreach ($productRepo->getOptions() as $opt)
-            {
-                if($opt->getType() == 'date'){
-                    $options[$opt->getOptionId()] = array('date'=>date("d/m/Y"));
+            foreach ($productRepo->getOptions() as $opt) {
+                if ($opt->getType() == 'date') {
+                    $options[$opt->getOptionId()] = ['date'=>date("d/m/Y")];
                 }
             }
-
         } else {
             $this->messageManager->addErrorMessage('No existe plan ' . $this->_request->getParam('type'));
             $resultRedirect->setPath('customer/index/index');
@@ -131,9 +131,18 @@ class AddPlan extends \Magento\Customer\Controller\Adminhtml\Index implements Ht
         $quote=$this->quote->create();
         $quote->setStore($store);
 
+        $productAllTierPrices = $productRepo->getData('tier_price');
+
+        $price = $productRepo->getPrice();
+        foreach ($productAllTierPrices as $tierPrices) {
+            if ($customer->getGroupId() == $tierPrices['cust_group']) {
+                $price = $tierPrices['price'];
+            }
+        }
+
         $quote->setCurrency();
         $quote->assignCustomer($customer);
-        $product->setPrice($productRepo->getPrice());
+        $product->setPrice($price);
 
         $obj = $this->_objectFactory->create();
         $obj->setData('options', $options);
