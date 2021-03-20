@@ -24,10 +24,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getProductPlan($id) {
         $product = $this->productRepository->getById($id);
-        if ($product->getData('planning_type')) {
-            return $product->getData('planning_type');
-        } else {
-            return null;
-        }
+        return $product->getData('is_plan');
     }
 }
