@@ -56,13 +56,14 @@ define([
                 timeDetecting: 0,
                 inputSize: 224,
                 errorDetecting: 0.7,
+                isActiveDetection: 'Si'
             },
             computed: {
                 disableRegisterWithFace: function disableRegisterWithFace() {
                     return this.isProcessing || !this.faceDetected;
                 },
                 showUserData: function showUserData() {
-                    return this.identifiedPerson;
+                    return this.identifiedPerson && this.identifiedPerson.id;
                 }
             },
             methods: {
@@ -79,7 +80,7 @@ define([
                             },
                             err => console.error(err)
                         );
-                    } else if (navigator.mediaDevices) {
+                    } else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
                             self.video.srcObject = stream;
                             self.video.addEventListener('playing', () => {
@@ -116,7 +117,9 @@ define([
                             resizedDetections = faceApi.resizeResults([detection], displaySize);
                             faceApi.draw.drawDetections(self.canvas, resizedDetections);
                             if (self.timeDetecting < self.timeToMakeRegister) {
-                                self.timeDetecting += 0.3;
+                                if (self.isActiveDetection === 'Si') {
+                                    self.timeDetecting += 0.3;
+                                }
                             } else {
                                 self.timeDetecting = self.timeToMakeRegister;
                                 self.registerWithFace();
