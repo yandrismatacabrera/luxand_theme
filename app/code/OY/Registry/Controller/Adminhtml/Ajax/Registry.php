@@ -156,13 +156,13 @@ class Registry extends \Magento\Backend\App\Action
 
         $registryRecord = $this->registryFactory->create();
         $registryRecord->setDateTime(date("Y-m-d H:i:s"));
+        if ($image) {
+            $registryRecord->setPhoto($this->savePhoto($image));
+        }
 
         if (!$customerId && !$ci) {
             $data['success'] = false;
-            $data['msg'] = 'Se debe indicar ci o identificador de cliente.';
-            if ($image) {
-                $registryRecord->setPhoto($this->savePhoto($image));
-            }
+            $data['msg'] = 'No se pudo identificar o no se tiene foto del cliente.';
             $registryRecord->setMessage($data['msg']);
             $registryRecord->setMethod(RegistryRepositoryInterface::METHOD_FACE);
             $this->registryRepository->save($registryRecord);

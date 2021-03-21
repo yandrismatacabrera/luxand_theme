@@ -654,5 +654,35 @@ class UpgradeData implements UpgradeDataInterface
             $attribute->save();
 
         }
+
+        if (version_compare($context->getVersion(), '1.0.16') < 0) {
+
+            $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+
+            $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
+            $attributeSetId = $customerEntity->getDefaultAttributeSetId();
+
+            /** @var $attributeSet AttributeSet */
+            $attributeSet = $this->attributeSetFactory->create();
+            $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+
+            $customerSetup->addAttribute(Customer::ENTITY, 'luxand_photo_id', [
+                'type' => 'text',
+                'label' => 'Luxand Photo ID',
+                'required' => false,
+                'visible' => false,
+                'user_defined' => false,
+                'position' => 30,
+                'system' => 0,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'luxand_photo_id')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId,
+                    'used_in_forms' => [],
+                ]);
+            $attribute->save();
+        }
     }
 }
