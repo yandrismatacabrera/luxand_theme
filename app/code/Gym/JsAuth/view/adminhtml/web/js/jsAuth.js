@@ -53,7 +53,9 @@ define([
                 ci: null,
                 isProcessing: false,
                 timeToMakeRegister: parseInt(config.timeToMakeRegister, 10) || 3,
-                timeDetecting: 0
+                timeDetecting: 0,
+                inputSize: 224,
+                errorDetecting: 0.7,
             },
             computed: {
                 disableRegisterWithFace: function disableRegisterWithFace() {
@@ -96,25 +98,23 @@ define([
                     var detection = null;
                     var resizedDetections;
                     var self = this;
-                    const detectionsOptions = new faceApi.TinyFaceDetectorOptions({ inputSize: 224 })
+                    const detectionsOptions = new faceApi.TinyFaceDetectorOptions({ inputSize: parseInt(this.inputSize, 10) })
 
                     this.faceDetected = null;
                     this.identifiedPerson = null;
                     this.canvas = faceApi.createCanvasFromMedia(this.video);
                     this.video.parentElement.append(this.canvas)
 
-                    faceApi.matchDimensions(this.canvas, displaySize);
+                     faceApi.matchDimensions(this.canvas, displaySize);
 
                     setInterval(async () => {
                         detection = await faceApi.detectSingleFace(self.video, detectionsOptions);
                         self.canvas.getContext('2d').clearRect(0, 0, self.canvas.width, self.canvas.height);
-
-                        if (detection && detection.score > 0.7) {
+                        
+                        if (detection && detection.score > (parseFloat(this.errorDetecting) || 0.7) && !self.isProcessing) {
+                            self.faceDetected = true;
                             resizedDetections = faceApi.resizeResults([detection], displaySize);
                             faceApi.draw.drawDetections(self.canvas, resizedDetections);
-                        }
-                        if (detection && detection.score > 0.7 && !self.isProcessing) {
-                            self.faceDetected = true;
                             if (self.timeDetecting < self.timeToMakeRegister) {
                                 self.timeDetecting += 0.3;
                             } else {
@@ -150,17 +150,15 @@ define([
                     }
                     self.setInfo(true, 'Procesando...', 'warning');
                     return jQuery.ajax(settings)
-                        .done(function(response) {
-                            self.identifiedPerson = self.handleResponseApi(response) || { id: null };
-                            self.accessRegister();
-                        })
-                        .fail(function () {
-                            self.setInfo(false, 'No se pudo identificar.', 'danger');
-                            self.isProcessing = false;
-                            self.timeDetecting = 0;
-                        })
-
-
+                    .done(function(response) {
+                        self.identifiedPerson = self.handleResponseApi(response) || { id: null };
+                        self.accessRegister();
+                    })
+                    .fail(function () {
+                        self.setInfo(false, 'No se pudo identificar.', 'error');
+                        self.isProcessing = false;
+                        self.timeDetecting = 0;
+                    })
                 },
                 accessRegister: function accessRegister() {
                     const settings = {
@@ -179,13 +177,13 @@ define([
                             if (response.success) {
                                 self.setInfo(false, 'El registro se completo satisfactoriamente.', 'success');
                             } else {
-                                self.setInfo(false, response.msg || 'El registro no se pudo completar.', 'danger');
+                                self.setInfo(false, response.msg || 'El registro no se pudo completar.', 'error');
                             }
                             self.isProcessing = false;
                             self.timeDetecting = 0;
                         })
                         .fail(function () {
-                            self.setInfo(false, 'El registro no se pudo completar.', 'danger');
+                            self.setInfo(false, 'El registro no se pudo completar.', 'error');
                             self.isProcessing = false;
                             self.timeDetecting = 0;
                         })
@@ -221,7 +219,7 @@ define([
                     const self = this;
                     self.isProcessing = true;
                     if (!self.isValidCi()) {
-                        self.setInfo(false, 'Ingrerse una CI correcta.', 'danger');
+                        self.setInfo(false, 'Ingrerse una CI correcta.', 'error');
                         return null;
                     } else {
                         self.setInfo(true, 'Procesando...', 'warning');
@@ -230,7 +228,7 @@ define([
                                 if (response && response.success) {
                                     self.setInfo(false, 'El registro se completo satisfactoriamente.', 'success');
                                 } else {
-                                    self.setInfo(false, response.msg || 'El registro no se pudo completar.', 'danger');
+                                    self.setInfo(false, response.msg || 'El registro no se pudo completar.', 'error');
                                 }
                                 if (response.customer && response.customer.success) {
                                     self.identifiedPerson = self.formatUserResponse(false, response.customer);
@@ -238,7 +236,7 @@ define([
                                 self.isProcessing = false;
                             })
                             .fail(function () {
-                                self.setInfo(false, 'El registro no se pudo completar.', 'danger');
+                                self.setInfo(false, 'El registro no se pudo completar.', 'error');
                                 self.isProcessing = false;
                             })
                     }
@@ -293,6 +291,9 @@ define([
                         console.log(e);
                     }
                     return false;
+                },
+                toggleConfigForm: function toggleConfigForm() {
+                    jQuery('#form-configuracion').slideToggle()
                 }
             }
         });

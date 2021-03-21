@@ -6,82 +6,124 @@
  */
 ?>
 
-<div id="appvue">
-    <div class="row">
-        <div class="col-12">
-            <div :class="'alert alert-' + info.type" role="alert">
-                <div v-if="info.showSpinner" class="spinner-grow" role="status">
-                </div> {{ info.msg }}
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="admin__field">
-                        <div class="admin__field-label">
-                            <label for="ci">
-                                <span>CI</span>
-                            </label>
+<main class="page-content" id="appvue">
+    <div class="page-columns">
+        <div class="admin__old">
+            <div class="main-col">
+                <!-- ROW para el mensage-->    
+                <div class="row">
+                    <div id="messages">
+                        <div class="messages">
+                            <div :class="'message message-' + info.type + ' ' + info.type">
+                                <div :data-ui-id="'messages-message-' + info.type">{{ info.msg }}</div>
+                            </div>
                         </div>
-                        <div class="admin__field-control">
-                            <input class="admin__control-text" type="number" name="ci" id="ci" maxlength="7" v-model="ci">
+                     </div>
+                </div>
+                <div class="row dashboard-container">
+                    <div class="col-m-8 col-l-8 dashboard-secondary">
+                        <!-- video progress bar-->
+                        <progress :value="timeDetecting" :max="timeToMakeRegister"> </progress>
+                    </div>
+                </div>
+                <!-- ROW para el contenido-->
+                <div class="row dashboard-container">
+                    <!-- COL para el video-->
+                    <div class="col-m-8 col-l-8 dashboard-secondary">
+                        <!-- ROW para el video-->
+                        <div class="row">
+                            <div class="col-m-12 col-l-12 display-flex">
+                                <!-- video aki-->
+                                <video id="main-video" autoplay muted></video>
+                            </div>
+                            <div class="col-m-12 col-l-12 form-config">
+                                <div>
+                                    <a @click="toggleConfigForm">Configurar (R:{{ inputSize }} | T: {{ timeToMakeRegister }} | P: {{ errorDetecting }})</a>
+                                    <div style="display: none;" id="form-configuracion">
+                                        <div class="entry-edit form-inline">
+                                            <div class="fieldset-wrapper">
+                                                <div class="admin__fieldset-wrapper-content">
+                                                    <fieldset class="admin__fieldset">
+                                                        <div class="admin__field _required">
+                                                            <div class="admin__field-label">
+                                                                <label for="IDFIELD">
+                                                                    <span>Resoluci&oacute;n</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="admin__field-control">
+                                                                <select v-model="inputSize" name="imagen-resolution" class="admin__control-select">
+                                                                    <option value="128">128</option>
+                                                                    <option value="160">160</option>
+                                                                    <option value="224" selected>224</option>
+                                                                    <option value="416">416</option>
+                                                                    <option value="512">512</option>
+                                                                    <option value="608">608</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="admin__field _required">
+                                                            <div class="admin__field-label">
+                                                                <label for="IDFIELD">
+                                                                    <span>Tiempo de espera</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="admin__field-control">
+                                                                <input v-model="timeToMakeRegister" class="admin__control-text" type="number" name="tiempo-espera" maxlength="2">
+                                                            </div>
+                                                        </div>
+                                                        <div class="admin__field _required">
+                                                            <div class="admin__field-label">
+                                                                <label for="IDFIELD">
+                                                                    <span>Precisi&oacute;n de detecti&oacute;n</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="admin__field-control">
+                                                                <input v-model="errorDetecting" class="admin__control-text" type="number" name="error-detecting" maxlength="2">
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- COL para la respuesta-->
+                    <div class="col-m-4 col-l-4">
+                        <div class="row">
+                            <div class="col-m-12 col-l-12">
+                                <!-- respuesta-->
+                                <div class="user-identification" v-if="showUserData">
+                                    <div class="image-container">
+                                        <img class="img-top" v-bind:src="identifiedPerson.image">
+                                    </div>
+                                    <div class="data">
+                                        <ul class="">
+                                            <li class="">
+                                                <span class="">{{ identifiedPerson.name }}</span>
+                                            </li>
+                                            <li class="">
+                                                <span class="">{{ identifiedPerson.email }}</span>
+                                            </li>
+                                            <li class="">
+                                                <span class="">{{ identifiedPerson.ci }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="actions">
+                                        <button :disabled="isProcessing" type="button" v-on:click="resetValues" class="btn-ocultar">Ocultar</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <button :disabled="isProcessing || !ci" type="button" class="btn btn-success btn-lg btn-block"
-                        v-on:click="registerWithCi">Registrar con CI</button>
-                </div>
             </div>
         </div>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-8">
-            <div class="card">
-                <div class="card-header"> 
-                <div class="progress" style="height: 30px;">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                    role="progressbar"
-                    v-bind:style="{ width: ((timeDetecting/timeToMakeRegister)*100)+'%' }"
-                    :aria-valuenow="timeDetecting" 
-                    aria-valuemin="0" 
-                    aria-valuemax="timeToMakeRegister">
-                    </div>
-                </div>
-                </div>
-                <div class="card-body display-flex">
-                    <video id="main-video" autoplay muted></video>
-                </div>
-            </div>
-        </div>
-        <div class="col-4" v-if="showUserData">
-            <div class="card card-user-info" >
-                <img class="card-img-top" v-bind:src="identifiedPerson.image"
-                    alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title card-user-name">{{ identifiedPerson.name }}</h5>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <span>{{ identifiedPerson.email }}</span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>CI:</strong>
-                            <span>{{ identifiedPerson.ci }}</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <button :disabled="isProcessing" type="button" v-on:click="resetValues"
-                        class="btn btn-danger btn-lg btn-block">Ocultar</button>
-                </div>
-
-            </div>
-        </div>
-    </div>   
-</div>
+</main>
 <script type="text/x-magento-init">
     {
         "*": {
