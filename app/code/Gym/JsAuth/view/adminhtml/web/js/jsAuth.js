@@ -34,14 +34,16 @@ define([
                 const self = this;
                 this.video = document.getElementById('main-video');
                 this.isProcessing = true;
-                return Promise.all([
-                    faceApi.nets.tinyFaceDetector.loadFromUri(self.config.assetBaseUrl + '/models'),
-                    faceApi.nets.ssdMobilenetv1.loadFromUri(self.config.assetBaseUrl + '/models'),
-                    faceApi.nets.faceRecognitionNet.loadFromUri(self.config.assetBaseUrl + '/models')
-                ]).then(function () {
-                    self.initVideo();
-                    self.isProcessing = false;
-                });
+                if (this.video) {
+                    Promise.all([
+                        faceApi.nets.tinyFaceDetector.loadFromUri(self.config.assetBaseUrl + '/models'),
+                        faceApi.nets.ssdMobilenetv1.loadFromUri(self.config.assetBaseUrl + '/models'),
+                        faceApi.nets.faceRecognitionNet.loadFromUri(self.config.assetBaseUrl + '/models')
+                    ]).then(function () {
+                        self.initVideo();
+                        self.isProcessing = false;
+                    });
+                }
             },
             data: {
                 config: config,

@@ -5,7 +5,7 @@
     </head>
     <referenceBlock name="page.title">
         <action method="setPageTitle">
-            <argument name="title" xsi:type="string">Control de acceso al local</argument>
+            <argument name="title" xsi:type="string">Control de Acceso con CI</argument>
         </action>
     </referenceBlock>
     <body>
