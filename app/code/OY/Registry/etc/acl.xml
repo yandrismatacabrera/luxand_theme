@@ -11,7 +11,8 @@
             <resource id="Magento_Backend::admin">
                 <resource id="OY_Registry::apiregistry" title="Registro" translate="title" sortOrder="110">
                     <resource id="OY_Registry::jsauth" title="Nuevo Registro" sortOrder="5" />
-                    <resource id="OY_Registry::manage" title="Todos los Registros" sortOrder="10" />
+                    <resource id="OY_Registry::jsauthci" title="Nuevo Registro con Cédula" sortOrder="10" />
+                    <resource id="OY_Registry::manage" title="Todos los Registros" sortOrder="15" />
                 </resource>
             </resource>
         </resources>

@@ -9,6 +9,7 @@
     <menu>
         <add id="OY_Registry::registry" title="Registro" module="OY_Registry" sortOrder="31" resource="OY_Registry::apiregistry"/>
         <add id="Gym_JsAuth::auth" title="Nuevo Registro" translate="title" module="Gym_JsAuth" parent="OY_Registry::registry" sortOrder="10" dependsOnModule="Gym_JsAuth" action="jsauth/auth" resource="OY_Registry::jsauth" target="_blank"/>
+        <add id="Gym_JsAuth::authci" title="Nuevo Registro con Cédula" translate="title" module="Gym_JsAuth" parent="OY_Registry::registry" sortOrder="10" dependsOnModule="Gym_JsAuth" action="jsauth/authci" resource="OY_Registry::jsauthci" target="_blank"/>
         <add id="OY_Registry::registry_manage" title="Todos los Registros" translate="title" module="OY_Registry" sortOrder="10" parent="OY_Registry::registry" action="registry/registry" resource="OY_Registry::manage"/>
     </menu>
 </config>
