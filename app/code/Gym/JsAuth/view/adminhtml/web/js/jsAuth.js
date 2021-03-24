@@ -54,10 +54,10 @@ define([
                 info: { msg: 'Bienvenido', type: 'primary' },
                 ci: null,
                 isProcessing: false,
-                timeToMakeRegister: parseInt(config.timeToMakeRegister, 10) || 3,
+                timeToMakeRegister: 2,
                 timeDetecting: 0,
-                inputSize: 224,
-                errorDetecting: 0.7,
+                inputSize: 128,
+                errorDetecting: 0.6,
                 isActiveDetection: 'Si'
             },
             computed: {
