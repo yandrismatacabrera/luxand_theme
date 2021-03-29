@@ -105,13 +105,6 @@
                 </item>
             </argument>
         </column>
-        <column name="group_id">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="componentDisabled" xsi:type="boolean">true</item>
-                </item>
-            </argument>
-        </column>
         <column name="created_in">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

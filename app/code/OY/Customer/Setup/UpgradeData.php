@@ -684,5 +684,48 @@ class UpgradeData implements UpgradeDataInterface
                 ]);
             $attribute->save();
         }
+
+
+        if (version_compare($context->getVersion(), '1.0.17') < 0) {
+
+            try {
+
+                $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+
+                $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
+                $attributeSetId = $customerEntity->getDefaultAttributeSetId();
+
+                /** @var $attributeSet AttributeSet */
+                $attributeSet = $this->attributeSetFactory->create();
+                $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+
+                $customerSetup->addAttribute(Customer::ENTITY, 'prof_entity_id', [
+                    'type' => 'int',
+                    'label' => 'Profesor',
+                    'input' => 'select',
+                    'source' => \OY\Customer\Model\Entity\Attribute\Source\Professor::class,
+                    'required' => false,
+                    'visible' => true,
+                    'user_defined' => false,
+                    'sort_order' => 40,
+                    'position' => 40,
+                    'system' => 0,
+                    'adminhtml_only' => true,
+                    'is_used_in_grid' => true,
+                    'is_visible_in_grid' => true,
+                    'is_filterable_in_grid' => true
+                ]);
+
+                $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'prof_entity_id')
+                    ->addData([
+                        'attribute_set_id' => $attributeSetId,
+                        'attribute_group_id' => $attributeGroupId,
+                        'used_in_forms' => ['adminhtml_customer'],
+                    ]);
+                $attribute->save();
+            } catch (\Exception $e) {
+                // Do nothing
+            }
+        }
     }
 }
