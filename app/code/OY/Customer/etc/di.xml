@@ -4,4 +4,7 @@
     <type name="Magento\Customer\Model\ResourceModel\CustomerRepository">
         <plugin name="customer_delete_action" type="OY\Customer\Plugin\DeleteCustomer" />
     </type>
+    <type name="Magento\Customer\Model\ResourceModel\Grid\Collection">
+        <plugin name="customer_delete_action" type="OY\Customer\Plugin\CollectionFilter" />
+    </type>
 </config>

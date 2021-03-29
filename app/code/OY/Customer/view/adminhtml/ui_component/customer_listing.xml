@@ -7,6 +7,39 @@
 -->
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array"/>
+                    </item>
+                    <item name="observers" xsi:type="array">
+                        <item name="filters" xsi:type="object">Magento\Catalog\Ui\Component\Listing\Filters</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <statefull>
+                    <property name="applied" xsi:type="boolean">false</property>
+                </statefull>
+            </settings>
+            <filterSelect name="plan" provider="${ $.parentName }">
+                <settings>
+                    <options class="OY\Customer\Model\Attribute\Source\StatusPlan"/>
+                    <caption translate="true">Select...</caption>
+                    <label translate="true">Plan</label>
+                    <dataScope>plan</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
     <columns name="customer_columns" class="Magento\Customer\Ui\Component\Listing\Columns">
         <column name="logo" class="OY\Customer\Ui\Component\Listing\Column\Photo">
             <argument name="data" xsi:type="array">
@@ -44,8 +77,8 @@
         <column name="access_number" class="OY\Customer\Ui\Component\Listing\Column\AccessNumber">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="boolean">false</item>
-                    <item name="label" translate="true" xsi:type="string">Planes</item>
+                    <item name="filter" xsi:type="boolean">true</item>
+                    <item name="label" translate="true" xsi:type="string">Plan</item>
                     <item name="sortable" xsi:type="boolean">false</item>
                 </item>
             </argument>
@@ -135,7 +168,7 @@
                 </item>
             </argument>
         </column>
-        <actionsColumn name="Plan" class="OY\Customer\Ui\Component\Listing\Column\ActionsPlan">
+        <actionsColumn name="plan" class="OY\Customer\Ui\Component\Listing\Column\ActionsPlan">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="label" translate="true" xsi:type="string">Adicionar Plan</item>
