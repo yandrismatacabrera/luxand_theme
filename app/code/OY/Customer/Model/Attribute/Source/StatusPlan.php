@@ -12,7 +12,7 @@ class StatusPlan extends AbstractSource implements SourceInterface, OptionSource
     {
         $result = [
             ['value' => 'activo', 'label' => 'Activo'],
-            ['value' => 'inactivo', 'label' => 'Inactivo'],
+            ['value' => 'inactivo', 'label' => 'Vencido'],
             ['value' => 'sin_plan', 'label' => 'Sin Plan']
         ];
 

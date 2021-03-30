@@ -18,12 +18,14 @@ class AccessNumber extends Column
         CustomerRepositoryInterface $customerRepository,
         SearchCriteriaBuilder $criteria,
         \OY\Plan\Model\ResourceModel\Plan\CollectionFactory $collectionPlanFactory,
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone,
         array $components = [],
         array $data = []
     ) {
         $this->_customerRepository = $customerRepository;
         $this->_searchCriteria  = $criteria;
         $this->collectionPlanFactory = $collectionPlanFactory;
+        $this->timezone=$timezone;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
@@ -51,11 +53,31 @@ class AccessNumber extends Column
             $to = '';
             foreach ($collection as $plan) {
                 if ($this->statusPlan($plan->getData('from'), $plan->getData('to'))) {
-                    return 'Activo hasta ' . $plan->getData('to');
+
+                    $strTo = new \DateTime($plan->getData('to'));
+                    $strTo->add(new \DateInterval('P1D'));
+
+                    $to = $this->timezone->formatDateTime(
+                        $strTo->format("Y-m-d"),
+                        \IntlDateFormatter::SHORT,
+                        \IntlDateFormatter::NONE,
+                        null,
+                        null,
+                        'yyyy-MM-dd'
+                    );
+                    return 'Activo hasta ' . $to;
                 }
-                $to = $plan->getData('to');
+                $to = $this->timezone->formatDateTime(
+                    $plan->getData('to'),
+                    \IntlDateFormatter::SHORT,
+                    \IntlDateFormatter::NONE,
+                    null,
+                    null,
+                    'yyyy-MM-dd'
+                );
+                //$to = $plan->getData('to');
             }
-            return 'Inactivo desde ' . $to;
+            return 'Vencido desde ' . $to;
         } else {
             return 'Sin Plan';
         }
