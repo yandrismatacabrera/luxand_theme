@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="OY\GymBooking\Api\Data\GymClassInterface" type="OY\GymBooking\Model\GymClass"/>
+    <preference for="OY\GymBooking\Api\Data\GymClassDateInterface" type="OY\GymBooking\Model\GymClassDate"/>
+    <preference for="OY\GymBooking\Api\Data\GymClassBookingInterface" type="OY\GymBooking\Model\GymClassBooking"/>
+    <preference for="OY\GymBooking\Api\GymClassRepositoryInterface" type="OY\GymBooking\Model\Repository\GymClassRepository"/>
+    <preference for="OY\GymBooking\Api\GymClassDateRepositoryInterface" type="OY\GymBooking\Model\Repository\GymClassDateRepository"/>
+    <preference for="OY\GymBooking\Api\GymClassBookingRepositoryInterface" type="OY\GymBooking\Model\Repository\GymClassBookingRepository"/>
+</config>
+
