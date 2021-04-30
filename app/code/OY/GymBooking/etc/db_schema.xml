@@ -13,7 +13,7 @@
     </table>
     <table name="gym_class" resource="default" engine="innodb" comment="Gym Class Table">
         <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
-        <column xsi:type="int" name="product_id" nullable="false" comment="Product ID"/>
+        <column xsi:type="varchar" name="profesor_name" nullable="false" comment="Name Profesor"/>
         <column xsi:type="int" name="profesor_id" nullable="false" comment="Profesor ID"/>
         <column xsi:type="varchar" name="name" nullable="false" comment="Name"/>
         <column xsi:type="varchar" name="description" nullable="false" comment="Description"/>

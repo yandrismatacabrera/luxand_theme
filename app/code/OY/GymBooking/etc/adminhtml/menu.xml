@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="OY_GymBooking::gymbooking" title="Reservas" module="OY_GymBooking" sortOrder="31" resource="OY_GymBooking::booking"/>
+        <add id="OY_GymBooking::gymbooking_classes" title="Clases" translate="title" module="OY_GymBooking" sortOrder="10" parent="OY_GymBooking::gymbooking" action="gymbooking/classes" resource="OY_GymBooking::gym_classes"/>
+    </menu>
+</config>
