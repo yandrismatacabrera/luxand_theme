@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="admin_user" resource="default" engine="innodb" comment="Admin User Table">
+        <column xsi:type="varchar" name="telephone" nullable="true" comment="Teléfono"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Descripción"/>
+        <column xsi:type="text" name="facebook" nullable="true" comment="Perfil de Facebook"/>
+        <column xsi:type="text" name="instagram" nullable="true" comment="Perfil de Instagram"/>
+    </table>
+</schema>

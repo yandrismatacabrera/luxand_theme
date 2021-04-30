@@ -81,7 +81,7 @@
             <editorConfig>
                 <param name="indexField" xsi:type="string">entity_id</param>
                 <param name="enabled" xsi:type="boolean">true</param>
-                <param name="selectProvider" xsi:type="string">${ $.columnsProvider }.ids</param>
+                <param name="selectProvider" xsi:type="string">registry_listing.registry_listing.registry_grid_columns.ids</param>
             </editorConfig>
         </settings>
 
