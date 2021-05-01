@@ -183,5 +183,25 @@ class UpgradeData implements UpgradeDataInterface
                 'apply_to' => 'simple,configurable,virtual,bundle,downloadable'
             ]);
         }
+        if (version_compare($context->getVersion(), '1.0.5') < 0){
+            $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+            $eavSetup->addAttribute(
+                \Magento\Catalog\Model\Product::ENTITY,
+                'classes_option',
+                [
+                    'group' => 'Product Details',
+                    'label' => 'Clases',
+                    'type'  => 'text',
+                    'input' => 'multiselect',
+                    'source' => 'OY\Catalog\Model\Config\Product\Classesoption',
+                    'required' => false,
+                    'sort_order' => 30,
+                    'global' => \Magento\Catalog\Model\ResourceModel\Eav\Attribute::SCOPE_STORE,
+                    'used_in_product_listing' => true,
+                    'backend' => 'Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend',
+                    'visible_on_front' => false
+                ]
+            );
+        }
     }
 }
