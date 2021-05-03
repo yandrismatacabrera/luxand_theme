@@ -27,7 +27,7 @@ class Save extends Action
         $resultRedirect = $this->resultRedirectFactory->create();
         $data = $this->getRequest()->getPostValue();
 
-        $id = $this->getRequest()->getParam('entity_id');
+        $id = $this->getRequest()->getParam('id');
 
         if ($data) {
             if ($id) {
@@ -36,7 +36,7 @@ class Save extends Action
                 $model = $this->gymClassFactory->create();
             }
 
-            if (!$model->getId() && $data['entity_id']!="") {
+            if (!$model->getId() && $id!="") {
                 $this->messageManager->addErrorMessage(__('This class no longer exists.'));
                 return $resultRedirect->setPath('*/classes/');
             }
