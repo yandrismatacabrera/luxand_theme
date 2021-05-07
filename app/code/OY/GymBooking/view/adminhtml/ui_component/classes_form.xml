@@ -46,7 +46,7 @@
             </item>
         </argument>
 
-        <field name="id">
+        <field name="entity_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="visible" xsi:type="boolean">false</item>
@@ -69,7 +69,7 @@
             </settings>
         </field>
 
-        <field name="description" sortOrder="15" formElement="input">
+        <field name="description" sortOrder="15" formElement="textarea">
             <settings>
                 <dataType>text</dataType>
                 <visible>true</visible>

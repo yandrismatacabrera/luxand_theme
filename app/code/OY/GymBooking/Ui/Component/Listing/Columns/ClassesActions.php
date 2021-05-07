@@ -21,6 +21,8 @@ class ClassesActions extends Column
 
     protected $_editUrl = 'gymbooking/classes/edit';
 
+    protected $_deleteUrl = 'gymbooking/classes/delete';
+
     /**
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
@@ -55,6 +57,10 @@ class ClassesActions extends Column
                     $item[$name]['edit'] = [
                         'href' => $this->urlBuilder->getUrl($this->_editUrl, ['id' => $item[$indexField]]),
                         'label' => __('Edit')
+                    ];
+                    $item[$name]['delete'] = [
+                        'href' => $this->urlBuilder->getUrl($this->_deleteUrl, ['id' => $item[$indexField]]),
+                        'label' => __('Delete')
                     ];
 
                 }

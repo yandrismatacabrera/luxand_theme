@@ -4,8 +4,9 @@ namespace OY\GymBooking\Model\Config\Source;
 class Professor implements \Magento\Framework\Option\ArrayInterface
 {
     public function __construct(
-        \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory $collectionFactory
-    ) {
+        \Magento\User\Model\ResourceModel\User\CollectionFactory $collectionFactory
+    )
+    {
         $this->collectionFactory = $collectionFactory;
     }
     /**
@@ -16,12 +17,22 @@ class Professor implements \Magento\Framework\Option\ArrayInterface
     public function toOptionArray()
     {
         $collection = $this->collectionFactory->create();
-        $collection->addAttributeToFilter('prof_entity_id', ['neq' => '']);
+        $professors = [];
 
-        $list = [['value' => '', 'label' => ' ']];
-        foreach ($collection as $item) {
-            $list[]=['value' => $item->getId(), 'label' => $item->getFirstname().' '.$item->getLastname()];
+        $professors[] = [
+            'label' => ' ',
+            'value' => ''
+        ];
+
+        foreach ($collection as $user) {
+            if ($user->getRole()->getRoleName() == 'Profesor') {
+                $professors[] = [
+                    'label' => $user->getFirstname().' '.$user->getLastname(),
+                    'value' => $user->getId()
+                ];
+            }
         }
-        return $list;
+
+        return $professors;
     }
 }
