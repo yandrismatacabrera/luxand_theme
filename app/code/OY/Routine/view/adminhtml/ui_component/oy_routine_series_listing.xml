@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">oy_routine_series_listing.oy_routine_series_listing_data_source</item>
+            <item name="deps" xsi:type="string">oy_routine_series_listing.oy_routine_series_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">series_grid_columns</item>
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Adicionar Serie de Ejercicios</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/addseries</item>
+            </item>
+        </item>
+    </argument>
+    <dataSource name="oy_routine_series_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
+            <argument name="name" xsi:type="string">oy_routine_series_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">series_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">series_id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="sticky" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging"/>
+        <exportButton name="export_button"/>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Eliminar</item>
+                        <item name="url" xsi:type="url" path="oy_routine/series/massDelete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Eliminar Serie de Ejercicios</item>
+                            <item name="message" xsi:type="string" translate="true">Estás seguro que deseas eliminar las series de ejercicios seleccionadas?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+    </listingToolbar>
+    <columns name="series_grid_columns">
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">55</item>
+                    <item name="indexField" xsi:type="string">series_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="routine_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">OY\Routine\Model\Source\Routine</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Rutina</item>
+                </item>
+            </argument>
+        </column>
+        <column name="exercise_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">OY\Routine\Model\Source\Exercise</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Ejercicio</item>
+                </item>
+            </argument>
+        </column>
+        <column name="order">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">number</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">number</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Orden</item>
+                </item>
+            </argument>
+        </column>
+        <column name="number_of_series">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">number</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">number</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Cantidad de series</item>
+                </item>
+            </argument>
+        </column>
+        <column name="break_time">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">number</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">number</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Tiempo de descanso entre series</item>
+                </item>
+            </argument>
+        </column>
+        <column name="number_of_repetitions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">number</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">number</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Cantidad de repeticiones por serie</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="plan" class="OY\Routine\Ui\Component\Listing\Series\Column\Action">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" translate="true" xsi:type="string">Acciones</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>
+

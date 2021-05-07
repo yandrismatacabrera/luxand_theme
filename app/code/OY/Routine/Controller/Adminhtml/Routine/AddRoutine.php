@@ -6,11 +6,11 @@
  * Time: 05:25 PM
  */
 
-namespace OY\Routine\Controller\Adminhtml\Exercise;
+namespace OY\Routine\Controller\Adminhtml\Routine;
 
 use Magento\Framework\Controller\ResultFactory;
 
-class AddExercise extends \Magento\Backend\App\Action
+class AddRoutine extends \Magento\Backend\App\Action
 {
     /**
      * @var \Magento\Framework\Registry
@@ -18,23 +18,23 @@ class AddExercise extends \Magento\Backend\App\Action
     private $coreRegistry;
 
     /**
-     * @var \OY\Routine\Model\ExerciseFactory
+     * @var \OY\Routine\Model\RoutineFactory
      */
-    private $exerciseFactory;
+    private $routineFactory;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Registry $coreRegistry,
-     * @param \OY\Routine\Model\ExerciseFactory $exerciseFactory
+     * @param \OY\Routine\Model\RoutineFactory $routineFactory
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Registry $coreRegistry,
-        \OY\Routine\Model\ExerciseFactory $exerciseFactory
+        \OY\Routine\Model\RoutineFactory $routineFactory
     ) {
         parent::__construct($context);
         $this->coreRegistry = $coreRegistry;
-        $this->exerciseFactory = $exerciseFactory;
+        $this->routineFactory = $routineFactory;
     }
 
     /**
@@ -44,21 +44,21 @@ class AddExercise extends \Magento\Backend\App\Action
     public function execute()
     {
         $rowId = (int) $this->getRequest()->getParam('id');
-        $rowData = $this->exerciseFactory->create();
+        $rowData = $this->routineFactory->create();
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         if ($rowId) {
             $rowData = $rowData->load($rowId);
             $rowTitle = $rowData->getTitle();
-            if (!$rowData->getExerciseId()) {
+            if (!$rowData->getRoutineId()) {
                 $this->messageManager->addError(__('row data no longer exist.'));
-                $this->_redirect('oy_routine/exercise/index');
+                $this->_redirect('oy_routine/routine/index');
                 return;
             }
         }
 
-        $this->coreRegistry->register('exercise_data', $rowData);
+        $this->coreRegistry->register('routine_data', $rowData);
         $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
-        $title = $rowId ? __(' Editar Ejercicio ').$rowTitle : __('Adicionar Ejercicio');
+        $title = $rowId ? __(' Editar Rutina ').$rowTitle : __('Adicionar Rutina');
         $resultPage->getConfig()->getTitle()->prepend($title);
         return $resultPage;
     }

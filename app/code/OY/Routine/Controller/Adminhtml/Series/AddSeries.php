@@ -6,11 +6,11 @@
  * Time: 05:25 PM
  */
 
-namespace OY\Routine\Controller\Adminhtml\Exercise;
+namespace OY\Routine\Controller\Adminhtml\Series;
 
 use Magento\Framework\Controller\ResultFactory;
 
-class AddExercise extends \Magento\Backend\App\Action
+class AddSeries extends \Magento\Backend\App\Action
 {
     /**
      * @var \Magento\Framework\Registry
@@ -18,23 +18,23 @@ class AddExercise extends \Magento\Backend\App\Action
     private $coreRegistry;
 
     /**
-     * @var \OY\Routine\Model\ExerciseFactory
+     * @var \OY\Routine\Model\SeriesFactory
      */
-    private $exerciseFactory;
+    private $seriesFactory;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Registry $coreRegistry,
-     * @param \OY\Routine\Model\ExerciseFactory $exerciseFactory
+     * @param \OY\Routine\Model\SeriesFactory $seriesFactory
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Registry $coreRegistry,
-        \OY\Routine\Model\ExerciseFactory $exerciseFactory
+        \OY\Routine\Model\SeriesFactory $seriesFactory
     ) {
         parent::__construct($context);
         $this->coreRegistry = $coreRegistry;
-        $this->exerciseFactory = $exerciseFactory;
+        $this->seriesFactory = $seriesFactory;
     }
 
     /**
@@ -44,21 +44,21 @@ class AddExercise extends \Magento\Backend\App\Action
     public function execute()
     {
         $rowId = (int) $this->getRequest()->getParam('id');
-        $rowData = $this->exerciseFactory->create();
+        $rowData = $this->seriesFactory->create();
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         if ($rowId) {
             $rowData = $rowData->load($rowId);
             $rowTitle = $rowData->getTitle();
-            if (!$rowData->getExerciseId()) {
+            if (!$rowData->getSeriesId()) {
                 $this->messageManager->addError(__('row data no longer exist.'));
-                $this->_redirect('oy_routine/exercise/index');
+                $this->_redirect('oy_routine/series/index');
                 return;
             }
         }
 
-        $this->coreRegistry->register('exercise_data', $rowData);
+        $this->coreRegistry->register('series_data', $rowData);
         $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
-        $title = $rowId ? __(' Editar Ejercicio ').$rowTitle : __('Adicionar Ejercicio');
+        $title = $rowId ? __(' Editar Serie de Ejercicios').$rowTitle : __('Adicionar Serie de Ejercicios');
         $resultPage->getConfig()->getTitle()->prepend($title);
         return $resultPage;
     }

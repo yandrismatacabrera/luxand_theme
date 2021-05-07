@@ -1,5 +1,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
     <preference for="OY\Routine\Api\Data\ExerciseInterface" type="OY\Routine\Model\Exercise" />
+    <preference for="OY\Routine\Api\Data\RoutineInterface" type="OY\Routine\Model\Routine" />
 
     <virtualType name="OY\Routine\Model\ResourceModel\Exercise\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
@@ -19,6 +20,50 @@
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="oy_routine_exercise_listing_data_source" xsi:type="string">OY\Routine\Model\ResourceModel\Exercise\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="OY\Routine\Model\ResourceModel\Routine\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">routine_entity</argument>
+            <argument name="resourceModel" xsi:type="string">OY\Routine\Model\ResourceModel\Routine</argument>
+        </arguments>
+    </virtualType>
+    <type name="OY\Routine\Model\ResourceModel\Routine\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">routine_entity</argument>
+            <argument name="eventPrefix" xsi:type="string">routine_entity</argument>
+            <argument name="eventObject" xsi:type="string">routine_entity</argument>
+            <argument name="resourceModel" xsi:type="string">OY\Routine\Model\ResourceModel\Routine</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="oy_routine_routine_listing_data_source" xsi:type="string">OY\Routine\Model\ResourceModel\Routine\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="OY\Routine\Model\ResourceModel\Series\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">exercise_series_entity</argument>
+            <argument name="resourceModel" xsi:type="string">OY\Routine\Model\ResourceModel\Series</argument>
+        </arguments>
+    </virtualType>
+    <type name="OY\Routine\Model\ResourceModel\Series\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">exercise_series_entity</argument>
+            <argument name="eventPrefix" xsi:type="string">exercise_series_entity</argument>
+            <argument name="eventObject" xsi:type="string">exercise_series_entity</argument>
+            <argument name="resourceModel" xsi:type="string">OY\Routine\Model\ResourceModel\Series</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="oy_routine_series_listing_data_source" xsi:type="string">OY\Routine\Model\ResourceModel\Series\Grid\Collection</item>
             </argument>
         </arguments>
     </type>

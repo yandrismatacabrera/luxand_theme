@@ -84,6 +84,8 @@ class Save extends \Magento\Backend\App\Action
                 {
                     $this->messageManager->addError(__("Image not Upload Please Try Again"));
                 }
+            } else if ((isset($data['image']['value'])) && ($data['image']['value'] != '')) {
+                $data['image'] = $data['image']['value'];
             }
 
 
