@@ -135,7 +135,7 @@
                             <item name="required-entry" xsi:type="boolean">true</item>
                         </item>
                     </item>
-                    <item name="label" xsi:type="string" translate="true">Tiempo de descanso entre series</item>
+                    <item name="label" xsi:type="string" translate="true">Tiempo de descanso entre serie</item>
                 </item>
             </argument>
         </column>

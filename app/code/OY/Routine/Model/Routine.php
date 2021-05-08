@@ -43,13 +43,6 @@ class Routine extends \Magento\Framework\Model\AbstractModel implements RoutineI
     }
 
     /**
-     * @return int
-     */
-    public function getCustomerId() {
-        return $this->getData(self::CUSTOMER_ID);
-    }
-
-    /**
      * @return string
      */
     public function getName() {
@@ -94,14 +87,6 @@ class Routine extends \Magento\Framework\Model\AbstractModel implements RoutineI
      */
     public function setRoutineId($id) {
         return $this->setData(self::ROUTINE_ID, $id);
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function setCustomerId($id) {
-        return $this->setData(self::CUSTOMER_ID, $id);
     }
 
     /**

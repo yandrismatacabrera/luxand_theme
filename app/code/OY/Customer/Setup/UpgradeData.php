@@ -727,5 +727,48 @@ class UpgradeData implements UpgradeDataInterface
                 // Do nothing
             }
         }
+
+
+        if (version_compare($context->getVersion(), '1.0.18') < 0) {
+
+            try {
+
+                $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+
+                $customerEntity = $customerSetup->getEavConfig()->getEntityType('customer');
+                $attributeSetId = $customerEntity->getDefaultAttributeSetId();
+
+                /** @var $attributeSet AttributeSet */
+                $attributeSet = $this->attributeSetFactory->create();
+                $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+
+                $customerSetup->addAttribute(Customer::ENTITY, 'routine_entity_id', [
+                    'type' => 'int',
+                    'label' => 'Rutina',
+                    'input' => 'select',
+                    'source' => \OY\Routine\Model\Source\Routine::class,
+                    'required' => false,
+                    'visible' => true,
+                    'user_defined' => false,
+                    'sort_order' => 50,
+                    'position' => 50,
+                    'system' => 0,
+                    'adminhtml_only' => true,
+                    'is_used_in_grid' => true,
+                    'is_visible_in_grid' => true,
+                    'is_filterable_in_grid' => true
+                ]);
+
+                $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'routine_entity_id')
+                    ->addData([
+                        'attribute_set_id' => $attributeSetId,
+                        'attribute_group_id' => $attributeGroupId,
+                        'used_in_forms' => ['adminhtml_customer'],
+                    ]);
+                $attribute->save();
+            } catch (\Exception $e) {
+                // Do nothing
+            }
+        }
     }
 }

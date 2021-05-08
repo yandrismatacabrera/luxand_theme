@@ -22,6 +22,11 @@
                     <argument name="label" xsi:type="string">Reservas</argument>
                 </action>
             </block>
+            <block class="OY\Customer\Block\Adminhtml\Edit\Tab\Series" name="customertab_panel_series">
+                <action method="setTabLabel">
+                    <argument name="label" xsi:type="string">Rutinas</argument>
+                </action>
+            </block>
         </referenceBlock>
     </body>
 </page>

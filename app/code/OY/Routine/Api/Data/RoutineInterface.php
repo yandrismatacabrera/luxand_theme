@@ -12,7 +12,6 @@ namespace OY\Routine\Api\Data;
 interface RoutineInterface
 {
     const ROUTINE_ID = 'routine_id';
-    const CUSTOMER_ID = 'customer_id';
     const NAME = 'name';
     const COMPLEXITY = 'complexity';
     const DURATION = 'duration';
@@ -23,11 +22,6 @@ interface RoutineInterface
      * @return int
      */
     public function getRoutineId();
-
-    /**
-     * @return int
-     */
-    public function getCustomerId();
 
     /**
      * @return string
@@ -63,12 +57,6 @@ interface RoutineInterface
      * @return $this
      */
     public function setRoutineId($id);
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function setCustomerId($id);
 
     /**
      * @param string $name

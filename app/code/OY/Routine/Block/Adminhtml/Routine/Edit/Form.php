@@ -27,12 +27,10 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Data\FormFactory $formFactory,
         \OY\Routine\Model\Source\Complexity $options,
-        \OY\Routine\Model\Source\Customer $customers,
         array $data = []
     )
     {
         $this->_options = $options;
-        $this->_customers = $customers;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -76,20 +74,6 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
                 'label' => __('Nombre'),
                 'id' => 'name',
                 'title' => __('Nombre'),
-                'class' => 'required-entry',
-                'required' => true,
-            ]
-        );
-
-        $fieldset->addField(
-            'customer_id',
-            'select',
-            [
-                'name' => 'customer_id',
-                'label' => __('Cliente'),
-                'id' => 'customer_id',
-                'title' => __('Cliente'),
-                'values' => $this->_customers->getAllOptions(),
                 'class' => 'required-entry',
                 'required' => true,
             ]
