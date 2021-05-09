@@ -74,5 +74,19 @@ class PlanRepository implements PlanRepositoryInterface
         return $this->planCollectionFactory->create();
     }
 
+    public function getActivePlan($customerId)
+    {
+        $collection = $this->planCollectionFactory->create();
+        $collection->addFieldToFilter('customer_id', $customerId)
+        ->addFieldToFilter('from', array('lteq' => date("Y-m-d H:i:s")))
+        ->addFieldToFilter('to', array('gteq' => date("Y-m-d H:i:s")));
+
+        if($collection->getSize()){
+            $dataPlan = $collection->getFirstItem()->getData();
+            return $dataPlan;
+        }
+        return [];
+    }
+
 
 }

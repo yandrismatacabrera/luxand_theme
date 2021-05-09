@@ -7,6 +7,8 @@
  */
 namespace OY\Plan\Api;
 
+use Magento\Tests\NamingConvention\true\mixed;
+
 interface PlanRepositoryInterface
 {
 
@@ -48,5 +50,14 @@ interface PlanRepositoryInterface
      */
     public function getAll();
 
+    /**
+     * Active Plan.
+     *
+     * @api
+     * @param int $customerId
+     * @return  mixed[]
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getActivePlan($customerId);
 
 }
