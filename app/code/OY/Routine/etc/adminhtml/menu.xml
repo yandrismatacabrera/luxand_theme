@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="OY_Routine::routine" title="Rutinas" module="OY_Routine" sortOrder="51" resource="OY_Routine::routine"/>
-        <add id="OY_Routine::exercise" title="Ejercicios" module="OY_Routine" sortOrder="10" action="oy_routine/exercise" resource="OY_Routine::exercise" parent="OY_Routine::routine"/>
+        <add id="OY_Routine::routine_menu" title="Rutinas" module="OY_Routine" sortOrder="51" resource="OY_Routine::routine_menu"/>
+        <add id="OY_Routine::exercise" title="Ejercicios" module="OY_Routine" sortOrder="10" action="oy_routine/exercise" resource="OY_Routine::exercise" parent="OY_Routine::routine_menu"/>
+        <add id="OY_Routine::routine" title="Rutinas" module="OY_Routine" sortOrder="10" action="oy_routine/routine" resource="OY_Routine::routine" parent="OY_Routine::routine_menu"/>
+        <add id="OY_Routine::series" title="Series de Ejercicios" module="OY_Routine" sortOrder="10" action="oy_routine/series" resource="OY_Routine::series" parent="OY_Routine::routine_menu"/>
     </menu>
 </config>

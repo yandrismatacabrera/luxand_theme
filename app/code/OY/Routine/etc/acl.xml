@@ -3,8 +3,10 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="OY_Routine::routine" title="Rutinas" sortOrder="51">
+                <resource id="OY_Routine::routine_menu" title="Rutinas" sortOrder="51">
                     <resource id="OY_Routine::exercise" title="Ejercicios" sortOrder="10"/>
+                    <resource id="OY_Routine::routine" title="Rutinas" sortOrder="20"/>
+                    <resource id="OY_Routine::series" title="Series de Ejercicios" sortOrder="30"/>
                 </resource>
             </resource>
         </resources>

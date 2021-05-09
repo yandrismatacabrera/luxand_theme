@@ -32,13 +32,6 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     'Routine ID'
                 )
                 ->addColumn(
-                    'customer_id',
-                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-                    null,
-                    ['unsigned' => true, 'nullable' => false, 'default' => '0'],
-                    'Customer ID'
-                )
-                ->addColumn(
                     'name',
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     255,
@@ -71,17 +64,6 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     null,
                     ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE],
                     'Updated At'
-                )->addForeignKey(
-                    $installer->getFkName(
-                        'routine_entity',
-                        'customer_id',
-                        'customer_entity',
-                        'entity_id'
-                    ),
-                    'customer_id',
-                    $installer->getTable('customer_entity'),
-                    'entity_id',
-                    \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
                 )
                 ->setComment('Routine Table');
             $installer->getConnection()->createTable($table);

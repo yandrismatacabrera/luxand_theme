@@ -6,10 +6,10 @@
  * Time: 05:41 PM
  */
 
-namespace OY\Routine\Block\Adminhtml\Exercise;
+namespace OY\Routine\Block\Adminhtml\Series;
 
 
-class AddExercise extends \Magento\Backend\Block\Widget\Form\Container
+class AddSeries extends \Magento\Backend\Block\Widget\Form\Container
 {
     /**
      * Core registry.
@@ -38,9 +38,9 @@ class AddExercise extends \Magento\Backend\Block\Widget\Form\Container
      */
     protected function _construct()
     {
-        $this->_objectId = 'exercise_id';
+        $this->_objectId = 'series_id';
         $this->_blockGroup = 'OY_Routine';
-        $this->_controller = 'adminhtml_exercise';
+        $this->_controller = 'adminhtml_series';
         parent::_construct();
         $this->buttonList->update('save', 'label', __('Save'));
         $this->buttonList->remove('reset');
