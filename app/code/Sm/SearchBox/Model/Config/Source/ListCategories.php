@@ -71,7 +71,7 @@ class ListCategories
                 while (count($stack) > 0) {
                     $opt = array_pop($stack);
                     $option = [
-                        'label' => ($opt->level > 1 ? str_repeat('- - ', $opt->level - 1) : '') . $opt->label,
+                        'label' => ($opt->level > 1 ? str_repeat('&nbsp; ', $opt->level - 1) : '') . $opt->label,
                         'value' => $opt->value
                     ];
                     array_push($options, $option);
