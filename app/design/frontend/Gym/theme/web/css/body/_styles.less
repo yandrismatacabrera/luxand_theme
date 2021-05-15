@@ -11,6 +11,14 @@
         }
       }
     }
+
+    .cart-empty {
+      a {
+        color: #FF5500 !important;
+        font-weight: bold;
+        font-size: 13.5px;
+      }
+    }
   }
 }
 
@@ -104,6 +112,26 @@
         .ui-datepicker-trigger::before {
           font-size: 65px !important;
           line-height: 30px !important;
+        }
+      }
+    }
+  }
+
+  .product-options-bottom {
+    .box-tocart {
+      .field.qty {
+        .control.control-qty-cart {
+          position: relative;
+
+          #qty {
+            width: 80px;
+          }
+
+          #qty-error {
+            position: absolute;
+            top: -35px;
+            width: 250px;
+          }
         }
       }
     }

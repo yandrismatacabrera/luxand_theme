@@ -58,12 +58,12 @@ class AccessNumber extends Column
                     $strTo->add(new \DateInterval('P1D'));
 
                     $to = $this->timezone->formatDateTime(
-                        $strTo->format("Y-m-d"),
+                        $strTo->format("Y-M-d"),
                         \IntlDateFormatter::SHORT,
                         \IntlDateFormatter::NONE,
                         null,
                         null,
-                        'yyyy-MM-dd'
+                        'dd LLL yyyy H:mm:ss'
                     );
                     return 'Activo hasta ' . $to;
                 }
@@ -73,7 +73,7 @@ class AccessNumber extends Column
                     \IntlDateFormatter::NONE,
                     null,
                     null,
-                    'yyyy-MM-dd'
+                    'dd LLL yyyy H:mm:ss'
                 );
                 //$to = $plan->getData('to');
             }
