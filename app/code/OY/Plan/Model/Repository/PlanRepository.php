@@ -27,11 +27,13 @@ class PlanRepository implements PlanRepositoryInterface
     public function __construct(
         Plan $resource,
         \OY\Plan\Model\PlanFactory $planFactory,
-        \OY\Plan\Model\ResourceModel\Plan\CollectionFactory $planCollectionFactory
+        \OY\Plan\Model\ResourceModel\Plan\CollectionFactory $planCollectionFactory,
+        \Magento\Framework\DataObjectFactory $dataObjectFactory
     ) {
         $this->_resourcePlan = $resource;
         $this->_planFactory = $planFactory;
         $this->planCollectionFactory = $planCollectionFactory;
+        $this->dataObjectFactory=$dataObjectFactory;
     }
 
     public function save(\OY\Plan\Api\Data\PlanInterface $plan)
@@ -83,7 +85,7 @@ class PlanRepository implements PlanRepositoryInterface
 
         if($collection->getSize()){
             $dataPlan = $collection->getFirstItem()->getData();
-            return $dataPlan;
+            return [$dataPlan];
         }
         return [];
     }
