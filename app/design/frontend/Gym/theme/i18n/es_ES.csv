@@ -88,12 +88,15 @@ Saturday,Sábado
 Sunday,Domingo
 "Bookings System","Sistema de Reservas"
 "to","a",module,Webkul_BookingSystem
-All Categories,Todas las Categorías
+All Categories,Categorías
 Top Search:, Búsquedas Destacadas:
 Enter keywords to search...,Introduzca el término de búsqueda...
 Your email address,Dirección de correo electrónico
 View Cart,Ver Carrito
-
+Allow remote shopping assistance,Permitir asistencia de compra remota
+"Please enter a valid email address (Ex: johndoe@domain.com).","Introduzca una dirección válida de correo electrónico (Ejemplo: johndoe@dominio.com).",module,Magento_Ui
+"Shopping Cart","Carrito"
+"Item was removed successfully.",El elemento se eliminó correctamente
 
 
 
