@@ -4,8 +4,8 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="OY_GymBooking::booking" title="Registro" translate="title" sortOrder="110">
-                    <resource id="OY_Registry::gym_classes" title="Clases" sortOrder="15" />
+                <resource id="OY_GymBooking::booking" title="Gym Reservas" translate="title" sortOrder="110">
+                    <resource id="OY_GymBooking::booking_classes" title="Clases" sortOrder="15" />
                 </resource>
             </resource>
         </resources>
