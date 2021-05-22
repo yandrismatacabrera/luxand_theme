@@ -28,11 +28,13 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
         \Magento\Framework\Data\FormFactory $formFactory,
         \OY\Routine\Model\Source\Routine $routines,
         \OY\Routine\Model\Source\Exercise $exercises,
+        \OY\Routine\Model\Source\Day $days,
         array $data = []
     )
     {
         $this->_routines = $routines;
         $this->_exercises = $exercises;
+        $this->_days = $days;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -91,6 +93,20 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
                 'id' => 'exercise_id',
                 'title' => __('Ejercicio'),
                 'values' => $this->_exercises->getAllOptions(),
+                'class' => 'required-entry',
+                'required' => true,
+            ]
+        );
+
+        $fieldset->addField(
+            'day',
+            'multiselect',
+            [
+                'name' => 'day',
+                'label' => __('Día'),
+                'id' => 'day',
+                'title' => __('Día'),
+                'values' => $this->_days->getAllOptions(),
                 'class' => 'required-entry',
                 'required' => true,
             ]

@@ -24,13 +24,21 @@ class RoutineRepository implements RoutineRepositoryInterface
     protected $routineCollectionFactory;
 
     public function __construct(
-        \OY\Routine\Model\ResourceModel\Routine $resource,
+        \OY\Routine\Model\ResourceModel\Routine $resourceRoutine,
+        \OY\Routine\Model\ResourceModel\Exercise $resourceExercise,
         \OY\Routine\Model\RoutineFactory $routineFactory,
-        \OY\Routine\Model\ResourceModel\Routine\CollectionFactory $routineCollectionFactory
+        \OY\Routine\Model\ExerciseFactory $exerciseFactory,
+        \OY\Routine\Model\ResourceModel\Routine\CollectionFactory $routineCollectionFactory,
+        \OY\Routine\Model\ResourceModel\Series\CollectionFactory $seriesCollectionFactory,
+        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
     ) {
-        $this->resourceRoutine = $resource;
+        $this->resourceRoutine = $resourceRoutine;
+        $this->resourceExercise = $resourceExercise;
         $this->routineFactory = $routineFactory;
+        $this->exerciseFactory = $exerciseFactory;
         $this->routineCollectionFactory = $routineCollectionFactory;
+        $this->seriesCollectionFactory = $seriesCollectionFactory;
+        $this->customerRepository = $customerRepository;
     }
 
 
@@ -96,5 +104,59 @@ class RoutineRepository implements RoutineRepositoryInterface
     public function getAll()
     {
         return $this->routineCollectionFactory->create();
+    }
+
+    /**
+     * Customer Routine.
+     *
+     * @api
+     * @param int $customerId
+     * @return  mixed[]
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getRoutine($customerId)
+    {
+        $customer = $this->customerRepository->getById($customerId);
+        $routineId = '';
+        if ($customer->getCustomAttribute('routine_entity_id') && $customer->getCustomAttribute('routine_entity_id')->getValue()) {
+            $routineId = $customer->getCustomAttribute('routine_entity_id')->getValue();
+        } else {
+            return [];
+        }
+
+        $data = [];
+        $routine = $this->routineFactory->create();
+        $this->resourceRoutine->load($routine, $routineId);
+        $data = [
+            'routine_id' => $routine->getRoutineId(),
+            'name' => $routine->getName(),
+            'complexity' => $routine->getComplexity(),
+            'duration' => $routine->getDuration(),
+        ];
+        $collection = $this->seriesCollectionFactory->create();
+        $collection->addFieldToFilter('routine_id', $routineId);
+        foreach ($collection as $series) {
+            $exercise = $this->exerciseFactory->create();
+            $this->resourceExercise->load($exercise, $series->getExerciseId());
+            $exerciseData = [
+                'exercise_id' => $exercise->getExerciseId(),
+                'name' => $exercise->getName(),
+                'image' => $exercise->getImage(),
+                'image_one' => $exercise->getImageOne(),
+                'image_two' => $exercise->getImageTwo(),
+                'image_three' => $exercise->getImageThree(),
+            ];
+            $seriesData = [
+                'series_id' => $series->getSeriesId(),
+                'order' => $series->getOrder(),
+                'number_of_series' => $series->getNumberOfSeries(),
+                'break_time' => $series->getBreakTime(),
+                'number_of_repetitions' => $series->getNumberOfRepetitions(),
+                'day' => $series->getDay(),
+                'exercise' => $exerciseData,
+            ];
+            $data['series'][] = $seriesData;
+        }
+        return json_encode($data);
     }
 }

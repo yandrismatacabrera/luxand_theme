@@ -57,6 +57,27 @@ class Exercise extends \Magento\Framework\Model\AbstractModel implements Exercis
     }
 
     /**
+     * @return string
+     */
+    public function getImageOne() {
+        return $this->getData(self::IMAGE_ONE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageTwo() {
+        return $this->getData(self::IMAGE_TWO);
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageThree() {
+        return $this->getData(self::IMAGE_THREE);
+    }
+
+    /**
      * Get CreatedAt.
      *
      * @return varchar
@@ -96,6 +117,30 @@ class Exercise extends \Magento\Framework\Model\AbstractModel implements Exercis
      */
     public function setImage($image) {
         return $this->setData(self::IMAGE, $image);
+    }
+
+    /**
+     * @param string $image
+     * @return $this
+     */
+    public function setImageOne($image) {
+        return $this->setData(self::IMAGE_ONE, $image);
+    }
+
+    /**
+     * @param string $image
+     * @return $this
+     */
+    public function setImageTwo($image) {
+        return $this->setData(self::IMAGE_TWO, $image);
+    }
+
+    /**
+     * @param string $image
+     * @return $this
+     */
+    public function setImageThree($image) {
+        return $this->setData(self::IMAGE_THREE, $image);
     }
 
     /**

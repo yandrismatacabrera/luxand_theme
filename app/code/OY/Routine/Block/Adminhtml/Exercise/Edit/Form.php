@@ -92,6 +92,51 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
             ]
         );
 
+        $fieldset->addField(
+            'image_one',
+            'image',
+            [
+                'name' => 'image_one',
+                'label' => __('Imagen'),
+                'id' => 'image_one',
+                'title' => __('Imagen'),
+                'class' => 'required-entry',
+                'required' => true,
+                'note' => 'Tipos de imágenes permitidos: jpg, jpeg, png',
+                'class' => 'required-entry required-file',
+            ]
+        );
+
+        $fieldset->addField(
+            'image_two',
+            'image',
+            [
+                'name' => 'image_two',
+                'label' => __('Imagen'),
+                'id' => 'image_two',
+                'title' => __('Imagen'),
+                'class' => 'required-entry',
+                'required' => true,
+                'note' => 'Tipos de imágenes permitidos: jpg, jpeg, png',
+                'class' => 'required-entry required-file',
+            ]
+        );
+
+        $fieldset->addField(
+            'image_three',
+            'image',
+            [
+                'name' => 'image_three',
+                'label' => __('Imagen'),
+                'id' => 'image_three',
+                'title' => __('Imagen'),
+                'class' => 'required-entry',
+                'required' => true,
+                'note' => 'Tipos de imágenes permitidos: jpg, jpeg, png',
+                'class' => 'required-entry required-file',
+            ]
+        );
+
         $form->setValues($model->getData());
         $form->setUseContainer(true);
         $this->setForm($form);

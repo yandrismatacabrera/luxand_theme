@@ -92,6 +92,14 @@ class Series extends \Magento\Framework\Model\AbstractModel implements SeriesInt
     }
 
     /**
+     * @return int
+     */
+    public function getDay()
+    {
+        return $this->getData(self::DAY);
+    }
+
+    /**
      * Get CreatedAt.
      *
      * @return varchar
@@ -172,6 +180,15 @@ class Series extends \Magento\Framework\Model\AbstractModel implements SeriesInt
     public function setNumberOfRepetitions($numberOfRepetitions)
     {
         return $this->setData(self::NUMBER_OF_REPETITIONS, $numberOfRepetitions);
+    }
+
+    /**
+     * @param int $day
+     * @return $this
+     */
+    public function setDay($day)
+    {
+        return $this->setData(self::DAY, $day);
     }
 
     /**

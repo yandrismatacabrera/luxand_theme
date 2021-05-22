@@ -41,6 +41,13 @@ class Save extends \Magento\Backend\App\Action
             return;
         }
         try {
+            if (count($data['day'])) {
+                $data['day'] = implode(',', array_values($data['day']));
+            }else {
+                $data['day'] = '';
+            }
+
+
             $rowData = $this->seriesFactory->create();
             $rowData->setData($data);
             if (isset($data['series_id'])) {
