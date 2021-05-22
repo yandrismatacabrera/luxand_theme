@@ -157,6 +157,6 @@ class RoutineRepository implements RoutineRepositoryInterface
             ];
             $data['series'][] = $seriesData;
         }
-        return $data;
+        return [$data];
     }
 }
