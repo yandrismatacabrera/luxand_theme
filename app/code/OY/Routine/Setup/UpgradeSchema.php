@@ -69,6 +69,25 @@ class UpgradeSchema implements UpgradeSchemaInterface{
 
         }
 
+        if (version_compare($context->getVersion(), '1.0.2') < 0){
+
+            try {
+                $installer->getConnection()->modifyColumn(
+                    $installer->getTable( 'exercise_series_entity' ),
+                    'number_of_repetitions',
+                    [
+                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                        'nullable' => false,
+                        'length' => '255',
+                        'comment' => 'Number of Repetitions'
+                    ]
+                );
+            } catch (\Exception $e) {
+                // Do nothing
+            }
+
+        }
+
         $installer->endSetup();
     }
 }

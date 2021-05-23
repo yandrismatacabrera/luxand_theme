@@ -159,7 +159,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
                 'label' => __('Cantidad de repeticiones por serie'),
                 'id' => 'number_of_repetitions',
                 'title' => __('Cantidad de repeticiones por serie'),
-                'class' => 'validate-number',
+                'class' => 'required-entry',
                 'required' => true,
             ]
         );
