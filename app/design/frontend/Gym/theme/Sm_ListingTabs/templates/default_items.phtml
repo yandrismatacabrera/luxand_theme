@@ -29,6 +29,7 @@ if ($this->_isAjax()) {
     $products = $this->getData('products');
 }
 $_helper         = $this->helper('Magento\Catalog\Helper\Output');
+$oyHelper         = $this->helper('OY\Catalog\Helper\Data');
 $_config         = $this->helper('Sm\Market\Helper\Data');
 $homeStyle       = $_config->getThemeLayout('home_style');
 $viewMode        = 'grid';
@@ -123,6 +124,16 @@ if (count($products)) {
                                 $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>
+                        <span>
+                            <?php
+                            if($oyHelper->getCountClass($_product->getId())==1){
+                                echo 'Incliye '.$oyHelper->getCountClass($_product->getId()).' clase.';
+                            }
+                            if($oyHelper->getCountClass($_product->getId())>1){
+                                echo 'Incliye '.$oyHelper->getCountClass($_product->getId()).' clases.';
+                            }
+                            ?>
+                        </span>
                         <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
                         <?= /* @escapeNotVerified */
                         $block->getProductPrice($_product) ?>

@@ -1,0 +1,26 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/**
+ * @var $block \Magento\Catalog\Block\Product\View
+ */
+$oyHelper         = $this->helper('OY\Catalog\Helper\Data');
+?>
+<?php
+$_product = $block->getProduct();
+?>
+
+<div class="cl_count-classes">
+    <?php
+    if($oyHelper->getCountClass($_product->getId())){
+        echo '<span>Clases</sapan>';
+        echo '<ul>';
+        foreach ($oyHelper->getListClassesId($_product->getId()) as $item){
+            $itemObj = $oyHelper->getClass($item);
+            echo '<li>'.$itemObj->getData('name').'</li>';
+        }
+        echo '</ul>';
+    }
+    ?>
+
+</div>
