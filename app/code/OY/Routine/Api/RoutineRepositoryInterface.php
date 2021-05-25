@@ -45,4 +45,14 @@ interface RoutineRepositoryInterface
      * @throws NoSuchEntityException
      */
     public function getAll();
+
+    /**
+     * Customer Routine.
+     *
+     * @api
+     * @param int $customerId
+     * @return  mixed[]
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getRoutine($customerId);
 }

@@ -14,6 +14,9 @@ interface ExerciseInterface
     const EXERCISE_ID = 'exercise_id';
     const NAME = 'name';
     const IMAGE = 'image';
+    const IMAGE_ONE = 'image_one';
+    const IMAGE_TWO = 'image_two';
+    const IMAGE_THREE = 'image_three';
     const UPDATE_AT = 'updated_at';
     const CREATED_AT = 'created_at';
 
@@ -31,6 +34,21 @@ interface ExerciseInterface
      * @return string
      */
     public function getImage();
+
+    /**
+     * @return string
+     */
+    public function getImageOne();
+
+    /**
+     * @return string
+     */
+    public function getImageTwo();
+
+    /**
+     * @return string
+     */
+    public function getImageThree();
 
     /**
      * Get CreatedAt.
@@ -63,6 +81,24 @@ interface ExerciseInterface
      * @return $this
      */
     public function setImage($image);
+
+    /**
+     * @param string $image
+     * @return $this
+     */
+    public function setImageOne($image);
+
+    /**
+     * @param string $image
+     * @return $this
+     */
+    public function setImageTwo($image);
+
+    /**
+     * @param string $image
+     * @return $this
+     */
+    public function setImageThree($image);
 
     /**
      * Set CreatedAt.

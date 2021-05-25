@@ -1,6 +1,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
     <preference for="OY\Routine\Api\Data\ExerciseInterface" type="OY\Routine\Model\Exercise" />
     <preference for="OY\Routine\Api\Data\RoutineInterface" type="OY\Routine\Model\Routine" />
+    <preference for="OY\Routine\Api\RoutineRepositoryInterface" type="OY\Routine\Model\Repository\RoutineRepository"/>
 
     <virtualType name="OY\Routine\Model\ResourceModel\Exercise\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>

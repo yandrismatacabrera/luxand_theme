@@ -18,6 +18,7 @@ interface SeriesInterface
     const NUMBER_OF_SERIES = 'number_of_series';
     const BREAK_TIME = 'break_time';
     const NUMBER_OF_REPETITIONS = 'number_of_repetitions';
+    const DAY = 'day';
     const UPDATE_AT = 'updated_at';
     const CREATED_AT = 'created_at';
 
@@ -55,6 +56,11 @@ interface SeriesInterface
      * @return int
      */
     public function getNumberOfRepetitions();
+
+    /**
+     * @return int
+     */
+    public function getDay();
 
     /**
      * Get CreatedAt.
@@ -111,6 +117,12 @@ interface SeriesInterface
      * @return $this
      */
     public function setNumberOfRepetitions($numberOfRepetitions);
+
+    /**
+     * @param int $day
+     * @return $this
+     */
+    public function setDay($day);
 
     /**
      * Set CreatedAt.

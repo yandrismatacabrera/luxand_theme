@@ -24,7 +24,7 @@ Start Time,Hora de inicio
 End Time,Hora de fin
 Status,Estado
 Open,Abierto
-Close,Cerrado
+Close,Cerrar
 Add Bookings,Agregar Reservas
 Book Now,Reservar
 Date,Fecha
@@ -97,8 +97,12 @@ Allow remote shopping assistance,Permitir asistencia de compra remota
 "Please enter a valid email address (Ex: johndoe@domain.com).","Introduzca una dirección válida de correo electrónico (Ejemplo: johndoe@dominio.com).",module,Magento_Ui
 "Shopping Cart","Carrito"
 "Item was removed successfully.",El elemento se eliminó correctamente
-
-
+"Default welcome msg!","¡Bienvenidos a Open Fit!",module,Magento_Theme
+Join Free,Registrarse
+"Go back","Atrás",module,Magento_Customer
+Filter Products By,Filtrar Productos Por
+"Ship To","Envío",module,Magento_Sales
+"Order Total","Total",module,Magento_Sales
 
 
 "==================== CREDENTIALS CONFIGURATION PAGE =====================","================================================"

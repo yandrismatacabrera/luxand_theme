@@ -29,4 +29,13 @@
             <parameter name="customerId" force="true">%customer_id%</parameter>
         </data>
     </route>
+    <route url="/V1/gym/routine" method="GET">
+        <service class="OY\Routine\Api\RoutineRepositoryInterface" method="getRoutine" />
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
 </routes>
