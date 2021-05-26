@@ -36,4 +36,13 @@ interface GymClassRepositoryInterface
      * @throws NoSuchEntityException
      */
     public function getAll();
+
+    /**
+     * get classes by plan.
+     *
+     * @api
+     * @return  mixed []
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getClassesByPlan();
 }
