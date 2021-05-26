@@ -9,6 +9,7 @@ namespace OY\Sales\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Model\Order;
+use OY\Registry\Api\RegistryRepositoryInterface;
 
 class OrderSaveAfter implements ObserverInterface
 {
@@ -16,12 +17,18 @@ class OrderSaveAfter implements ObserverInterface
         \OY\Plan\Model\Repository\PlanRepository $planRepository,
         \OY\Plan\Model\PlanFactory $planFactory,
         \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter,
-        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        \OY\Registry\Model\RegistryFactory $registryFactory,
+        \OY\Registry\Api\RegistryRepositoryInterface $registryRepository,
+        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
     ) {
         $this->planRepository=$planRepository;
         $this->planFactory=$planFactory;
         $this->dateFilter = $dateFilter;
-        $this->productRepository=$productRepository;
+        $this->productRepository = $productRepository;
+        $this->registryFactory = $registryFactory;
+        $this->registryRepository = $registryRepository;
+        $this->customerRepository = $customerRepository;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -30,7 +37,8 @@ class OrderSaveAfter implements ObserverInterface
         $customerId = $order->getCustomerId();
         $orderStatus       = $order->getStatus();
 
-        if ($customerId) { // Order Criada
+        if ($customerId) { // Order Created
+            $customer = $this->customerRepository->getById($customerId);
 
             if ($orderStatus == Order::STATE_COMPLETE) {
                 foreach ($order->getAllVisibleItems() as $orderItem) {
@@ -65,6 +73,14 @@ class OrderSaveAfter implements ObserverInterface
                                         }
 
                                         $this->planRepository->save($model);
+
+                                        $registryRecord = $this->registryFactory->create();
+                                        $registryRecord->setDateTime(date("Y-m-d H:i:s"));
+                                        $registryRecord->setValid(1);
+                                        $registryRecord->setCustomerId($customerId);
+                                        $registryRecord->setFullname($customer->getFirstname() . ' ' . $customer->getLastname());
+                                        $registryRecord->setMethod(RegistryRepositoryInterface::METHOD_AUTOMATIC);
+                                        $this->registryRepository->save($registryRecord);
                                     } catch (LocalizedException $e) {
                                     }
                                 }
