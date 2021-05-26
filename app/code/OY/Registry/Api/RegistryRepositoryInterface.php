@@ -12,6 +12,7 @@ interface RegistryRepositoryInterface
 {
     const METHOD_FACE = 'Reconocimiento Facial';
     const METHOD_CI = 'Cédula';
+    const METHOD_AUTOMATIC = 'Automático';
 
     /**
      * @param \OY\Registry\Api\Data\RegistryInterface $registry

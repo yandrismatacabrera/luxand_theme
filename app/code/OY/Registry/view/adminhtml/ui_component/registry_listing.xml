@@ -139,6 +139,10 @@
                         <item name="value" xsi:type="string">Reconocimiento Facial</item>
                         <item name="label" xsi:type="string" translate="true">Reconocimiento Facial</item>
                     </option>
+                    <option name="2" xsi:type="array">
+                        <item name="value" xsi:type="string">Automático</item>
+                        <item name="label" xsi:type="string" translate="true">Automático</item>
+                    </option>
                 </options>
             </settings>
         </column>
@@ -170,16 +174,5 @@
                 </item>
             </argument>
         </column>
-
-        <!--<column name="date_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
-            <settings>
-                <filter>dateRange</filter>
-                <dataType>date</dataType>
-                <dateFormat>yyyy-MM-dd hh:mm:ss</dateFormat>
-                <label translate="true">Date Time</label>
-                <timezone>false</timezone>
-            </settings>
-        </column>-->
-
     </columns>
 </listing>
