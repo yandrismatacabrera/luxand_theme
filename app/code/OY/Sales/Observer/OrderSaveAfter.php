@@ -13,6 +13,8 @@ use OY\Registry\Api\RegistryRepositoryInterface;
 
 class OrderSaveAfter implements ObserverInterface
 {
+    const AREA_CODE = \Magento\Framework\App\Area::AREA_ADMINHTML;
+
     public function __construct(
         \OY\Plan\Model\Repository\PlanRepository $planRepository,
         \OY\Plan\Model\PlanFactory $planFactory,
@@ -20,7 +22,8 @@ class OrderSaveAfter implements ObserverInterface
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \OY\Registry\Model\RegistryFactory $registryFactory,
         \OY\Registry\Api\RegistryRepositoryInterface $registryRepository,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
+        \Magento\Framework\App\State $state
     ) {
         $this->planRepository=$planRepository;
         $this->planFactory=$planFactory;
@@ -29,6 +32,7 @@ class OrderSaveAfter implements ObserverInterface
         $this->registryFactory = $registryFactory;
         $this->registryRepository = $registryRepository;
         $this->customerRepository = $customerRepository;
+        $this->state = $state;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -74,13 +78,15 @@ class OrderSaveAfter implements ObserverInterface
 
                                         $this->planRepository->save($model);
 
-                                        $registryRecord = $this->registryFactory->create();
-                                        $registryRecord->setDateTime(date("Y-m-d H:i:s"));
-                                        $registryRecord->setValid(1);
-                                        $registryRecord->setCustomerId($customerId);
-                                        $registryRecord->setFullname($customer->getFirstname() . ' ' . $customer->getLastname());
-                                        $registryRecord->setMethod(RegistryRepositoryInterface::METHOD_AUTOMATIC);
-                                        $this->registryRepository->save($registryRecord);
+                                        if ($this->state->getAreaCode() == self::AREA_CODE) {
+                                            $registryRecord = $this->registryFactory->create();
+                                            $registryRecord->setDateTime(date("Y-m-d H:i:s"));
+                                            $registryRecord->setValid(1);
+                                            $registryRecord->setCustomerId($customerId);
+                                            $registryRecord->setFullname($customer->getFirstname() . ' ' . $customer->getLastname());
+                                            $registryRecord->setMethod(RegistryRepositoryInterface::METHOD_AUTOMATIC);
+                                            $this->registryRepository->save($registryRecord);
+                                        }
                                     } catch (LocalizedException $e) {
                                     }
                                 }
