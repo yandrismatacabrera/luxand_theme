@@ -11,16 +11,30 @@ $_product = $block->getProduct();
 ?>
 
 <div class="cl_count-classes">
-    <?php
-    if($oyHelper->getCountClass($_product->getId())){
-        echo '<span>Clases</sapan>';
-        echo '<ul>';
-        foreach ($oyHelper->getListClassesId($_product->getId()) as $item){
-            $itemObj = $oyHelper->getClass($item);
-            echo '<li>'.$itemObj->getData('name').'</li>';
-        }
-        echo '</ul>';
-    }
-    ?>
+    <div class="product-classes-list" role="tablist">
+        <div class="collapsible">Clases</div>
+        <div class="content">
+            <?php
+            if($oyHelper->getCountClass($_product->getId())){
+                echo '<ul>';
+                foreach ($oyHelper->getListClassesId($_product->getId()) as $item){
+                    $itemObj = $oyHelper->getClass($item);
+                    echo '<li>'.$itemObj->getData('name').'</li>';
+                }
+                echo '</ul>';
+            }
+            ?>
+        </div>
+    </div>
 
+    <script>
+        require(['jquery'], function ($) {
+            $(function() {
+                $( ".collapsible" ).click(function() {
+                    $( ".collapsible" ).toggleClass( "active" );
+                    $( ".content" ).toggle();
+                });
+            });
+        });
+    </script>
 </div>
