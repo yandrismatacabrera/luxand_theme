@@ -21,6 +21,7 @@ $_productCollection = $block->getLoadedProductCollection();
 $_helper            = $this->helper('Magento\Catalog\Helper\Output');
 $_config            = $this->helper('Sm\Market\Helper\Data');
 $homeStyle          = $_config->getThemeLayout('home_style');
+$oyHelper         = $this->helper('OY\Catalog\Helper\Data');
 ?>
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty">
@@ -120,6 +121,16 @@ $homeStyle          = $_config->getThemeLayout('home_style');
                                         $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                                     </a>
                                 </strong>
+                                <span>
+                                    <?php
+                                    if($oyHelper->getCountClass($_product->getId())==1){
+                                        echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clase.';
+                                    }
+                                    if($oyHelper->getCountClass($_product->getId())>1){
+                                        echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clases.';
+                                    }
+                                    ?>
+                                </span>
                                 <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
                                 <?= /* @escapeNotVerified */
                                 $block->getProductPrice($_product) ?>
@@ -364,9 +375,9 @@ $homeStyle          = $_config->getThemeLayout('home_style');
                 "catalogAddToCart": {}
             }
         }
-        
 
-        
+
+
 
         </script>
     <?php endif; ?>
