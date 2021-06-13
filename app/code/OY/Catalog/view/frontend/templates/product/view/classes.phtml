@@ -20,6 +20,14 @@ $_product = $block->getProduct();
                 foreach ($oyHelper->getListClassesId($_product->getId()) as $item){
                     $itemObj = $oyHelper->getClass($item);
                     echo '<li>'.$itemObj->getData('name').'</li>';
+                    echo '<div style="display: inline-block;">';
+                    if($itemObj->getData('image')){
+                        echo '<div style="float: left; margin-right: 10px; margin-bottom: 10px;"><img width="150" height="150" src="'.$itemObj->getData('image').'"></div>';
+                    }
+                    echo  '<div style="margin-left: 10px;">'.$itemObj->getData('description').'</div>';
+                    echo '<br/>';
+                    echo '<strong>Profesor:</strong> '.$itemObj->getData('profesor_name');
+                    echo '</div>';
                 }
                 echo '</ul>';
             }
