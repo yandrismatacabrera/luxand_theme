@@ -22,6 +22,7 @@ $_helper            = $this->helper('Magento\Catalog\Helper\Output');
 $_helperProduct     = $this->helper('OY\Catalog\Helper\Data');
 $_config            = $this->helper('Sm\Market\Helper\Data');
 $homeStyle          = $_config->getThemeLayout('home_style');
+$oyHelper         = $this->helper('OY\Catalog\Helper\Data');
 ?>
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty">
@@ -121,6 +122,16 @@ $homeStyle          = $_config->getThemeLayout('home_style');
                                         $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                                     </a>
                                 </strong>
+                                <span>
+                                    <?php
+                                    if($oyHelper->getCountClass($_product->getId())==1){
+                                        echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clase.';
+                                    }
+                                    if($oyHelper->getCountClass($_product->getId())>1){
+                                        echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clases.';
+                                    }
+                                    ?>
+                                </span>
                                 <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
                                 <?= /* @escapeNotVerified */
                                 $block->getProductPrice($_product) ?>
@@ -139,6 +150,16 @@ $homeStyle          = $_config->getThemeLayout('home_style');
                                                             Ver Plan
                                                         </a>
                                                     </strong>
+                                                    <span>
+                                                        <?php
+                                                        if($oyHelper->getCountClass($_product->getId())==1){
+                                                            echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clase.';
+                                                        }
+                                                        if($oyHelper->getCountClass($_product->getId())>1){
+                                                            echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clases.';
+                                                        }
+                                                        ?>
+                                                    </span>
                                                 <?php else: ?>
                                                     <form data-role="tocart-form"
                                                           data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
@@ -309,6 +330,16 @@ $homeStyle          = $_config->getThemeLayout('home_style');
                                                             Ver Plan
                                                         </a>
                                                     </strong>
+                                                    <span>
+                                                        <?php
+                                                        if($oyHelper->getCountClass($_product->getId())==1){
+                                                            echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clase.';
+                                                        }
+                                                        if($oyHelper->getCountClass($_product->getId())>1){
+                                                            echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clases.';
+                                                        }
+                                                        ?>
+                                                    </span>
                                                 <?php else: ?>
                                                     <form data-role="tocart-form" action="<?php /* @escapeNotVerified */
                                                     echo $postParams['action']; ?>" method="post">
@@ -385,9 +416,9 @@ $homeStyle          = $_config->getThemeLayout('home_style');
                 "catalogAddToCart": {}
             }
         }
-        
 
-        
+
+
 
         </script>
     <?php endif; ?>
