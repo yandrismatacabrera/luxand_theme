@@ -177,16 +177,7 @@ if (count($products)) {
                                                     Ver Plan
                                                 </a>
                                             </strong>
-                                            <span>
-                                                <?php
-                                                if($oyHelper->getCountClass($_product->getId())==1){
-                                                    echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clase.';
-                                                }
-                                                if($oyHelper->getCountClass($_product->getId())>1){
-                                                    echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clases.';
-                                                }
-                                                ?>
-                                         </span>
+
                                         <?php else: ?>
                                             <form data-role="tocart-form"
                                                   data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
