@@ -111,16 +111,6 @@ switch ($type = $block->getType()) {
                                         <?php echo $block->escapeHtml($_item->getName()) ?>
                                     </a>
                                 </strong>
-                                <span>
-                                    <?php
-                                    if($oyHelper->getCountClass($_product->getId())==1){
-                                        echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clase.';
-                                    }
-                                    if($oyHelper->getCountClass($_product->getId())>1){
-                                        echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clases.';
-                                    }
-                                    ?>
-                                </span>
 
                                 <?php echo $block->getReviewsSummaryHtml($_item, $templateType, true) ?>
 
