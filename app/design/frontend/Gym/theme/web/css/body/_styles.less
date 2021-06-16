@@ -226,13 +226,20 @@
     border-top: none;
     width: 100%;
 
-    ul {
-      list-style: square;
-      padding-left: 15px;
+    .class-item {
+      display: flex;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
 
-      li {
-        padding: 3px 0;
-        font-size: 13px;
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .image-container {
+        margin-right: 15px;
+        min-width: 150px;
       }
     }
   }
