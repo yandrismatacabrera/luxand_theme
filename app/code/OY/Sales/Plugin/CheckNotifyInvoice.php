@@ -23,7 +23,7 @@ class CheckNotifyInvoice
 
             if ($customer &&
                 $customer->getCustomAttribute('client_send_invoice') &&
-                $customer->getCustomAttribute('client_send_invoice')->getValue()) {
+                !$customer->getCustomAttribute('client_send_invoice')->getValue()) {
                 return true;
             }
         }
