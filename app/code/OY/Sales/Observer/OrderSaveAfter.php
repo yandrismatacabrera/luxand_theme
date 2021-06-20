@@ -23,7 +23,8 @@ class OrderSaveAfter implements ObserverInterface
         \OY\Registry\Model\RegistryFactory $registryFactory,
         \OY\Registry\Api\RegistryRepositoryInterface $registryRepository,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
-        \Magento\Framework\App\State $state
+        \Magento\Framework\App\State $state,
+        \OY\Plan\Helper\Data $helper
     ) {
         $this->planRepository=$planRepository;
         $this->planFactory=$planFactory;
@@ -33,6 +34,7 @@ class OrderSaveAfter implements ObserverInterface
         $this->registryRepository = $registryRepository;
         $this->customerRepository = $customerRepository;
         $this->state = $state;
+        $this->helper=$helper;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -76,6 +78,8 @@ class OrderSaveAfter implements ObserverInterface
                                             $model->setData('access_enabled', $product->getData('number_access'));
                                         }
 
+                                        $this->deleteActivePlan($customerId);
+
                                         $this->planRepository->save($model);
 
                                         if ($this->state->getAreaCode() == self::AREA_CODE) {
@@ -95,6 +99,13 @@ class OrderSaveAfter implements ObserverInterface
                     }
                 }
             }
+        }
+    }
+
+    private function deleteActivePlan($customerId){
+        $activePlan = $this->helper->getEnablePlanByCustomer($customerId);
+        if($activePlan){
+            $this->planRepository->deleteById($activePlan->getId());
         }
     }
 }
