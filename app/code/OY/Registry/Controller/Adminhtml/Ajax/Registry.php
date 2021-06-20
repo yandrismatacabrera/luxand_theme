@@ -178,6 +178,12 @@ class Registry extends \Magento\Backend\App\Action
             $method = RegistryRepositoryInterface::METHOD_CI;
         }
 
+        if ($customer->getCustomAttribute('client_local_access') && !$customer->getCustomAttribute('client_local_access')->getValue()) {
+            $data['success'] = false;
+            $data['msg'] = 'El cliente no se puede registrar porque no tiene acceso al local.';
+            return $result->setData($data);
+        }
+
         $data['customer'] = $this->formatCustomerData($customer);
         $data['plan'] = $this->getPlanDataByCustomer($customer);
         $data['book'] = $this->getBookDataByCustomer($customer);

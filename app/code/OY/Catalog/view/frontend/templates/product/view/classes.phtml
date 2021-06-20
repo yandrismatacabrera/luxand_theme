@@ -15,22 +15,26 @@ $_product = $block->getProduct();
         <div class="collapsible">Clases</div>
         <div class="content">
             <?php
-            if($oyHelper->getCountClass($_product->getId())){
-                echo '<ul>';
-                foreach ($oyHelper->getListClassesId($_product->getId()) as $item){
-                    $itemObj = $oyHelper->getClass($item);
-                    echo '<li style="list-style: none;"><strong>'.$itemObj->getData('name').'</strong></li>';
-                    echo '<div style="display: inline-block;">';
-                    if($itemObj->getData('image')){
-                        echo '<div style="float: left; margin-right: 10px; margin-bottom: 10px;"><img width="150" height="150" src="'.$itemObj->getData('image').'"></div>';
+            if($oyHelper->getCountClass($_product->getId())) {
+            foreach ($oyHelper->getListClassesId($_product->getId()) as $item){
+                $itemObj = $oyHelper->getClass($item);
+            ?>
+                <div class="class-item">
+                    <?php if($itemObj->getData('image')) { ?>
+                        <div class="image-container">
+                            <img width="150" height="150" src="<?=$itemObj->getData('image')?>">
+                        </div>
+                    <?php
                     }
-                    echo  '<div style="margin-left: 10px; float: right;">'.$itemObj->getData('description').
-                          '<br/><strong>Profesor:</strong> '.$itemObj->getData('profesor_name').
-                          '</div>';
-                    echo '</div>';
-                }
-                echo '</ul>';
-            }
+                    ?>
+                    <div>
+                        <strong>Nombre:</strong> <?=$itemObj->getData('name') ?><br/>
+                        <strong>Profesor:</strong> <?=$itemObj->getData('profesor_name') ?><br/>
+                        <?=$itemObj->getData('description') ?>
+                    </div>
+                </div>
+            <?php
+            }}
             ?>
         </div>
     </div>
