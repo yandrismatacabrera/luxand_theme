@@ -78,7 +78,12 @@ class OrderSaveAfter implements ObserverInterface
                                             $model->setData('access_enabled', $product->getData('number_access'));
                                         }
 
-                                        $this->deleteActivePlan($customerId);
+                                        $today = date("Y-m-d");
+                                        $init = date("Y-m-d H:i:s", strtotime("+3 hours", strtotime($strFrom)));
+
+                                        if(strtotime($init) <= strtotime($today)){
+                                            $this->deleteActivePlan($customerId);
+                                        }
 
                                         $this->planRepository->save($model);
 
