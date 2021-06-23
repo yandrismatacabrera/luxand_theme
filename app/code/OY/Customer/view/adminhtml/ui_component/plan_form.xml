@@ -77,7 +77,7 @@
         <field name="plan">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                     <item name="label" xsi:type="string" translate="true">Plan</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">select</item>
@@ -139,7 +139,7 @@
         <field name="to">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="disabled" xsi:type="boolean">false</item>
                     <item name="dataType" xsi:type="string">string</item>
                     <item name="label" xsi:type="string" translate="true">Hasta</item>
                     <item name="formElement" xsi:type="string">date</item>

@@ -100,7 +100,10 @@ class Save extends Action
 
                 $model->setData('from',date("Y-m-d H:i:s", strtotime("+3 hours", strtotime($strTo))));
                 //$model->setTo($this->dateFilter->filter(date('d/m/Y', $dateTo)));
-                $model->setData('to',$dateTo);
+                $strToTo = strtotime($data['to']);
+                $strToTo =$this->dateFilter->filter($data['to']);
+
+                $model->setData('to',date("Y-m-d H:i:s", strtotime("+3 hours", strtotime($strToTo))));
 
                 $model->setData('access_number',0);
                 if($data['access_number'])

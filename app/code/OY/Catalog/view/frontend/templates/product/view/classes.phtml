@@ -9,10 +9,10 @@ $oyHelper         = $this->helper('OY\Catalog\Helper\Data');
 <?php
 $_product = $block->getProduct();
 ?>
-
-<div class="cl_count-classes">
+<?php if ($oyHelper->getCountClass($_product->getId())): ?>
+ <div class="cl_count-classes">
     <div class="product-classes-list" role="tablist">
-        <div class="collapsible">Clases</div>
+        <div class="collapsible"><?=$oyHelper->getCountClass($_product->getId()).' Clases';?></div>
         <div class="content">
             <?php
             if($oyHelper->getCountClass($_product->getId())) {
@@ -50,3 +50,4 @@ $_product = $block->getProduct();
         });
     </script>
 </div>
+<?php endif ?>
