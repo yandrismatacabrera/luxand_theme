@@ -52,15 +52,14 @@ class OrderSaveAfter implements ObserverInterface
 
                     if (isset($options['info_buyRequest']) && isset($options['info_buyRequest']['options'])) {
                         foreach ($options['info_buyRequest']['options'] as $opt) {
-                            if ($opt) {
+                            if (isset($opt['date'])) {
                                 $product = $this->productRepository->getById($orderItem->getProductId());
                                 $model = $this->planFactory->create();
 
                                 if ($product->getData('code_interval')) {
                                     try {
 
-                                        $strFrom=$opt;
-                                        //$strFrom =$this->dateFilter->filter($opt);
+                                        $strFrom =$this->dateFilter->filter($opt['date']);
 
                                         $strTo = new \DateTime($strFrom);
                                         $strTo->add(new \DateInterval($product->getData('code_interval')));
