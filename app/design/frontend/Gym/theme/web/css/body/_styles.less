@@ -244,3 +244,247 @@
     }
   }
 }
+
+.data-product-gallery {
+  margin-bottom: 35px;
+
+  .image-gallery-title {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #1E120D;
+  }
+
+  .container-carousel-product {
+    display: flex;
+    justify-content: center;
+
+    .owl-carousel {
+      //width: calc(~'100% - 100px');
+      width: 100%;
+      .owl-nav {
+        position: absolute;
+        top: -55px;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        height: 1px;
+
+        .owl-prev, .owl-next {
+          margin-top: 5px !important;
+          height: 35px !important;
+          width: 35px !important;
+          background-color: #B41420 !important;
+        }
+
+        .owl-prev {
+          margin-right: auto;
+          margin-left: 10px;
+        }
+
+        .owl-prev::before {
+          content: '\f104' !important;
+          color: white !important;
+          font-size: 100px;
+          line-height: 100px;
+        }
+
+        .owl-next::before {
+          content: '\f105' !important;
+          color: white !important;
+          font-size: 100px;
+          line-height: 100px;
+        }
+
+        .owl-next {
+          margin-right: -6px;
+        }
+      }
+    }
+  }
+}
+
+.container-gallery-images {
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+
+    .item {
+      display: flex;
+      vertical-align: middle;
+      height: 250px;
+      border: none;
+      padding: 5px;
+      flex: 0 0 33.333333%;
+
+      img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        height: auto;
+        width: 100% !important;
+        max-width: 400px;
+        max-height: 300px;
+        height: 100%;
+        align-self: center;
+        flex: 0 0 auto;
+      }
+
+      &:hover {
+        cursor: zoom-in;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .item {
+        flex: 0 0 50%;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .item {
+        flex: 0 0 100%;
+      }
+    }
+  }
+}
+
+//=============================================
+/* Style the Image Used to Trigger the Modal */
+#myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 99999; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+  justify-content: center;
+}
+
+/* Modal Content (Image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 90%;
+  max-width: 1200px;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content, #caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+#button-close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+#button-close:hover,
+#button-close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  .modal-content {
+    width: 100%;
+  }
+}
+
+.container-gallery-viewer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  //flex-wrap: wrap;
+
+  .viewer-prev, .viewer-next {
+    border-radius: 50%;
+    width: 35px !important;
+    height: 35px !important;
+    background: white;
+    position: relative;
+    cursor: pointer;
+
+    &:hover::before {
+      color: #9D111C;
+    }
+  }
+
+  .viewer-prev {
+    margin-left: 10px;
+    margin-right: 10px;
+
+    &::before {
+      content: '\f104';
+      color: #434342;
+      display: inline-block;
+      font-family: FontAwesome;
+      font-size: 26px !important;
+      line-height: 35px !important;
+      font-weight: bold !important;
+      text-align: center;
+      position: absolute;
+      left: 11px;
+      top: 0;
+    }
+  }
+
+  .viewer-next {
+    margin-left: 10px;
+    margin-right: 10px;
+
+    &::before {
+      content: '\f105';
+      color: #434342;
+      display: inline-block;
+      font-family: FontAwesome;
+      font-family: FontAwesome;
+      font-size: 26px !important;
+      line-height: 35px !important;
+      font-weight: bold !important;
+      text-align: center;
+      position: absolute;
+      left: 13px;
+      top: 0;
+    }
+  }
+}

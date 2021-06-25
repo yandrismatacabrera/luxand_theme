@@ -50,6 +50,8 @@
             <values>
                 <value id="localhost" type="host">https://localhost</value>
                 <value id="prod" type="host">https://openfit.com.uy</value>
+                <value id="googleusercontent" type="host">https://lh3.googleusercontent.com</value>
+                <value id="googleapis" type="host">https://maps.googleapis.com</value>
             </values>
         </policy>
     </policies>

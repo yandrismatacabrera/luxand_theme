@@ -25,5 +25,19 @@
                 </field>
             </group>
         </section>
+        <section id="luxand_gallery" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+            <label>Galería de Imágenes</label>
+            <tab>luxand</tab>
+            <resource>OY_Registry::config_oy_registry</resource>
+            <group id="config_gallery" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                <label>Configuración de la Galería</label>
+                <field id="api_key" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label" type="text">
+                    <label>API Key</label>
+                </field>
+                <field id="place_id" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label" type="text">
+                    <label>Place ID</label>
+                </field>
+            </group>
+        </section>
     </system>
 </config>
