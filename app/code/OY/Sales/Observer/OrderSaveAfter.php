@@ -52,14 +52,15 @@ class OrderSaveAfter implements ObserverInterface
 
                     if (isset($options['info_buyRequest']) && isset($options['info_buyRequest']['options'])) {
                         foreach ($options['info_buyRequest']['options'] as $opt) {
-                            if (isset($opt['date'])) {
+                            if ($opt) {
                                 $product = $this->productRepository->getById($orderItem->getProductId());
                                 $model = $this->planFactory->create();
 
                                 if ($product->getData('code_interval')) {
                                     try {
 
-                                        $strFrom =$this->dateFilter->filter($opt['date']);
+                                        $strFrom=$opt;
+                                        //$strFrom =$this->dateFilter->filter($opt);
 
                                         $strTo = new \DateTime($strFrom);
                                         $strTo->add(new \DateInterval($product->getData('code_interval')));
@@ -78,12 +79,12 @@ class OrderSaveAfter implements ObserverInterface
                                             $model->setData('access_enabled', $product->getData('number_access'));
                                         }
 
-                                        /*$today = date("Y-m-d");
+                                        $today = date("Y-m-d");
                                         $init = date("Y-m-d H:i:s", strtotime("+3 hours", strtotime($strFrom)));
 
                                         if(strtotime($init) <= strtotime($today)){
                                             $this->deleteActivePlan($customerId);
-                                        }*/
+                                        }
 
                                         $this->planRepository->save($model);
 
