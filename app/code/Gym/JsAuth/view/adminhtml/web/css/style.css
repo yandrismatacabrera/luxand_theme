@@ -70,3 +70,6 @@ progress[value]::-webkit-progress-bar {
     padding: 14px;
     width: 100%;
 }
+.top-message {
+    font-size: 3rem !important;
+}

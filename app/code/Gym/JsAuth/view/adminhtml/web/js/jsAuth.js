@@ -54,11 +54,11 @@ define([
                 info: { msg: 'Bienvenido', type: 'primary' },
                 ci: null,
                 isProcessing: false,
-                timeToMakeRegister: 2,
+                timeToMakeRegister: parseInt(config.timeToMakeRegister, 10) || 2,
                 timeDetecting: 0,
-                inputSize: 128,
-                errorDetecting: 0.6,
-                isActiveDetection: 'Si'
+                inputSize: 512,
+                errorDetecting: 0.7,
+                timeWithIdentifiedPerson: null
             },
             computed: {
                 disableRegisterWithFace: function disableRegisterWithFace() {
@@ -94,10 +94,7 @@ define([
                     }
                 },
                 initFaceDetection: async function initFaceDetection() {
-                    const displaySize = {
-                        width: this.video.clientWidth,
-                        height: this.video.clientHeight
-                    };
+                    
                     var detection = null;
                     var resizedDetections;
                     var self = this;
@@ -105,12 +102,16 @@ define([
 
                     this.faceDetected = null;
                     this.identifiedPerson = null;
-                    this.canvas = faceApi.createCanvasFromMedia(this.video);
-                    this.video.parentElement.append(this.canvas)
-
-                     faceApi.matchDimensions(this.canvas, displaySize);
+                    
+                    self.canvas = faceApi.createCanvasFromMedia(self.video);
+                    self.video.parentElement.append(self.canvas)
 
                     setInterval(async () => {
+                        var displaySize = {
+                            width: this.video.clientWidth,
+                            height: this.video.clientHeight
+                        };
+                        faceApi.matchDimensions(self.canvas, displaySize);
                         detection = await faceApi.detectSingleFace(self.video, detectionsOptions);
                         self.canvas.getContext('2d').clearRect(0, 0, self.canvas.width, self.canvas.height);
                         
@@ -119,9 +120,7 @@ define([
                             resizedDetections = faceApi.resizeResults([detection], displaySize);
                             faceApi.draw.drawDetections(self.canvas, resizedDetections);
                             if (self.timeDetecting < self.timeToMakeRegister) {
-                                if (self.isActiveDetection === 'Si') {
-                                    self.timeDetecting += 0.3;
-                                }
+                                self.timeDetecting += 0.3;
                             } else {
                                 self.timeDetecting = self.timeToMakeRegister;
                                 self.registerWithFace();
@@ -129,6 +128,18 @@ define([
                         } else {
                             self.faceDetected = false;
                             self.timeDetecting = 0
+                        }
+                        // hide handler user data
+                        if (self.showUserData && self.timeWithIdentifiedPerson !== null) {
+                            self.timeWithIdentifiedPerson += 0.3;
+                        } else if(self.showUserData && self.timeWithIdentifiedPerson === null) {
+                            self.timeWithIdentifiedPerson = 0;
+                        } else {
+                            self.timeWithIdentifiedPerson = null;
+                        }
+                        if (self.timeWithIdentifiedPerson !== null && self.timeWithIdentifiedPerson > 20) {
+                            self.timeWithIdentifiedPerson = null;
+                            self.identifiedPerson = null;
                         }
                     }, 300);
                 },
@@ -154,6 +165,7 @@ define([
                         "data": {"photo": this.faceDetectedImg }
                     }
                     self.setInfo(true, 'Procesando...', 'warning');
+                    self.identifiedPerson = null;
                     return jQuery.ajax(settings)
                     .done(function(response) {
                         self.identifiedPerson = self.handleResponseApi(response) || { id: null };
@@ -179,8 +191,12 @@ define([
                     const self = this;
                     return jQuery.ajax(settings)
                         .done(function (response) {
+                            self.setInfo(false, 'El registro se completo satisfactoriamente.', 'success');
                             if (response.success) {
                                 self.setInfo(false, 'El registro se completo satisfactoriamente.', 'success');
+                                self.identifiedPerson = Object.assign(self.identifiedPerson, {
+                                    to: response.plan && self.humanizeDate(response.plan.to)
+                                })
                             } else {
                                 self.setInfo(false, response.msg || 'El registro no se pudo completar.', 'error');
                             }
@@ -232,6 +248,9 @@ define([
                             .done(function (response) {
                                 if (response && response.success) {
                                     self.setInfo(false, 'El registro se completo satisfactoriamente.', 'success');
+                                    self.identifiedPerson = Object.assign(self.identifiedPerson, {
+                                        to: response.plan && self.humanizeDate(response.plan.to)
+                                    })
                                 } else {
                                     self.setInfo(false, response.msg || 'El registro no se pudo completar.', 'error');
                                 }
@@ -250,6 +269,7 @@ define([
                 resetValues: function resetValues() {
                     this.faceDetected = null;
                     this.identifiedPerson = null;
+                    this.timeWithIdentifiedPerson = null;
                     this.setInfo(false, 'Bienvenido', 'primary');
                     return null;
                 },
@@ -285,20 +305,42 @@ define([
                     var person;
                     try {
                         if (Array.isArray(response)) {
-                            personArray = response.filter(person => person.probability > 0.9);
-                            if (personArray) {
+                            personArray = response.sort((a,b) => a.probability - b.probability).reverse();
+                            if (personArray && personArray.length > 0) {
                                 person = personArray && personArray[0] && JSON.parse(personArray[0].name);
                                 person.image64 = this.faceDetectedImg;
                                 return this.formatUserResponse(true, person);
                             }
                         }
                     } catch (e) {
-                        console.log(e);
+                        console.error(response);
+                        console.error(e);
                     }
                     return false;
                 },
                 toggleConfigForm: function toggleConfigForm() {
                     jQuery('#form-configuracion').slideToggle()
+                },
+                humanizeDate: function formatDate (dateStr) {
+                    var currentDate = new Date();
+                    var dateArr = dateStr.split('-');
+                    var sameYear = currentDate.getFullYear().toString() === dateArr[0];
+                    var sameMonth = currentDate.getMonth() + 1 === parseInt(dateArr[1], 10);
+                    var diffDay;
+
+                    if (sameYear && sameMonth ) {
+                        diffDay = Math.abs(currentDate.getDate() - parseInt(dateArr[2], 10));
+                        if (diffDay <= 4) {
+                            if (diffDay === 0) {
+                                return 'Hoy es el último día del plan.';
+                            }
+                            if (diffDay === 1) {
+                                return 'El plan vence mañana.';
+                            }
+                            return 'El plan vence en '  + diffDay + ' días.';
+                        }
+                    }
+                    return 'Plan válido hasta '  + dateArr[2] + '/' + dateArr[1] + '/' + dateArr[0] + '.';
                 }
             }
         });

@@ -15,7 +15,7 @@
                     <div id="messages">
                         <div class="messages">
                             <div :class="'message message-' + info.type + ' ' + info.type">
-                                <div :data-ui-id="'messages-message-' + info.type">{{ info.msg }}</div>
+                                <div :data-ui-id="'messages-message-' + info.type" class="top-message">{{ info.msg }}</div>
                             </div>
                         </div>
                      </div>
@@ -65,9 +65,9 @@
                                                             </div>
                                                             <div class="admin__field-control">
                                                                 <select v-model="inputSize" name="imagen-resolution" class="admin__control-select">
-                                                                    <option value="128" selected>128</option>
+                                                                    <option value="128">128</option>
                                                                     <option value="160">160</option>
-                                                                    <option value="224">224</option>
+                                                                    <option value="224" selected>224</option>
                                                                     <option value="416">416</option>
                                                                     <option value="512">512</option>
                                                                     <option value="608">608</option>
@@ -123,6 +123,9 @@
                                             </li>
                                             <li class="">
                                                 <span class="">{{ identifiedPerson.ci }}</span>
+                                            </li>
+                                            <li class="" v-if="identifiedPerson.to">
+                                                <span class="">{{ identifiedPerson.to }}</span>
                                             </li>
                                         </ul>
                                     </div>
