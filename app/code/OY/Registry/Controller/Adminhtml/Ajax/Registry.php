@@ -103,12 +103,18 @@ class Registry extends \Magento\Backend\App\Action
                         if ($plan->getData('access_enabled')) {
                             $plan->setData('access_enabled', (int) $plan->getData('access_enabled') - 1);
                             $this->planRepository->save($plan);
-                            $planData['plan'] = $plan->getData('from') . ' - ' . $plan->getData('to');
+                            $planData['from'] = $plan->getData('from');
+                            $planData['to'] = $plan->getData('to');
+                            $planData['access_enabled'] = $plan->getData('access_enabled');
+                            $planData['access_number'] = $plan->getData('access_number');
                             $planData['success'] = true;
                             unset($planData['msg']);
                         }
                     } else {
-                        $planData['plan'] = $plan->getData('from') . ' - ' . $plan->getData('to');
+                        $planData['from'] = $plan->getData('from');
+                        $planData['to'] = $plan->getData('to');
+                        $planData['access_enabled'] = $plan->getData('access_enabled');
+                        $planData['access_number'] = $plan->getData('access_number');
                         $planData['success'] = true;
                         unset($planData['msg']);
                     }
