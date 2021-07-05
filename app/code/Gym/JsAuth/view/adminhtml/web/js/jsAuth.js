@@ -56,7 +56,7 @@ define([
                 isProcessing: false,
                 timeToMakeRegister: parseInt(config.timeToMakeRegister, 10) || 2,
                 timeDetecting: 0,
-                inputSize: 512,
+                inputSize: 224,
                 errorDetecting: 0.7,
                 timeWithIdentifiedPerson: null
             },
@@ -140,6 +140,7 @@ define([
                         if (self.timeWithIdentifiedPerson !== null && self.timeWithIdentifiedPerson > 20) {
                             self.timeWithIdentifiedPerson = null;
                             self.identifiedPerson = null;
+                            self.resetValues();
                         }
                     }, 300);
                 },
