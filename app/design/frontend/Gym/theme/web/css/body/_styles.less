@@ -327,6 +327,8 @@
         height: 100%;
         align-self: center;
         flex: 0 0 auto;
+        object-fit: cover;
+        object-position: center;
       }
 
       &:hover {
@@ -510,4 +512,19 @@
 
 .checkout-container .checkout-payment-method .step-title {
   display: none;
+}
+
+.panel-checkout {
+  .row {
+    margin-left: 0;
+
+    .pt-20 {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+}
+
+.checkout-payment-method .field-select-billing, .checkout-payment-method .billing-address-form {
+  max-width: 100%;
 }
