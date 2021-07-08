@@ -16,6 +16,7 @@ $_productCollection = $block->getLoadedProductCollection();
 $_helper            = $this->helper('Magento\Catalog\Helper\Output');
 $_helperProduct     = $this->helper('OY\Catalog\Helper\Data');
 $_config            = $this->helper('Sm\Market\Helper\Data');
+$oyHelper         = $this->helper('OY\Catalog\Helper\Data');
 ?>
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty">
@@ -110,11 +111,24 @@ $_config            = $this->helper('Sm\Market\Helper\Data');
                                 echo $block->getProductPrice($_product) ?>
                                 <?php echo $block->getProductDetailsHtml($_product); ?>
 
+                                <span>
+                                    <?php
+                                    if($oyHelper->getCountClass($_product->getId())==1){
+                                        echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clase.';
+                                    }
+                                    if($oyHelper->getCountClass($_product->getId())>1){
+                                        echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clases.';
+                                    }else{
+                                        echo '</br>';
+                                    }
+                                    ?>
+                                </span>
                                 <div class="bottom-action">
                                     <?php if ($_config->getAdvanced('show_addtocart_button')) { ?>
                                         <?php if ($_product->isSaleable()): ?>
                                             <?php $postParams = $block->getAddToCartPostParams($_product); ?>
                                             <?php if ($_helperProduct->getProductPlan($_product->getId())):?>
+
                                                 <strong class="product name product-item-name">
                                                     <a class="action primary view-plan"
                                                        href="<?= /* @escapeNotVerified */
@@ -265,8 +279,8 @@ $_config            = $this->helper('Sm\Market\Helper\Data');
                 "catalogAddToCart": {}
             }
         }
-        
-        
+
+
         </script>
     <?php endif; ?>
 <?php endif; ?>
