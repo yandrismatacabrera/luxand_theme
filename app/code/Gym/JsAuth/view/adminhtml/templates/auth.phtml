@@ -6,7 +6,7 @@
  */
 ?>
 
-<main class="page-content" id="appvue">
+<main class="page-content margin-top-20" id="appvue">
     <div class="page-columns">
         <div class="admin__old">
             <div class="main-col">
@@ -38,25 +38,12 @@
                             </div>
                             <div class="col-m-12 col-l-12 form-config">
                                 <div>
-                                    <a @click="toggleConfigForm">Configurar (A: {{ isActiveDetection }} |R: {{ inputSize }} | T: {{ timeToMakeRegister }} | P: {{ errorDetecting }})</a>
+                                    <a @click="toggleConfigForm">Configurar (R: {{ inputSize }} | T: {{ timeToMakeRegister }} | P: {{ errorDetecting }})</a>
                                     <div style="display: none;" id="form-configuracion">
                                         <div class="entry-edit form-inline">
                                             <div class="fieldset-wrapper">
                                                 <div class="admin__fieldset-wrapper-content">
                                                     <fieldset class="admin__fieldset">
-                                                        <div class="admin__field _required">
-                                                            <div class="admin__field-label">
-                                                                <label for="IDFIELD">
-                                                                    <span>Activado</span>
-                                                                </label>
-                                                            </div>
-                                                            <div class="admin__field-control">
-                                                                <select v-model="isActiveDetection" name="isActiveDetection" class="admin__control-select">
-                                                                    <option value="Si" selected>Si</option>
-                                                                    <option value="No">No</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
                                                         <div class="admin__field _required">
                                                             <div class="admin__field-label">
                                                                 <label for="IDFIELD">
