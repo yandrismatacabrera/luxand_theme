@@ -137,7 +137,7 @@ define([
                         } else {
                             self.timeWithIdentifiedPerson = null;
                         }
-                        if (self.timeWithIdentifiedPerson !== null && self.timeWithIdentifiedPerson > 20) {
+                        if (self.timeWithIdentifiedPerson !== null && self.timeWithIdentifiedPerson > 60) {
                             self.timeWithIdentifiedPerson = null;
                             self.identifiedPerson = null;
                             self.resetValues();
