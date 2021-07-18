@@ -34,6 +34,7 @@ class Date extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRe
      */
     public function render(\Magento\Framework\DataObject $row)
     {
+        date_default_timezone_set('America/Montevideo');
         $date = $this->timezone->formatDateTime(
             $row->getData('dob'),
             \IntlDateFormatter::SHORT,
