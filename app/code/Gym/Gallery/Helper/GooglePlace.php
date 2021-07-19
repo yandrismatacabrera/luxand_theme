@@ -54,6 +54,7 @@ class GooglePlace extends \Magento\Framework\App\Helper\AbstractHelper
 
         if ($err) {
             echo "cURL Error #:" . $err;
+            error_log("cURL Error #:" . $err);
         } else {
             return $response;
         }
