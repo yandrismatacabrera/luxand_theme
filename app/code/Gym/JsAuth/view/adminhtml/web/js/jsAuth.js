@@ -137,7 +137,7 @@ define([
                         } else {
                             self.timeWithIdentifiedPerson = null;
                         }
-                        if (self.timeWithIdentifiedPerson !== null && self.timeWithIdentifiedPerson > 20) {
+                        if (self.timeWithIdentifiedPerson !== null && self.timeWithIdentifiedPerson > 60) {
                             self.timeWithIdentifiedPerson = null;
                             self.identifiedPerson = null;
                             self.resetValues();
@@ -169,8 +169,15 @@ define([
                     self.identifiedPerson = null;
                     return jQuery.ajax(settings)
                     .done(function(response) {
-                        self.identifiedPerson = self.handleResponseApi(response) || { id: null };
-                        self.accessRegister();
+                        self.identifiedPerson = self.handleResponseApi(response);
+                        if (self.identifiedPerson) {
+                            self.accessRegister();
+                        } else {
+                            self.setInfo(false, 'No se pudo identificar, por favor vuelva a intentarlo.', 'error');
+                            self.isProcessing = false;
+                            self.timeDetecting = 0;
+                        }
+                        
                     })
                     .fail(function () {
                         self.setInfo(false, 'No se pudo identificar.', 'error');
@@ -307,7 +314,7 @@ define([
                     try {
                         if (Array.isArray(response)) {
                             personArray = response.sort((a,b) => a.probability - b.probability).reverse();
-                            if (personArray && personArray.length > 0) {
+                            if (personArray && personArray.length > 0 && personArray[0].probability > 0.8) {
                                 person = personArray && personArray[0] && JSON.parse(personArray[0].name);
                                 person.image64 = this.faceDetectedImg;
                                 return this.formatUserResponse(true, person);
