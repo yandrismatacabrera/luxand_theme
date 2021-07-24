@@ -21,7 +21,7 @@
     <route method="POST" url="/V1/registry/registrycustomer">
         <service class="OY\Registry\Api\RegistryManagementInterface" method="registryCustomer"/>
         <resources>
-            <resource ref="OY_Registry::registry"/>
+            <resource ref="self"/>
         </resources>
     </route>
 </routes>

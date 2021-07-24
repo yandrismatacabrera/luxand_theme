@@ -21,7 +21,9 @@ class RegistryManagement implements RegistryManagementInterface
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \OY\Registry\Model\RegistryFactory $registryFactory,
         \OY\Registry\Api\RegistryRepositoryInterface $registryRepository,
-        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone,
+        \OY\Registry\Helper\Registry $registry,
+        \Magento\Customer\Model\Session $customerSession
     ) {
 
         $this->request         = $request;
@@ -32,6 +34,8 @@ class RegistryManagement implements RegistryManagementInterface
         $this->registryFactory=$registryFactory;
         $this->registryRepository=$registryRepository;
         $this->timezone=$timezone;
+        $this->registry=$registry;
+        $this->customerSession=$customerSession;
     }
 
     public function recognitionFace()
@@ -68,35 +72,13 @@ class RegistryManagement implements RegistryManagementInterface
     public function registryCustomer()
     {
         $param = $this->request->getBodyParams();
-        if(isset($param['customer_id']))
-        {
 
-            try{
-
-                $customer = $this->customerRepository->getById((int)$param['customer_id']);
-                $fullName = $customer->getFirstname().' '.$customer->getLastname();
-                //$dateTime = $this->timezone->date()->format('Y-m-d H:i:s');
-                $dateTime=date("Y-m-d H:i:s");
-
-                $registry = $this->registryFactory->create();
-                $registry->setCustomerId((int)$param['customer_id']);
-                $registry->setDateTime($dateTime);
-                $registry->setFullname($fullName);
-
-                $this->registryRepository->save($registry);
-
-                return [
-                    "success"=>true,
-                    "msg"=>"Registro satisfactorio."
-                ];
-
-            }catch (Exception $e){
-                return [
-                    "success"=>false,
-                    "msg"=>"El usuario no existe."
-                ];
-            }
+        if(isset($param['customer_id'])){
+            $this->customerSession->setCustomerId($param['customer_id']);
         }
+        $result = $this->registry->registry();
+        print_r($result);die;
+        return true;
     }
 
 
