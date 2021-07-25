@@ -78,7 +78,7 @@ class RegistryManagement implements RegistryManagementInterface
         }
         $result = $this->registry->registry();
 
-        return $result;
+        return [$result];
     }
 
 
