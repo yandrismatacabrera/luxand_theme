@@ -8,25 +8,17 @@
 
 /** @var $block \Magento\Catalog\Block\Category\View */
 $_helper = $this->helper('Gym\Gallery\Helper\GooglePlace');
-$response = json_decode($_helper->getPlaceDetails(), true);
-$data = [];
-if (isset($response['result']) && isset($response['status']) && $response['status'] == 'OK') {
-    if (isset($response['result']['photos']) && count($response['result']['photos']) > 0) {
-        foreach ($response['result']['photos'] as $photo) {
-            $data[] = $photo['photo_reference'];
-        }
-    }
-}
-$imagesCount = count($data);
+$images = $_helper->getImagesPath();
+$imagesCount = count($images);
 
 ?>
 <div class="container-gallery-images">
-    <div class="gallery">
+    <div class="gallery <?=$imagesCount?>">
         <?php
         $index = 0;
-        foreach ($data as $ref) { ?>
+        foreach ($images as $image) { ?>
             <div class="item">
-                <img src="<?=$_helper->getPlacePhoto($ref)?>" alt="image" class="gallery-image" data-index="<?=$index++?>" onclick="openModalImage(this)"/>
+                <img src="<?php echo $block->getUrl("pub/media/gallery/").$image?>" alt="image" class="gallery-image" data-index="<?=$index++?>" onclick="openModalImage(this)"/>
             </div>
         <?php } ?>
     </div>

@@ -12,9 +12,11 @@ namespace Gym\Gallery\Helper;
 class GooglePlace extends \Magento\Framework\App\Helper\AbstractHelper
 {
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context
+        \Magento\Framework\App\Helper\Context $context,
+        \Magento\Framework\App\Filesystem\DirectoryList $directoryList
     ) {
         parent::__construct($context);
+        $this->directoryList = $directoryList;
     }
 
     private function getConfig($config_path)
@@ -62,5 +64,16 @@ class GooglePlace extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getPlacePhoto($photoRef) {
         return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=".$photoRef."&key=".$this->getAPIKey();
+    }
+
+    public function getImagesPath() {
+        $mediaDir = $this->directoryList->getPath('media');
+        $images = glob($mediaDir.'/gallery/'.'*');
+        $result = [];
+        foreach($images as $image) {
+            $array = explode("/", $image);
+            $result[] =  $array[count($array) - 1];
+        }
+        return $result;
     }
 }

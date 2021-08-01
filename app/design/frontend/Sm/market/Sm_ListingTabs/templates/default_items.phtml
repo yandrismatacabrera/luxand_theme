@@ -29,6 +29,7 @@ if ($this->_isAjax()) {
     $products = $this->getData('products');
 }
 $_helper         = $this->helper('Magento\Catalog\Helper\Output');
+$oyHelper         = $this->helper('OY\Catalog\Helper\Data');
 $_config         = $this->helper('Sm\Market\Helper\Data');
 $homeStyle       = $_config->getThemeLayout('home_style');
 $viewMode        = 'grid';
@@ -53,7 +54,7 @@ if (count($products)) {
     echo $viewMode; ?> products-<?php /* @escapeNotVerified */
     echo $viewMode; ?>">
         <?php $iterator = 1; ?>
-        <div class="products list items product-items  <?php echo $type_loadmore == false ? ' owl-carousel ' : ''; ?>" <?php echo $type_loadmore ? 'data-liffect="fadeIn"' : ''; ?>>
+        <div class="products list items product-items  gggg  gggggff  <?php echo $type_loadmore == false ? ' owl-carousel ' : ''; ?>" <?php echo $type_loadmore ? 'data-liffect="fadeIn"' : ''; ?>>
             <?php /** @var $_product \Magento\Catalog\Model\Product */
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
             ?>
@@ -123,6 +124,16 @@ if (count($products)) {
                                 $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>
+                        <span>
+                            <?php
+                            if($oyHelper->getCountClass($_product->getId())==1){
+                                echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clase.';
+                            }
+                            if($oyHelper->getCountClass($_product->getId())>1){
+                                echo 'Incluye '.$oyHelper->getCountClass($_product->getId()).' clases.';
+                            }
+                            ?>
+                        </span>
                         <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
                         <?= /* @escapeNotVerified */
                         $block->getProductPrice($_product) ?>
@@ -158,25 +169,35 @@ if (count($products)) {
                                 <div class="actions-primary"<?= strpos($pos, $viewMode . '-primary') ? $position : '' ?>>
                                     <?php if ($_product->isSaleable()): ?>
                                         <?php $postParams = $block->getAddToCartPostParams($_product); ?>
-                                        <form data-role="tocart-form"
-                                              data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
-                                              action="<?= /* @NoEscape */
-                                              $postParams['action'] ?>" method="post">
-                                            <input type="hidden" name="product"
-                                                   value="<?= /* @escapeNotVerified */
-                                                   $postParams['data']['product'] ?>">
-                                            <input type="hidden" name="<?= /* @escapeNotVerified */
-                                            Action::PARAM_NAME_URL_ENCODED ?>"
-                                                   value="<?= /* @escapeNotVerified */
-                                                   $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
-                                            <?= $block->getBlockHtml('formkey') ?>
-                                            <button type="submit"
-                                                    title="<?= $block->escapeHtml(__('Add to Cart')) ?>"
-                                                    class="action tocart primary">
-											<span><?= /* @escapeNotVerified */
-                                                __('Add to Cart') ?></span>
-                                            </button>
-                                        </form>
+                                        <?php if ($_product->getData('is_plan')):?>
+                                            <strong class="product name product-item-name">
+                                                <a class="action primary view-plan"
+                                                   href="<?= /* @escapeNotVerified */
+                                                   $_product->getProductUrl() ?>">
+                                                    Ver Plan
+                                                </a>
+                                            </strong>
+                                        <?php else: ?>
+                                            <form data-role="tocart-form"
+                                                  data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
+                                                  action="<?= /* @NoEscape */
+                                                  $postParams['action'] ?>" method="post">
+                                                <input type="hidden" name="product"
+                                                       value="<?= /* @escapeNotVerified */
+                                                       $postParams['data']['product'] ?>">
+                                                <input type="hidden" name="<?= /* @escapeNotVerified */
+                                                Action::PARAM_NAME_URL_ENCODED ?>"
+                                                       value="<?= /* @escapeNotVerified */
+                                                       $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                                <?= $block->getBlockHtml('formkey') ?>
+                                                <button type="submit"
+                                                        title="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                        class="action tocart primary">
+                                                <span><?= /* @escapeNotVerified */
+                                                    __('Add to Cart') ?></span>
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
                                     <?php else: ?>
                                         <?php if ($_product->isAvailable()): ?>
                                             <div class="stock available"><span><?= /* @escapeNotVerified */
