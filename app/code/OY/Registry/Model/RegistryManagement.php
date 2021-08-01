@@ -77,8 +77,8 @@ class RegistryManagement implements RegistryManagementInterface
             $this->customerSession->setCustomerId($param['customer_id']);
         }
         $result = $this->registry->registry();
-        print_r($result);die;
-        return true;
+
+        return [$result];
     }
 
 
