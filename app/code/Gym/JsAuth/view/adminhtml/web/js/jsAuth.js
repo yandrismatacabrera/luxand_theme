@@ -54,9 +54,9 @@ define([
                 info: { msg: 'Bienvenido', type: 'primary' },
                 ci: null,
                 isProcessing: false,
-                timeToMakeRegister: parseInt(config.timeToMakeRegister, 10) || 2,
+                timeToMakeRegister: 1.5,
                 timeDetecting: 0,
-                inputSize: 224,
+                inputSize: 416,
                 errorDetecting: 0.7,
                 timeWithIdentifiedPerson: null
             },
@@ -171,7 +171,7 @@ define([
                     .done(function(response) {
                         self.identifiedPerson = self.handleResponseApi(response);
                         if (self.identifiedPerson) {
-                            self.accessRegister();
+                            self.accessRegister(response);
                         } else {
                             self.setInfo(false, 'No se pudo identificar, por favor vuelva a intentarlo.', 'error');
                             self.isProcessing = false;
@@ -185,7 +185,7 @@ define([
                         self.timeDetecting = 0;
                     })
                 },
-                accessRegister: function accessRegister() {
+                accessRegister: function accessRegister(response) {
                     const settings = {
                         "async": true,
                         "dataType": "json",
@@ -193,7 +193,8 @@ define([
                         "method": "POST",
                         "data": { 
                             "customer_id": this.identifiedPerson.id,
-                            "image": this.faceDetectedImg
+                            "image": this.faceDetectedImg,
+                            "score": response && response[0] && response[0].probability
                         }
                     }
                     const self = this;
@@ -314,7 +315,7 @@ define([
                     try {
                         if (Array.isArray(response)) {
                             personArray = response.sort((a,b) => a.probability - b.probability).reverse();
-                            if (personArray && personArray.length > 0 && personArray[0].probability > 0.8) {
+                            if (personArray && personArray.length > 0 && personArray[0].probability > 0.9) {
                                 person = personArray && personArray[0] && JSON.parse(personArray[0].name);
                                 person.image64 = this.faceDetectedImg;
                                 return this.formatUserResponse(true, person);
