@@ -792,9 +792,6 @@ class UpgradeData implements UpgradeDataInterface
                        $customer->getCustomAttribute('photo') &&
                        $customer->getCustomAttribute('photo')->getValue()){
 
-                       $luxandId = $customer->getCustomAttribute('luxand_id')->getValue();
-                       $this->luxand->deleteCustomer($luxandId);
-
                        $nameCustomer = [];
                        $nameCustomer['id']=$customer->getId();
                        $nameCustomer['email']=$customer->getEmail();
