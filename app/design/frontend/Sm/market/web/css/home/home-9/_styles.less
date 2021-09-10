@@ -568,3 +568,85 @@ body {
         }
     }
 }
+
+.action.primary.view-plan {
+    height: 40px !important;
+    line-height: 38px !important;
+    border: none !important;
+    background: #f5f5f5;
+    color: #666 !important;
+    font-weight: 700;
+    padding: 0 30px !important;
+
+    &::before {
+        background: none !important;
+        content: '\f073' !important;
+        font-family: 'FontAwesome' !important;
+        margin-right: 10px;
+        top: 0 !important;
+    }
+
+    &:hover {
+        color: white !important;
+    }
+}
+
+.product-classes-list {
+    width: 100%;
+    margin-top: 20px;
+
+    .collapsible {
+        background-color: white;
+        border: 1px solid #adadad;
+        color: #444;
+        cursor: pointer;
+        padding: 15px 20px !important;
+        width: 100%;
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        position: relative;
+
+        &::before {
+            width: 50px;
+            content: '\f067';
+            font-family: 'FontAwesome' !important;
+            right: -15px;
+            position: absolute;
+            font-size: 14px;
+            line-height: 28px;
+        }
+    }
+
+    .collapsible.active {
+        &::before {
+            content: '\f068';
+        }
+    }
+
+    .content {
+        padding: 10px 18px;
+        display: none;
+        overflow: hidden;
+        border: 1px solid #adadad;
+        border-top: none;
+        width: 100%;
+
+        .class-item {
+            display: flex;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .image-container {
+                margin-right: 15px;
+                min-width: 150px;
+            }
+        }
+    }
+}

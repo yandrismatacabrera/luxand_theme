@@ -19,6 +19,7 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper            = $this->helper('Magento\Catalog\Helper\Output');
+$_helperProduct     = $this->helper('OY\Catalog\Helper\Data');
 $_config            = $this->helper('Sm\Market\Helper\Data');
 $homeStyle          = $_config->getThemeLayout('home_style');
 $oyHelper         = $this->helper('OY\Catalog\Helper\Data');
@@ -141,25 +142,35 @@ $oyHelper         = $this->helper('OY\Catalog\Helper\Data');
                                         <div class="actions-primary"<?= strpos($pos, $viewMode . '-primary') ? $position : '' ?>>
                                             <?php if ($_product->isSaleable()): ?>
                                                 <?php $postParams = $block->getAddToCartPostParams($_product); ?>
-                                                <form data-role="tocart-form"
-                                                      data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
-                                                      action="<?= /* @NoEscape */
-                                                      $postParams['action'] ?>" method="post">
-                                                    <input type="hidden" name="product"
-                                                           value="<?= /* @escapeNotVerified */
-                                                           $postParams['data']['product'] ?>">
-                                                    <input type="hidden" name="<?= /* @escapeNotVerified */
-                                                    Action::PARAM_NAME_URL_ENCODED ?>"
-                                                           value="<?= /* @escapeNotVerified */
-                                                           $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
-                                                    <?= $block->getBlockHtml('formkey') ?>
-                                                    <button type="submit"
-                                                            title="<?= $block->escapeHtml(__('Add to Cart')) ?>"
-                                                            class="action tocart primary">
-                                                        <span><?= /* @escapeNotVerified */
-                                                            __('Add to Cart') ?></span>
-                                                    </button>
-                                                </form>
+                                                <?php if ($_helperProduct->getProductPlan($_product->getId())):?>
+                                                    <strong class="product name product-item-name">
+                                                        <a class="action primary view-plan"
+                                                           href="<?= /* @escapeNotVerified */
+                                                           $_product->getProductUrl() ?>">
+                                                            Ver Plan
+                                                        </a>
+                                                    </strong>
+                                                <?php else: ?>
+                                                    <form data-role="tocart-form"
+                                                          data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
+                                                          action="<?= /* @NoEscape */
+                                                          $postParams['action'] ?>" method="post">
+                                                        <input type="hidden" name="product"
+                                                               value="<?= /* @escapeNotVerified */
+                                                               $postParams['data']['product'] ?>">
+                                                        <input type="hidden" name="<?= /* @escapeNotVerified */
+                                                        Action::PARAM_NAME_URL_ENCODED ?>"
+                                                               value="<?= /* @escapeNotVerified */
+                                                               $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                                        <?= $block->getBlockHtml('formkey') ?>
+                                                        <button type="submit"
+                                                                title="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                class="action tocart primary">
+                                                            <span><?= /* @escapeNotVerified */
+                                                                __('Add to Cart') ?></span>
+                                                        </button>
+                                                    </form>
+                                                <?php endif; ?>
                                             <?php else: ?>
                                                 <?php if ($_product->isAvailable()): ?>
                                                     <div class="stock available"><span><?= /* @escapeNotVerified */
@@ -301,23 +312,33 @@ $oyHelper         = $this->helper('OY\Catalog\Helper\Data');
                                         <?php if ($_config->getAdvanced('show_addtocart_button')) { ?>
                                             <?php if ($_product->isSaleable()): ?>
                                                 <?php $postParams = $block->getAddToCartPostParams($_product); ?>
-                                                <form data-role="tocart-form" action="<?php /* @escapeNotVerified */
-                                                echo $postParams['action']; ?>" method="post">
-                                                    <input type="hidden" name="product"
-                                                           value="<?php /* @escapeNotVerified */
-                                                           echo $postParams['data']['product']; ?>">
-                                                    <input type="hidden" name="<?php /* @escapeNotVerified */
-                                                    echo Action::PARAM_NAME_URL_ENCODED; ?>"
-                                                           value="<?php /* @escapeNotVerified */
-                                                           echo $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
-                                                    <?php echo $block->getBlockHtml('formkey') ?>
-                                                    <button type="submit"
-                                                            title="<?php echo $block->escapeHtml(__('Add to Cart')); ?>"
-                                                            class="action tocart btn-action btn-cart">
-														<span><?php /* @escapeNotVerified */
-                                                            echo __('Add to Cart') ?></span>
-                                                    </button>
-                                                </form>
+                                                <?php if ($_helperProduct->getProductPlan($_product->getId())):?>
+                                                    <strong class="product name product-item-name">
+                                                        <a class="action primary view-plan"
+                                                           href="<?= /* @escapeNotVerified */
+                                                           $_product->getProductUrl() ?>">
+                                                            Ver Plan
+                                                        </a>
+                                                    </strong>
+                                                <?php else: ?>
+                                                    <form data-role="tocart-form" action="<?php /* @escapeNotVerified */
+                                                    echo $postParams['action']; ?>" method="post">
+                                                        <input type="hidden" name="product"
+                                                               value="<?php /* @escapeNotVerified */
+                                                               echo $postParams['data']['product']; ?>">
+                                                        <input type="hidden" name="<?php /* @escapeNotVerified */
+                                                        echo Action::PARAM_NAME_URL_ENCODED; ?>"
+                                                               value="<?php /* @escapeNotVerified */
+                                                               echo $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
+                                                        <?php echo $block->getBlockHtml('formkey') ?>
+                                                        <button type="submit"
+                                                                title="<?php echo $block->escapeHtml(__('Add to Cart')); ?>"
+                                                                class="action tocart btn-action btn-cart">
+                                                            <span><?php /* @escapeNotVerified */
+                                                                echo __('Add to Cart') ?></span>
+                                                        </button>
+                                                    </form>
+                                                <?php endif; ?>
                                             <?php else: ?>
                                                 <?php if ($_product->getIsSalable()): ?>
                                                     <div class="stock available"><span><?php /* @escapeNotVerified */
