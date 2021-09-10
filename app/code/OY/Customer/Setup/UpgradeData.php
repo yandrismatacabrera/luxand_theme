@@ -778,7 +778,7 @@ class UpgradeData implements UpgradeDataInterface
                 // Do nothing
             }
         }
-        if (version_compare($context->getVersion(), '1.0.19') < 0){
+        if (version_compare($context->getVersion(), '1.0.20') < 0){
             try{
 
                 $collection = $this->collectionFactory->create();
