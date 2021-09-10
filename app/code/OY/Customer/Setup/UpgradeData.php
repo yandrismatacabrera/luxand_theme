@@ -30,10 +30,18 @@ class UpgradeData implements UpgradeDataInterface
      */
     public function __construct(
         CustomerSetupFactory $customerSetupFactory,
-        AttributeSetFactory $attributeSetFactory
+        AttributeSetFactory $attributeSetFactory,
+        \OY\Registry\Helper\Luxand $luxand,
+        \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory $collectionFactory,
+        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         $this->customerSetupFactory = $customerSetupFactory;
         $this->attributeSetFactory = $attributeSetFactory;
+        $this->luxand=$luxand;
+        $this->collectionFactory=$collectionFactory;
+        $this->customerRepository=$customerRepository;
+        $this->storeManager=$storeManager;
     }
 
     public function upgrade( ModuleDataSetupInterface $setup, ModuleContextInterface $context )
@@ -767,6 +775,52 @@ class UpgradeData implements UpgradeDataInterface
                     ]);
                 $attribute->save();
             } catch (\Exception $e) {
+                // Do nothing
+            }
+        }
+        if (version_compare($context->getVersion(), '1.0.19') < 0){
+            try{
+
+                $collection = $this->collectionFactory->create();
+                $collection->addFieldToFilter('entity_id',419);
+
+                foreach ($collection as $item){
+
+                    $customer = $this->customerRepository->getById($item->getId());
+                    if($customer->getCustomAttribute('luxand_id') &&
+                       $customer->getCustomAttribute('luxand_id')->getValue() &&
+                       $customer->getCustomAttribute('photo') &&
+                       $customer->getCustomAttribute('photo')->getValue()){
+
+                       $luxandId = $customer->getCustomAttribute('luxand_id')->getValue();
+                       $this->luxand->deleteCustomer($luxandId);
+
+                       $nameCustomer = [];
+                       $nameCustomer['id']=$customer->getId();
+                       $nameCustomer['email']=$customer->getEmail();
+                       $nameCustomer['name']=$customer->getFirstname() . ' ' . $customer->getLastname();
+                       $nameCustomer['ci']=$customer->getCustomAttribute('ci')->getValue();
+
+                       $name=(string)json_encode($nameCustomer);
+
+                       $urlImg = $this->storeManager->getStore()->getBaseUrl(
+                                \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
+                            ) . $customer->getCustomAttribute('photo')->getValue();
+
+                       $registry = $this->luxand->createCustomer($name, 0, $urlImg);
+
+                        if ($registry) {
+                            $faceId = $this->luxand->getCustomerFace($registry);
+                            $customer->setCustomAttribute('luxand_registry', 1);
+                            $customer->setCustomAttribute('luxand_id', $registry);
+                            $customer->setCustomAttribute('luxand_photo_id', $faceId);
+                            $this->customerRepository->save($customer);
+                        }
+
+                    }
+                }
+
+            }catch (\Exception $e) {
                 // Do nothing
             }
         }
