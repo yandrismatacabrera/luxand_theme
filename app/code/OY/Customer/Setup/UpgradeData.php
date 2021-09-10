@@ -778,12 +778,10 @@ class UpgradeData implements UpgradeDataInterface
                 // Do nothing
             }
         }
-        if (version_compare($context->getVersion(), '1.0.20') < 0){
+        if (version_compare($context->getVersion(), '1.0.21') < 0){
             try{
 
                 $collection = $this->collectionFactory->create();
-                $collection->addFieldToFilter('entity_id',419);
-
                 foreach ($collection as $item){
 
                     $customer = $this->customerRepository->getById($item->getId());
