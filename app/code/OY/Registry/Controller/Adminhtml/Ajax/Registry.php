@@ -26,7 +26,8 @@ class Registry extends \Magento\Backend\App\Action
         \Magento\Framework\App\Config\ScopeConfigInterface $config,
         \Webkul\BookingSystem\Model\ResourceModel\Booked\CollectionFactory $bookedCollectionFactory,
         \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory $customerCollectionFactory,
-        \Magento\Framework\App\Filesystem\DirectoryList $directoryList
+        \Magento\Framework\App\Filesystem\DirectoryList $directoryList,
+        \Magento\Customer\Model\Session $customerSession
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
@@ -41,6 +42,7 @@ class Registry extends \Magento\Backend\App\Action
         $this->bookedCollectionFactory=$bookedCollectionFactory;
         $this->customerCollectionFactory=$customerCollectionFactory;
         $this->directoryList=$directoryList;
+        $this->customerSession=$customerSession;
     }
 
     public function getCustomerDataByCi($ci)
@@ -158,6 +160,11 @@ class Registry extends \Magento\Backend\App\Action
         $customer = null;
         $customerId = $this->getRequest()->getParam('customer_id');
         $ci = $this->getRequest()->getParam('ci');
+
+        if($this->customerSession->getCustomerId()){
+            $ci = (int)$this->customerSession->getCustomerId();
+        }
+
         $image = $this->getRequest()->getParam('image');
 
         $registryRecord = $this->registryFactory->create();
@@ -165,6 +172,9 @@ class Registry extends \Magento\Backend\App\Action
         if ($image) {
             $registryRecord->setPhoto($this->savePhoto($image));
         }
+
+        $score = $this->getRequest()->getParam('score')??'';
+        $registryRecord->setData('score',$score);
 
         if (!$customerId && !$ci) {
             $data['success'] = false;
