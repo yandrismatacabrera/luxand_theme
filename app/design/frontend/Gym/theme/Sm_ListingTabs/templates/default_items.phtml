@@ -74,7 +74,28 @@ if (count($products)) {
                     ?>
                     <?php // Product Image
                     ?>
+
                     <div class="image-grid">
+                        <?php if ($_product->getData('restricted_hour')): ?>
+                        <div style="position: absolute; left: 175px; top: 15px;">
+                            <div style="position: absolute;
+                                z-index: 1;
+                                width: 90px;
+                                background-color: #A5D3AE;
+                                height: 35px;
+                                border-bottom-left-radius: 30px;
+                                border-bottom-right-radius: 30px;
+                                border-top-left-radius: 30px;
+                                border-top-right-radius: 30px;">
+                                <div style="margin-top: 7px;margin-left: 8px;color: white;">
+                                    <strong>
+                                        <?php echo $_product->getData('hour_from').' - '.$_product->getData('hour_to'); ?>
+
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif; ?>
                         <a href="<?= /* @escapeNotVerified */
                         $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
                             <?= $productImage->toHtml() ?>
