@@ -101,6 +101,13 @@ class Registry extends \Magento\Backend\App\Action
         if ($collection->getSize()) {
             foreach ($collection as $plan) {
                 if ($this->statusPlan($plan->getData('from'), $plan->getData('to'))) {
+
+                    if($plan->getData('hour_from') && $plan->getData('hour_to')){
+                        if(!$this->restrictedTime($plan->getData('hour_from'), $plan->getData('hour_to'))){
+                            continue;
+                        }
+                    }
+
                     if ($plan->getData('access_number')) {
                         if ($plan->getData('access_enabled')) {
                             $plan->setData('access_enabled', (int) $plan->getData('access_enabled') - 1);
@@ -109,6 +116,8 @@ class Registry extends \Magento\Backend\App\Action
                             $planData['to'] = $plan->getData('to');
                             $planData['access_enabled'] = $plan->getData('access_enabled');
                             $planData['access_number'] = $plan->getData('access_number');
+                            $planData['restricted_from'] = $plan->getData('hour_from');
+                            $planData['restricted_to'] = $plan->getData('hour_to');
                             $planData['success'] = true;
                             unset($planData['msg']);
                         }
@@ -117,6 +126,8 @@ class Registry extends \Magento\Backend\App\Action
                         $planData['to'] = $plan->getData('to');
                         $planData['access_enabled'] = $plan->getData('access_enabled');
                         $planData['access_number'] = $plan->getData('access_number');
+                        $planData['restricted_from'] = $plan->getData('hour_from');
+                        $planData['restricted_to'] = $plan->getData('hour_to');
                         $planData['success'] = true;
                         unset($planData['msg']);
                     }
@@ -258,6 +269,20 @@ class Registry extends \Magento\Backend\App\Action
         }
 
         return false;
+    }
+
+    public function restrictedTime($restrictedFrom, $restrictedTo){
+        if($restrictedFrom && $restrictedTo){
+
+            $fromTime = str_replace(':','',$restrictedFrom);
+            $toTime = (int)str_replace(':','',$restrictedTo);
+            $currentTime = (int)str_replace(':','',$this->timezone->date()->format('H:i'));
+
+            if($currentTime < $fromTime || $currentTime > $toTime){
+                return false;
+            }
+            return true;
+        }
     }
 
     private function getConfig($config_path)

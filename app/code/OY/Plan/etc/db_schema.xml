@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <table name="plan_entity" resource="default" engine="innodb" comment="Plan Table">
+        <column xsi:type="varchar" name="hour_from" nullable="true" comment="Hour from"/>
+        <column xsi:type="varchar" name="hour_to" nullable="true" comment="Hour to"/>
+    </table>
+</schema>
