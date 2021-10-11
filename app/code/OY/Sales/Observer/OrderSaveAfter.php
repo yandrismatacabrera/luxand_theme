@@ -76,7 +76,11 @@ class OrderSaveAfter implements ObserverInterface
                                         $strTo->add(new \DateInterval($product->getData('code_interval')));
 
                                         $model->setData('customer_id', $customerId);
-                                        $model->setData('plan', $product->getName());
+                                        $name = $product->getName();
+                                        if($product->getData('restricted_hour')){
+                                            $name .= ' (Horario restringido)';
+                                        }
+                                        $model->setData('plan', $name);
 
                                         $model->setData('from', date("Y-m-d H:i:s", strtotime("+3 hours", strtotime($strFrom))));
 

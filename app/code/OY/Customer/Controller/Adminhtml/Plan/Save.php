@@ -96,7 +96,7 @@ class Save extends Action
                 $now= new \DateTime();
 
                 $model->setData('customer_id',$data['customer_id']);
-                $model->setData('plan',$plan);
+                //$model->setData('plan',$plan);
 
                 $model->setData('from',date("Y-m-d H:i:s", strtotime("+3 hours", strtotime($strTo))));
                 //$model->setTo($this->dateFilter->filter(date('d/m/Y', $dateTo)));
