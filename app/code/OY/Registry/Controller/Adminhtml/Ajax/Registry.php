@@ -104,6 +104,10 @@ class Registry extends \Magento\Backend\App\Action
 
                     if($plan->getData('hour_from') && $plan->getData('hour_to')){
                         if(!$this->restrictedTime($plan->getData('hour_from'), $plan->getData('hour_to'))){
+                            $planData = [
+                                'success' => false,
+                                'msg' => 'El usuario no se encuentra en al horario admitido para el plan asociado.'
+                            ];
                             continue;
                         }
                     }
