@@ -46,16 +46,14 @@ class RegistryCustomerLuxand implements ObserverInterface
         }
 
         if ($customer->getCustomAttribute('luxand_registry') &&
-            $customer->getCustomAttribute('luxand_registry')->getValue() &&
-            $customer->getCustomAttribute('luxand_id') &&
-            $customer->getCustomAttribute('luxand_id')->getValue()) {
+            $customer->getCustomAttribute('luxand_registry')->getValue()) {
             if ($photoChanged == true) {
                 if ($customer->getCustomAttribute('luxand_photo_id') && $customer->getCustomAttribute('luxand_photo_id')->getValue()) {
                     $this->luxand->deleteCustomerPhoto($customer->getCustomAttribute('luxand_id')->getValue(), $customer->getCustomAttribute('luxand_photo_id')->getValue());
                 }
                 $img = $customer->getCustomAttribute('photo')->getValue();
                 $imagePub ='pub/media' . $img;
-                $this->luxand->addCustomerPhoto($customer->getCustomAttribute('luxand_id')->getValue(), $imagePub);
+                $this->luxand->addCustomerPhoto($customer->getId(), $imagePub);
                 $faceId = $this->luxand->getCustomerFace($customer->getCustomAttribute('luxand_id')->getValue());
                 $customer->setCustomAttribute('luxand_photo_id', $faceId);
                 $this->customerRepository->save($customer);
