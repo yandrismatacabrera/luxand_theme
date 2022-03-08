@@ -12,10 +12,12 @@ class FeedBack implements FeedBackInterface
     private $request;
 
     public function __construct(
-        \Magento\Framework\Webapi\Rest\Request $request
+        \Magento\Framework\Webapi\Rest\Request $request,
+        \Psr\Log\LoggerInterface $logger
     )
     {
         $this->request=$request;
+        $this->logger=$logger;
     }
 
 
@@ -23,6 +25,7 @@ class FeedBack implements FeedBackInterface
     {
         $params = $this->request->getBodyParams();
 
+        $this->logger->info('WhastApp ',$params);
         print_r($params);die;
     }
 
